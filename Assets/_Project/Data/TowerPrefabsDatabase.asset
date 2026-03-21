@@ -1,0 +1,21 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 48b15a134051459d9c9abde27c8e51e4, type: 3}
+  m_Name: TowerPrefabsDatabase
+  m_EditorClassIdentifier: Assembly-CSharp::_Project.Scripts.Database.TowersDatabase.TowersDatabase
+  _towers:
+  - type: 0
+    prefab: {fileID: 1462002706356958582, guid: 1c0712da740e2274bbc198bd9bb21b84, type: 3}
+  - type: 1
+    prefab: {fileID: 5605224903200634097, guid: 56c3ac3e7d130154c84225b8b70d357c, type: 3}
+  - type: 2
+    prefab: {fileID: 8951336817122866525, guid: 6e3585de0aebb4642933e84be16cb9f5, type: 3}
