@@ -1,12 +1,11 @@
 ﻿using Zenject;
 using UnityEngine;
 using _Project.Scripts.Services;
+using _Project.Scripts.Repositories;
 using _Project.Scripts.Database.EnemyDatabase;
 using _Project.Scripts.Database.TowersDatabase;
-using _Project.Scripts.Services.EnemiesRepository;
 using _Project.Scripts.Infrastructure.SceneLoader;
 using _Project.Scripts.Infrastructure.CoroutineRunner;
-using _Project.Scripts.Services.LevelConfigRepository;
 
 namespace _Project.Scripts.DI.ProjectContext
 {
@@ -26,7 +25,8 @@ namespace _Project.Scripts.DI.ProjectContext
             Container.BindInterfacesAndSelfTo<AssetProvider>().AsSingle();
             Container.BindInterfacesAndSelfTo<CoroutineRunner>().FromComponentInNewPrefab(_coroutineRunner).AsSingle().NonLazy();
             Container.BindInterfacesAndSelfTo<EnemyConfigsRepository>().AsSingle();
-            Container.BindInterfacesAndSelfTo<LevelConfigRepository>().AsSingle();
+            Container.BindInterfacesAndSelfTo<LevelRepository>().AsSingle();
+            Container.BindInterfacesAndSelfTo<TowersRepository>().AsSingle();
             Container.BindInterfacesAndSelfTo<SceneLoader>().AsSingle().NonLazy();
         }
     }

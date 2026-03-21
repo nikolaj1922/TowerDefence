@@ -1,28 +1,31 @@
 ﻿using Zenject;
-using _Project.Scripts.Services.EnemiesRepository;
-using _Project.Scripts.Services.LevelConfigRepository;
+using _Project.Scripts.Repositories;
 
-namespace _Project.Scripts.Infrastructure
+namespace _Project.Scripts.Infrastructure.Game
 {
     public class GameBoostrapper : IInitializable
     {
         private readonly EnemyConfigsRepository _enemyConfigsRepository;
-        private readonly LevelConfigRepository _levelConfigsRepository;
+        private readonly LevelRepository _levelRepository;
         private readonly SceneLoader.SceneLoader _sceneLoader;
+        private readonly TowersRepository _towersRepository;
         
         public GameBoostrapper(
+            TowersRepository towersRepository,
             EnemyConfigsRepository enemyConfigsRepository, 
-            LevelConfigRepository levelConfigsRepository,
+            LevelRepository levelRepository,
             SceneLoader.SceneLoader sceneLoader)
         {
+            _towersRepository = towersRepository;
             _enemyConfigsRepository = enemyConfigsRepository;
-            _levelConfigsRepository = levelConfigsRepository;
+            _levelRepository = levelRepository;
             _sceneLoader = sceneLoader;
         }
         
         public void Initialize()
         {
-            _levelConfigsRepository.Load();
+            _towersRepository.Load();
+            _levelRepository.Load();
             _enemyConfigsRepository.Load();
             _sceneLoader.LoadScene(GameConstants.MenuScene);
         }

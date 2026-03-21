@@ -1,5 +1,5 @@
 ﻿using Zenject;
-using _Project.Scripts.Infrastructure;
+using _Project.Scripts.Infrastructure.Game;
 
 namespace _Project.Scripts.DI.SceneContext.BootstrapScene
 {

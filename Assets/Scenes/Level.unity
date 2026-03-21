@@ -2927,10 +2927,22 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 511997333002150684, guid: c0c694697f0fa5043bf280d711cc4440, type: 3}
+      propertyPath: _weaponHead
+      value: 
+      objectReference: {fileID: 103835290}
     - target: {fileID: 1462002706356958582, guid: c0c694697f0fa5043bf280d711cc4440, type: 3}
       propertyPath: m_Name
       value: Castle
       objectReference: {fileID: 0}
+    - target: {fileID: 3852611358589786142, guid: c0c694697f0fa5043bf280d711cc4440, type: 3}
+      propertyPath: _weaponBase
+      value: 
+      objectReference: {fileID: 103835291}
+    - target: {fileID: 3852611358589786142, guid: c0c694697f0fa5043bf280d711cc4440, type: 3}
+      propertyPath: _weaponHead
+      value: 
+      objectReference: {fileID: 103835290}
     - target: {fileID: 5787136485587841881, guid: c0c694697f0fa5043bf280d711cc4440, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -2976,6 +2988,16 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: c0c694697f0fa5043bf280d711cc4440, type: 3}
+--- !u!4 &103835290 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 3143606739626245408, guid: c0c694697f0fa5043bf280d711cc4440, type: 3}
+  m_PrefabInstance: {fileID: 103835289}
+  m_PrefabAsset: {fileID: 0}
+--- !u!4 &103835291 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 3037154719360723019, guid: c0c694697f0fa5043bf280d711cc4440, type: 3}
+  m_PrefabInstance: {fileID: 103835289}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &103969303
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -13352,7 +13374,7 @@ Light:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 410087039}
   m_Enabled: 1
-  serializedVersion: 12
+  serializedVersion: 13
   m_Type: 1
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_Intensity: 2
@@ -13404,7 +13426,7 @@ Light:
   m_UseBoundingSphereOverride: 0
   m_UseViewFrustumForShadowCasterCull: 1
   m_ForceVisible: 0
-  m_ShadowRadius: 0
+  m_ShapeRadius: 0
   m_ShadowAngle: 0
   m_LightUnit: 1
   m_LuxAtDistance: 1

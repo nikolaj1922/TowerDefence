@@ -13,8 +13,8 @@ MonoBehaviour:
   m_Name: Ork
   m_EditorClassIdentifier: Assembly-CSharp::_Project.Scripts.Configs.EnemyConfig
   type: 0
-  speed: 1
-  health: 100
+  speed: 0.5
+  health: 10
   damage: 10
   attackRange: 0.3
   attackCooldown: 2

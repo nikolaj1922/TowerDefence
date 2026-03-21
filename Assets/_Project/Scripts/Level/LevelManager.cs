@@ -1,11 +1,11 @@
 ﻿using Zenject;
 using UnityEngine;
 using System.Collections;
+using _Project.Scripts.Configs;
 using _Project.Scripts.Enemy;
 using _Project.Scripts.Tower;
+using _Project.Scripts.Repositories;
 using _Project.Scripts.Infrastructure.CoroutineRunner;
-using _Project.Scripts.Services.EnemiesRepository;
-using _Project.Scripts.Services.LevelConfigRepository;
 
 namespace _Project.Scripts.Level
 {
@@ -15,7 +15,8 @@ namespace _Project.Scripts.Level
         private EnemyFactory _enemyFactory;
         private EnemySpawner _enemySpawner;
         private CoroutineRunner _coroutineRunner;
-        private LevelConfigRepository _levelConfigRepository;
+        private LevelRepository _levelRepository;
+        private TowersRepository _towersRepository;
         private EnemyConfigsRepository _enemyConfigsRepository;
 
         private CastleController _castle;
@@ -27,12 +28,14 @@ namespace _Project.Scripts.Level
         private void Construct(
             EnemyFactory enemyFactory,
             CoroutineRunner coroutineRunner,
-            LevelConfigRepository levelConfigRepository,
+            TowersRepository towersRepository,
+            LevelRepository levelRepository,
             CastleController castleController,
             DefeatModal defeatModal)
         {
             _castle = castleController;
-            _levelConfigRepository = levelConfigRepository;
+            _levelRepository = levelRepository;
+            _towersRepository = towersRepository;
             _enemyFactory = enemyFactory;
             _coroutineRunner = coroutineRunner;
             _defeatModal = defeatModal;
@@ -40,16 +43,30 @@ namespace _Project.Scripts.Level
 
         public void Initialize()
         {
-            _castle.InitHealth(_levelConfigRepository.LevelConfig.castleHealth);
-            _castle.OnCastleDestroy += GameOver;
+            InitializeCastle();
             _coroutineRunner.Run(StartWay());
         }
-        
+
+        private void InitializeCastle()
+        {
+            _castle.InitHealth(_levelRepository.LevelConfig.castleHealth);
+
+            TowerConfig castleConfig = _towersRepository.Get(TowerType.Castle);
+            
+            TowerAim castleAim = _castle.GetComponent<TowerAim>();
+            TowerAttack castleAttack = _castle.GetComponent<TowerAttack>();
+            
+            castleAim.Initialize(castleConfig.attackRange, castleConfig.rotationSpeed);
+            castleAttack.Initialize(castleConfig.damage, castleConfig.attackSpeed);
+            
+            _castle.OnCastleDestroy += GameOver;
+        }
+
         private IEnumerator StartWay()
         {
             yield return new WaitForSeconds(3f);
 
-            var currentWay = _levelConfigRepository.LevelConfig.ways[_wayIndex];
+            var currentWay = _levelRepository.LevelConfig.ways[_wayIndex];
             
             foreach (var wayEnemyData in currentWay.enemies)
             {

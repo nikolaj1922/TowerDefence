@@ -1,12 +1,12 @@
 ﻿using Zenject;
 using UnityEngine;
+using _Project.Scripts.Tower;
 using _Project.Scripts.Configs;
+using _Project.Scripts.Repositories;
 using _Project.Scripts.Enemy.States;
 using _Project.Scripts.Database.EnemyDatabase;
 using _Project.Scripts.Infrastructure;
 using _Project.Scripts.Infrastructure.StateMachine;
-using _Project.Scripts.Services.EnemiesRepository;
-using _Project.Scripts.Tower;
 
 namespace _Project.Scripts.Enemy
 {
@@ -14,9 +14,9 @@ namespace _Project.Scripts.Enemy
     {
         private readonly DiContainer _container;
         private readonly Transform _castle;
+        private readonly EnemySpawner _enemySpawner;
         private readonly EnemyPrefabsDatabase _enemyPrefabsDatabase;
         private readonly EnemyConfigsRepository _enemyConfigsRepository;
-        private readonly EnemySpawner _enemySpawner;
 
         public EnemyFactory(
             EnemyConfigsRepository enemyConfigsRepository,
@@ -41,7 +41,7 @@ namespace _Project.Scripts.Enemy
             EnemyController enemyController =  _container.InstantiatePrefabForComponent<EnemyController>(
                 enemyPrefab,
                 spawnPoint, 
-                Quaternion.LookRotation(_castle.position),
+                Quaternion.FromToRotation(spawnPoint, _castle.position),
                 null);
             
             EnemyAttack enemyAttack = enemyController.GetComponent<EnemyAttack>();

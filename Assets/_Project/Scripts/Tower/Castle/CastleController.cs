@@ -4,6 +4,7 @@ using _Project.Scripts.Logic.Health;
 
 namespace _Project.Scripts.Tower
 {
+    [RequireComponent(typeof(TowerAim), typeof(TowerAttack))]
     public class CastleController : HealthController
     {
         public event Action OnCastleDestroy;
