@@ -1,35 +1,31 @@
-﻿using UnityEngine;
+﻿using System;
+using Zenject;
 
-namespace _Project.Scripts.Logic.Health
+namespace _Project.Scripts.UI.HealthBar
 {
-    public class HealthController : MonoBehaviour, IDamagable
+    public class HealthController: IInitializable, IDisposable
     {
-        public HealthModel HealthModel { get; private set; }
-        [SerializeField] private HealthBarView _healthBarView;
+        private readonly HealthBarView _view;
+        private readonly HealthModel _model;
 
-        private void OnDisable()
+        public HealthController(HealthModel model,  HealthBarView view)
         {
-            if (HealthModel != null)
-                HealthModel.OnHealthChanged -= UpdateHealthBar;
+            _model = model;
+            _view = view;
+        }
+
+        public void Initialize()
+        {
+            _model.OnHealthChanged += UpdateHealthBar;
+            UpdateHealthBar(_model.CurrentHealth);
         }
         
-        public virtual void InitHealth(float health)
+        public void Dispose() => _model.OnHealthChanged -= UpdateHealthBar;
+        
+        private void UpdateHealthBar(float current)
         {
-            HealthModel = new HealthModel(health);
-            HealthModel.OnHealthChanged += UpdateHealthBar;
-            UpdateHealthBar(HealthModel.CurrentHealth, HealthModel.MaxHealth);
-        }
-
-        public void TakeDamage(float damage)
-        {
-            Debug.Log($"Health: {HealthModel.CurrentHealth} / {HealthModel.MaxHealth}");
-            HealthModel.ChangeHealth(-damage);
-        }
-
-        private void UpdateHealthBar(float current, float max)
-        {
-            if (_healthBarView != null)
-                _healthBarView.SetFill(current / max);
+            if (_view != null)
+                _view.SetFill(current / _model.MaxHealth);
         }
     }
 }

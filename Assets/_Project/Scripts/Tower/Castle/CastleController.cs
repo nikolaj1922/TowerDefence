@@ -1,32 +1,45 @@
 ﻿using System;
+using Zenject;
 using UnityEngine;
-using _Project.Scripts.Logic.Health;
+using _Project.Scripts.UI.HealthBar;
+using _Project.Scripts.Tower.Weapon;
 
-namespace _Project.Scripts.Tower
+namespace _Project.Scripts.Tower.Castle
 {
-    [RequireComponent(typeof(TowerAim), typeof(TowerAttack))]
-    public class CastleController : HealthController
+    public class CastleController : MonoBehaviour, IDamagable
     {
         public event Action OnCastleDestroy;
         
         [SerializeField] private GameObject _castleModel;
         [SerializeField] private GameObject _castleDamagedModel;
-        [SerializeField] private GameObject _castleWeapon;
-        
+
+        private HealthModel _healthModel;
+        private Weapon1 _weapon;
         private bool _damagedModel = false;
         private bool _isGameOver = false;
 
-        private void OnDisable() => HealthModel.OnHealthChanged -= TakeDamage;
-        
-        public override void InitHealth(float health)
+        [Inject]
+        public void Construct(HealthModel healthModel, Weapon1 weapon)
         {
-            base.InitHealth(health);
-            HealthModel.OnHealthChanged += TakeDamage;
+            _healthModel = healthModel;
+            _weapon = weapon;
         }
 
-        private void TakeDamage(float currentHealth, float maxHealth)
+        private void Start()
         {
-            if (currentHealth / maxHealth > 0.5f)
+            _healthModel.OnHealthChanged += TakeDamage;
+        }
+
+        private void Update()
+        {
+            _weapon.Tick(Time.deltaTime);
+        }
+
+        private void OnDisable() => _healthModel.OnHealthChanged -= TakeDamage;
+        
+        public void TakeDamage(float currentHealth)
+        {
+            if (currentHealth / _healthModel.MaxHealth > 0.5f)
                 return;
 
             ChangeCastleModel();
@@ -44,9 +57,10 @@ namespace _Project.Scripts.Tower
                 return;
             
             _damagedModel = true;
-            _castleModel.SetActive(false);
-            _castleWeapon.SetActive(false);
+            
             _castleDamagedModel.SetActive(true);
+            _castleModel.SetActive(false);
+            // Weapon.gameObject.SetActive(false);
         }
     }
 }

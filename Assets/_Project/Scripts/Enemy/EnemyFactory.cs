@@ -1,10 +1,7 @@
-﻿using Zenject;
+﻿using System;
 using UnityEngine;
-using _Project.Scripts.Tower;
-using _Project.Scripts.Configs;
-using _Project.Scripts.Repositories;
 using _Project.Scripts.Enemy.States;
-using _Project.Scripts.Database.EnemyDatabase;
+using _Project.Scripts.Tower.Castle;
 using _Project.Scripts.Infrastructure;
 using _Project.Scripts.Infrastructure.StateMachine;
 
@@ -12,66 +9,78 @@ namespace _Project.Scripts.Enemy
 {
     public class EnemyFactory
     {
-        private readonly DiContainer _container;
-        private readonly Transform _castle;
         private readonly EnemySpawner _enemySpawner;
-        private readonly EnemyPrefabsDatabase _enemyPrefabsDatabase;
-        private readonly EnemyConfigsRepository _enemyConfigsRepository;
+        private readonly EnemyPool _orksPool;
 
         public EnemyFactory(
-            EnemyConfigsRepository enemyConfigsRepository,
             EnemySpawner enemySpawner,
-            EnemyPrefabsDatabase enemyPrefabsDatabase,
-            CastleController castle,
-            DiContainer container)
+            EnemyPool orksPool
+        )
         {
             _enemySpawner = enemySpawner;
-            _enemyConfigsRepository = enemyConfigsRepository;
-            _castle = castle.transform;
-            _enemyPrefabsDatabase = enemyPrefabsDatabase;
-            _container = container;
+            _orksPool = orksPool;
         }
 
-        public void CreateEnemy(EnemyType type)
+        public void CreateEnemy(EnemyType type, Action onDeath)
         {
-            EnemyConfig enemyConfig = _enemyConfigsRepository.ForEnemy(type);
-            GameObject enemyPrefab = _enemyPrefabsDatabase.Get(type);
             Vector3 spawnPoint = _enemySpawner.GetRandomSpawnPoint(GameConstants.EnemySpawnOffset);
-            
-            EnemyController enemyController =  _container.InstantiatePrefabForComponent<EnemyController>(
-                enemyPrefab,
-                spawnPoint, 
-                Quaternion.FromToRotation(spawnPoint, _castle.position),
-                null);
-            
-            EnemyAttack enemyAttack = enemyController.GetComponent<EnemyAttack>();
-            EnemyAgentMover enemyMover = enemyController.GetComponent<EnemyAgentMover>();
-            EnemyAnimator enemyAnimator = enemyController.GetComponent<EnemyAnimator>();
+            EnemyController enemy = GetEnemy(type);
+
+            enemy.Agent.Warp(spawnPoint);
+            Physics.SyncTransforms();
+            enemy.ResetComponents();
 
             StateMachine enemyStateMachine = new(
                 new IState[] {
-                    new EnemyIdleState(enemyMover, enemyAttack, enemyAnimator), 
-                    new EnemyAttackState(enemyAttack),
-                    new EnemyDeathState(enemyAnimator),
-                    new EnemyMoveState(enemyMover, enemyAnimator),
-                    new EnemyVictoryState(enemyMover, enemyAttack, enemyAnimator)
+                    new EnemyIdleState(enemy.Mover, enemy.Attack, enemy.Animator), 
+                    new EnemyAttackState(enemy.Attack),
+                    new EnemyDeathState(enemy.Animator, enemy.Agent),
+                    new EnemyMoveState(enemy.Mover, enemy.Animator),
+                    new EnemyVictoryState(enemy.Mover, enemy.Attack, enemy.Animator)
                 },
                 new ITransition[]
                 {
-                    new Transition<EnemyIdleState, EnemyMoveState>(() => enemyMover.IsMoving),
-                    new Transition<EnemyMoveState, EnemyAttackState>(() => enemyMover.IsCastleReached),
-                    new Transition<EnemyIdleState, EnemyDeathState>(() => enemyController.HealthModel.CurrentHealth <= 0),
-                    new Transition<EnemyMoveState, EnemyDeathState>(() => enemyController.HealthModel.CurrentHealth <= 0),
-                    new Transition<EnemyAttackState, EnemyDeathState>(() => enemyController.HealthModel.CurrentHealth <= 0),
+                    new Transition<EnemyIdleState, EnemyMoveState>(() => enemy.Mover.IsMoving),
+                    new Transition<EnemyMoveState, EnemyAttackState>(() => enemy.Mover.IsCastleReached),
+                    new Transition<EnemyIdleState, EnemyDeathState>(() => enemy.HealthModel.CurrentHealth <= 0),
+                    new Transition<EnemyMoveState, EnemyDeathState>(() => enemy.HealthModel.CurrentHealth <= 0),
+                    new Transition<EnemyAttackState, EnemyDeathState>(() => enemy.HealthModel.CurrentHealth <= 0),
                 }
                 );
-            
-            
-            enemyAttack.Initialize(enemyConfig.damage, enemyConfig.attackCooldown, enemyConfig.attackRange);
-            enemyMover.Initialize(enemyConfig.speed, enemyConfig.attackRange, _castle.position);
-            
-            enemyController.SetStateMachine(enemyStateMachine);
-            enemyController.InitHealth(enemyConfig.health);
+
+            // TODO
+            enemy.Mover.Initialize(Vector3.zero);
+            enemy.Death.Initialize(onDeath: () => GetEnemyPool(type).Despawn(enemy));
+            enemy.HealthModel.OnDeath+= onDeath;
+            enemy.HealthModel.OnDeath+= enemy.Death.Die;
+            enemy.SetStateMachine(enemyStateMachine);
+        }
+        
+        // private EnemyConfig GetEnemyConfig(EnemyType type)
+        // {
+        //     return type switch
+        //     {
+        //         EnemyType.Ork => _enemyConfigsRepository.ForEnemy(EnemyType.Ork),
+        //         _ => throw new ArgumentOutOfRangeException(nameof(type), type, "Unknown enemy type")
+        //     };
+        // }
+
+        private EnemyController GetEnemy(EnemyType type)
+        {
+            return type switch
+            {
+                EnemyType.Ork => _orksPool.Spawn(),
+                _ => throw new ArgumentOutOfRangeException(nameof(type), type, "Unknown enemy type")
+            };
+        }
+
+        private EnemyPool GetEnemyPool(EnemyType type)
+        {
+            return type switch
+            {
+                EnemyType.Ork => _orksPool,
+                _ => throw new ArgumentOutOfRangeException(nameof(type), type, "Unknown enemy type")
+            };
         }
     }
 }

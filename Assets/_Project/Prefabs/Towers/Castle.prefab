@@ -11,8 +11,8 @@ GameObject:
   - component: {fileID: 5787136485587841881}
   - component: {fileID: 4247492527175211092}
   - component: {fileID: 1625379637378449326}
-  - component: {fileID: 3852611358589786142}
-  - component: {fileID: 511997333002150684}
+  - component: {fileID: 1393665117474331415}
+  - component: {fileID: 4343081017574913119}
   m_Layer: 7
   m_Name: Castle
   m_TagString: Untagged
@@ -72,11 +72,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8a4cc7ce4cf119340a779d70db6e1ace, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::_Project.Scripts.Tower.CastleController
-  _healthBarView: {fileID: 55345165796221890}
   _castleModel: {fileID: 2177793888199174644}
   _castleDamagedModel: {fileID: 8260604979489275177}
-  _castleWeapon: {fileID: 6724717381682422750}
---- !u!114 &3852611358589786142
+--- !u!114 &1393665117474331415
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -85,27 +83,36 @@ MonoBehaviour:
   m_GameObject: {fileID: 1462002706356958582}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a5e8f954a83dc2f469b05ef1beeabce7, type: 3}
+  m_Script: {fileID: 11500000, guid: 08eca9f7688a0a24685b89133b020c8e, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::_Project.Scripts.Tower.TowerAim
-  _weaponHead: {fileID: 8798137064593392349}
-  _weaponBase: {fileID: 6724717381682422750}
-  _enemiesLayerMask:
+  m_EditorClassIdentifier: Zenject::Zenject.GameObjectContext
+  _scriptableObjectInstallers: []
+  _monoInstallers:
+  - {fileID: 4343081017574913119}
+  _installerPrefabs: []
+  _autoRun: 1
+  _kernel: {fileID: 0}
+--- !u!114 &4343081017574913119
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1462002706356958582}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1deb8dc4f5854180960d4cf3cb43f246, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::_Project.Scripts.DI.GameObjectInstaller.CastleInstaller
+  _towerType: 0
+  _enemyLayerMask:
     serializedVersion: 2
     m_Bits: 256
---- !u!114 &511997333002150684
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1462002706356958582}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2ccf2d5f7dcf4222b607abb3749aa0f9, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::_Project.Scripts.Tower.TowerAttack
-  _weaponHead: {fileID: 8798137064593392349}
+  _weaponBase: {fileID: 3037154719360723019}
+  _weaponHead: {fileID: 3143606739626245408}
+  _projectileSpawnPoint: {fileID: 7209964005575286915}
+  _projectile: {fileID: -1521682930354109669, guid: 4ea3d4da4fe9f6842a5ed0164e3be0e5, type: 3}
+  _healthBarView: {fileID: 55345165796221890}
 --- !u!1 &2177793888199174644
 GameObject:
   m_ObjectHideFlags: 0
@@ -443,17 +450,13 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 5787136485587841881}
     m_Modifications:
+    - target: {fileID: 2741494828710267197, guid: b5ff6bac1833f49478bdf466c2ba62b1, type: 3}
+      propertyPath: _range
+      value: 2.06
+      objectReference: {fileID: 0}
     - target: {fileID: 2788770021580157122, guid: b5ff6bac1833f49478bdf466c2ba62b1, type: 3}
       propertyPath: m_Name
       value: WeaponCannon
-      objectReference: {fileID: 0}
-    - target: {fileID: 5782930849589259836, guid: b5ff6bac1833f49478bdf466c2ba62b1, type: 3}
-      propertyPath: m_LocalRotation.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 5782930849589259836, guid: b5ff6bac1833f49478bdf466c2ba62b1, type: 3}
-      propertyPath: m_LocalRotation.z
-      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5892794615815076695, guid: b5ff6bac1833f49478bdf466c2ba62b1, type: 3}
       propertyPath: m_LocalPosition.x
@@ -505,13 +508,13 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 5892794615815076695, guid: b5ff6bac1833f49478bdf466c2ba62b1, type: 3}
   m_PrefabInstance: {fileID: 8926500991786308380}
   m_PrefabAsset: {fileID: 0}
---- !u!1 &6724717381682422750 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 2788770021580157122, guid: b5ff6bac1833f49478bdf466c2ba62b1, type: 3}
+--- !u!4 &3143606739626245408 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 5782930849589259836, guid: b5ff6bac1833f49478bdf466c2ba62b1, type: 3}
   m_PrefabInstance: {fileID: 8926500991786308380}
   m_PrefabAsset: {fileID: 0}
---- !u!1 &8798137064593392349 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 141879128425091521, guid: b5ff6bac1833f49478bdf466c2ba62b1, type: 3}
+--- !u!4 &7209964005575286915 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 2301266065993413535, guid: b5ff6bac1833f49478bdf466c2ba62b1, type: 3}
   m_PrefabInstance: {fileID: 8926500991786308380}
   m_PrefabAsset: {fileID: 0}

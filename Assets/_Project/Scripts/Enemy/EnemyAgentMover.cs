@@ -1,5 +1,8 @@
-﻿using UnityEngine;
+﻿using System;
+using _Project.Scripts.Configs;
+using UnityEngine;
 using UnityEngine.AI;
+using Zenject;
 
 namespace _Project.Scripts.Enemy
 {
@@ -13,9 +16,22 @@ namespace _Project.Scripts.Enemy
         public bool IsMoving { get; private set; } = false;
         public bool IsCastleReached { get; private set; } = false;
 
+        [Inject]
+        public void Construct(EnemyConfig config)
+        {
+            _navMeshAgent.speed = config.speed;
+            _navMeshAgent.stoppingDistance = CASTLE_SIZE + _navMeshAgent.radius + config.attackRange;
+        }
+
         private void Awake()
         {
             _navMeshAgent = GetComponent<NavMeshAgent>();
+        }
+
+        private void OnEnable()
+        {
+            IsMoving = false;
+            IsCastleReached = false;
         }
 
         private void Update()
@@ -26,12 +42,9 @@ namespace _Project.Scripts.Enemy
             IsCastleReached = true;
         }
 
-        public void Initialize(float speed, float attackRange, Vector3 destination)
+        public void Initialize(Vector3 destination)
         {
-            _navMeshAgent.speed = speed;
-            _navMeshAgent.stoppingDistance = CASTLE_SIZE + _navMeshAgent.radius + attackRange;
             _navMeshAgent.destination = destination;
-            
             IsMoving = true;
         }
     }

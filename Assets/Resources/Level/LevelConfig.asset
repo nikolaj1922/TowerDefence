@@ -16,5 +16,9 @@ MonoBehaviour:
   ways:
   - enemies:
     - enemyType: 0
-      enemyCount: 1
+      enemyCount: 3
+    spawnFrequency: 1
+  - enemies:
+    - enemyType: 0
+      enemyCount: 6
     spawnFrequency: 1

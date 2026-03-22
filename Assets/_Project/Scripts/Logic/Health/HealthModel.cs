@@ -1,13 +1,13 @@
 ﻿using System;
-using _Project.Scripts.Logic.Health;
+using _Project.Scripts.UI.HealthBar;
 using UnityEngine;
 
-namespace _Project.Scripts.Logic.Health
+namespace _Project.Scripts.UI.HealthBar
 {
     public class HealthModel
     {
-        public event Action<float, float> OnHealthChanged;
-        public event Action OnDied;
+        public event Action<float> OnHealthChanged;
+        public event Action OnDeath;
 
         private float _currentHealth;
         public float MaxHealth { get; private set; }
@@ -19,10 +19,10 @@ namespace _Project.Scripts.Logic.Health
             {
                 _currentHealth = value;
                 
-                OnHealthChanged?.Invoke(_currentHealth, MaxHealth);
+                OnHealthChanged?.Invoke(_currentHealth);
                 
                 if (value <= 0)
-                    OnDied?.Invoke();
+                    OnDeath?.Invoke();
             }
         }
 

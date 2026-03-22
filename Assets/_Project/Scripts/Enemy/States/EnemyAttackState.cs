@@ -7,15 +7,9 @@ namespace _Project.Scripts.Enemy.States
     {
         private readonly EnemyAttack _enemyAttack;
         
-        public EnemyAttackState(EnemyAttack enemyAttack)
-        {
-            _enemyAttack = enemyAttack;
-        }
+        public EnemyAttackState(EnemyAttack enemyAttack) => _enemyAttack = enemyAttack;
 
-        public void Enter()
-        {
-            _enemyAttack.enabled = true;
-        }
+        public void Enter() => _enemyAttack.enabled = true;
 
         public void Exit() => _enemyAttack.enabled = false;
     }

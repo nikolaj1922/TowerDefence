@@ -77,9 +77,11 @@ GameObject:
   - component: {fileID: 5836148478707686841}
   - component: {fileID: 5804415847503915}
   - component: {fileID: 4632995313129484344}
+  - component: {fileID: 5192946282292657622}
   - component: {fileID: 6747568525429956210}
   - component: {fileID: 9189538133516170799}
   - component: {fileID: 1034175701899688284}
+  - component: {fileID: -5423916470273880586}
   m_Layer: 8
   m_Name: Ork
   m_TagString: Untagged
@@ -104,6 +106,7 @@ Transform:
   - {fileID: 2115219943}
   - {fileID: 9209527942530323918}
   - {fileID: 1816095473402699668}
+  - {fileID: 1832042597210765047}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!95 &388476415
@@ -162,7 +165,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fe26fa65e8ca473b9c97b956e5df966b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::_Project.Scripts.Enemy.Enemy
-  _healthBarView: {fileID: 7685303353695183910}
   <AttackPoint>k__BackingField: {fileID: 1816095473402699668}
 --- !u!114 &4632995313129484344
 MonoBehaviour:
@@ -176,6 +178,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 836b9a73ede94943aa0ae7f5c97f0804, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::_Project.Scripts.Enemy.EnemyAgentMover
+--- !u!114 &5192946282292657622
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 388476414}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c215c0118bdc43d1876ab3df313dac99, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::_Project.Scripts.Enemy.EnemyDeath
 --- !u!114 &6747568525429956210
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -225,6 +239,33 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 0.9210026, y: 1.9973359, z: 1}
   m_Center: {x: -0.00987431, y: 1.0022725, z: 0}
+--- !u!54 &-5423916470273880586
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 388476414}
+  serializedVersion: 5
+  m_Mass: 1
+  m_LinearDamping: 0
+  m_AngularDamping: 0.05
+  m_CenterOfMass: {x: 0, y: 0, z: 0}
+  m_InertiaTensor: {x: 1, y: 1, z: 1}
+  m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ImplicitCom: 1
+  m_ImplicitTensor: 1
+  m_UseGravity: 0
+  m_IsKinematic: 1
+  m_Interpolate: 0
+  m_Constraints: 0
+  m_CollisionDetection: 0
 --- !u!1 &408409025
 GameObject:
   m_ObjectHideFlags: 0
@@ -1011,6 +1052,71 @@ Transform:
   - {fileID: 1044657998}
   m_Father: {fileID: 388476416}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &4921707371239145325
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1832042597210765047}
+  - component: {fileID: 3681126335886604286}
+  - component: {fileID: 5631585239346047768}
+  m_Layer: 0
+  m_Name: GameObjectContext
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1832042597210765047
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4921707371239145325}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 5, y: 5, z: 5}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 388476416}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &3681126335886604286
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4921707371239145325}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 08eca9f7688a0a24685b89133b020c8e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Zenject::Zenject.GameObjectContext
+  _scriptableObjectInstallers: []
+  _monoInstallers:
+  - {fileID: 5631585239346047768}
+  _installerPrefabs: []
+  _autoRun: 1
+  _kernel: {fileID: 0}
+--- !u!114 &5631585239346047768
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4921707371239145325}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 122c89c9fc904ee7b513a60e9514150c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::_Project.Scripts.DI.GameObjectInstaller.EnemyInstaller
+  _enemyType: 0
+  _healthBarView: {fileID: 7685303353695183910}
 --- !u!1 &8406091870460092983
 GameObject:
   m_ObjectHideFlags: 0

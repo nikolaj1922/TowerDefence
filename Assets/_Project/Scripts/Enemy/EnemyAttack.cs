@@ -1,5 +1,7 @@
-﻿using UnityEngine;
-using _Project.Scripts.Logic.Health;
+﻿using _Project.Scripts.Configs;
+using Zenject;
+using UnityEngine;
+using _Project.Scripts.UI.HealthBar;
 
 namespace _Project.Scripts.Enemy
 {
@@ -18,6 +20,14 @@ namespace _Project.Scripts.Enemy
 
         [SerializeField] private float _attackRadius;
         [SerializeField] private LayerMask _castleLayer;
+        
+        [Inject]
+        public void Construct(EnemyConfig config)
+        {
+            _damage = config.damage;
+            _attackCooldown = config.attackCooldown;
+            _attackRange = config.attackRange;
+        }
 
         private void Awake()
         {
@@ -33,11 +43,10 @@ namespace _Project.Scripts.Enemy
             TickAttackTimer();
         }
 
-        public void Initialize(float damage, float attackCooldown, float attackRange)
+        private void OnEnable()
         {
-            _damage = damage;
-            _attackCooldown = attackCooldown;
-            _attackRange = attackRange;
+            _canAttack = true;
+            _attackTimer = 0f;
         }
         
         private void StartAttack()
@@ -47,7 +56,7 @@ namespace _Project.Scripts.Enemy
             _animator.PlayAttack();
         }
         
-        private void OnAttackEnd() =>  _canAttack = true;
+        private void OnAttackEnd() => _canAttack = true;
 
         private void OnAttack()
         {
