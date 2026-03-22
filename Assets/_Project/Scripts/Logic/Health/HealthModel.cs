@@ -1,8 +1,7 @@
 ﻿using System;
-using _Project.Scripts.UI.HealthBar;
 using UnityEngine;
 
-namespace _Project.Scripts.UI.HealthBar
+namespace _Project.Scripts.Logic.Health
 {
     public class HealthModel
     {

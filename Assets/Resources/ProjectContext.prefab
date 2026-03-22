@@ -77,3 +77,4 @@ MonoBehaviour:
   _coroutineRunner: {fileID: 2530000934983509241, guid: fc8c21a9fe0d74b4dbdc29098c63457e, type: 3}
   _enemyPrefabsDatabase: {fileID: 11400000, guid: d05b69215a4c8cf4788123c9567dfaff, type: 2}
   _towerPrefabsDatabase: {fileID: 11400000, guid: b87c2713842875141842e979d95c126d, type: 2}
+  _weaponPrefabsDatabase: {fileID: 11400000, guid: d1bb9ea55e5c2f8439783ed7a90234aa, type: 2}

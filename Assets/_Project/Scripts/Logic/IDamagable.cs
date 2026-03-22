@@ -1,4 +1,4 @@
-﻿namespace _Project.Scripts.UI.HealthBar
+﻿namespace _Project.Scripts.Logic.Health
 {
     public interface IDamagable
     {

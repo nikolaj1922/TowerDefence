@@ -99,6 +99,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6405029471761671939}
+  - component: {fileID: 2338393512434213384}
   m_Layer: 0
   m_Name: CannonTower
   m_TagString: Untagged
@@ -123,6 +124,19 @@ Transform:
   - {fileID: 6736302824352753345}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &2338393512434213384
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5605224903200634097}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b3f33db868f942d1b0fd56cc55c860ae, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::_Project.Scripts.Tower.Tower
+  <WeaponPoint>k__BackingField: {fileID: 0}
 --- !u!1001 &917413540489092502
 PrefabInstance:
   m_ObjectHideFlags: 0

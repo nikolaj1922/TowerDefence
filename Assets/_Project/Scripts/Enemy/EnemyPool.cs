@@ -2,14 +2,14 @@
 
 namespace _Project.Scripts.Enemy
 {
-    public class EnemyPool : MonoMemoryPool<EnemyController>
+    public class EnemyPool : MonoMemoryPool<Enemy>
     {
-        protected override void OnSpawned(EnemyController enemy)
+        protected override void OnSpawned(Enemy enemy)
         {
             enemy.gameObject.SetActive(true);
         }
 
-        protected override void OnDespawned(EnemyController enemy)
+        protected override void OnDespawned(Enemy enemy)
         {
             enemy.gameObject.SetActive(false);
         }

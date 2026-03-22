@@ -9,17 +9,17 @@ namespace _Project.Scripts.Database.TowersDatabase
     {
         [SerializeField] private List<TowerEntry> _towers;
 
-        private Dictionary<TowerType, GameObject> _map;
+        private Dictionary<TowerType, Tower.Tower> _map;
 
         public void Init()
         {
-            _map = new Dictionary<TowerType, GameObject>();
+            _map = new Dictionary<TowerType, Tower.Tower>();
 
             foreach (var entry in _towers)
                 _map[entry.type] = entry.prefab;
         }
 
-        public GameObject Get(TowerType type)
+        public Tower.Tower Get(TowerType type)
         {
             if (!_map.TryGetValue(type, out var prefab))
             {

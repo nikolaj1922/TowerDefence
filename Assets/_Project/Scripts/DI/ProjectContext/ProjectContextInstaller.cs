@@ -1,9 +1,10 @@
 ﻿using Zenject;
 using UnityEngine;
-using _Project.Scripts.Services;
 using _Project.Scripts.Repositories;
+using _Project.Scripts.Services.AssetProvider;
 using _Project.Scripts.Database.EnemyDatabase;
 using _Project.Scripts.Database.TowersDatabase;
+using _Project.Scripts.Database.WeaponDatabase;
 using _Project.Scripts.Infrastructure.SceneLoader;
 using _Project.Scripts.Infrastructure.CoroutineRunner;
 
@@ -14,20 +15,25 @@ namespace _Project.Scripts.DI.ProjectContext
         [SerializeField] private CoroutineRunner _coroutineRunner;
         [SerializeField] private EnemyPrefabsDatabase _enemyPrefabsDatabase;
         [SerializeField] private TowerPrefabsDatabase _towerPrefabsDatabase;
+        [SerializeField] private WeaponPrefabsDatabase _weaponPrefabsDatabase;
         public override void InstallBindings()
         {
             _enemyPrefabsDatabase.Init();
             _towerPrefabsDatabase.Init();
+            _weaponPrefabsDatabase.Init();
 
-            Container.BindInstance(_towerPrefabsDatabase).AsSingle();
-            Container.BindInstance(_enemyPrefabsDatabase).AsSingle();
+            Container.Bind<TowerPrefabsDatabase>().FromInstance(_towerPrefabsDatabase).AsSingle();
+            Container.Bind<EnemyPrefabsDatabase>().FromInstance(_enemyPrefabsDatabase).AsSingle();
+            Container.Bind<WeaponPrefabsDatabase>().FromInstance(_weaponPrefabsDatabase).AsSingle();
             
             Container.BindInterfacesAndSelfTo<AssetProvider>().AsSingle();
-            Container.BindInterfacesAndSelfTo<CoroutineRunner>().FromComponentInNewPrefab(_coroutineRunner).AsSingle().NonLazy();
-            Container.BindInterfacesAndSelfTo<EnemyConfigsRepository>().AsSingle();
-            Container.BindInterfacesAndSelfTo<LevelRepository>().AsSingle();
-            Container.BindInterfacesAndSelfTo<TowersRepository>().AsSingle();
-            Container.BindInterfacesAndSelfTo<SceneLoader>().AsSingle().NonLazy();
+            Container.Bind<CoroutineRunner>().FromComponentInNewPrefab(_coroutineRunner).AsSingle().NonLazy();
+            Container.Bind<LevelRepository>().AsSingle();
+            Container.Bind<SceneLoader>().AsSingle().NonLazy();
+            
+            Container.Bind<TowerConfigsRepository>().AsSingle();
+            Container.Bind<WeaponConfigsRepository>().AsSingle();
+            Container.Bind<EnemyConfigsRepository>().AsSingle();
         }
     }
 }

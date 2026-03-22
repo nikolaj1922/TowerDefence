@@ -1,7 +1,7 @@
 ﻿using System;
 using Zenject;
 
-namespace _Project.Scripts.UI.HealthBar
+namespace _Project.Scripts.Logic.Health
 {
     public class HealthController: IInitializable, IDisposable
     {
@@ -19,6 +19,8 @@ namespace _Project.Scripts.UI.HealthBar
             _model.OnHealthChanged += UpdateHealthBar;
             UpdateHealthBar(_model.CurrentHealth);
         }
+
+        public void ChangeHealth(float newHealth) => _model.ChangeHealth(newHealth);
         
         public void Dispose() => _model.OnHealthChanged -= UpdateHealthBar;
         

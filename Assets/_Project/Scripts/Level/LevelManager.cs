@@ -1,28 +1,27 @@
 ﻿using Zenject;
 using UnityEngine;
-using System.Collections;
 using System.Linq;
-using _Project.Scripts.Configs;
-using _Project.Scripts.Database.TowersDatabase;
+using System.Collections;
+using _Project.Scripts.Tower;
 using _Project.Scripts.Enemy;
+using _Project.Scripts.Weapon;
+using _Project.Scripts.Configs;
 using _Project.Scripts.Tower.Castle;
 using _Project.Scripts.Repositories;
+using _Project.Scripts.Database.TowersDatabase;
 using _Project.Scripts.Infrastructure.CoroutineRunner;
-using _Project.Scripts.UI.HealthBar;
-using _Project.Scripts.Tower;
 
 namespace _Project.Scripts.Level
 {
     public class LevelManager : IInitializable
     {
         [Inject] private DiContainer _container;
-        private TowerPrefabsDatabase _towerPrefabsDatabase;
         private EnemyFactory _enemyFactory;
-        private EnemySpawner _enemySpawner;
+        private TowerFactory _towerFactory;
+        private WeaponFactory _weaponFactory;
         private CoroutineRunner _coroutineRunner;
         private LevelRepository _levelRepository;
-        private TowersRepository _towersRepository;
-        private EnemyConfigsRepository _enemyConfigsRepository;
+        private TowerConfigsRepository _towerConfigsRepository;
         private DefeatModal _defeatModal;
         
         private int _wayIndex = 0;
@@ -33,14 +32,17 @@ namespace _Project.Scripts.Level
         private void Construct(
             TowerPrefabsDatabase towerPrefabsDatabase,
             EnemyFactory enemyFactory,
+            TowerFactory towerFactory,
+            WeaponFactory weaponFactory,
             CoroutineRunner coroutineRunner,
-            TowersRepository towersRepository,
             LevelRepository levelRepository,
+            TowerConfigsRepository towerConfigsRepository,
             DefeatModal defeatModal)
         {
-            _towerPrefabsDatabase = towerPrefabsDatabase;
+            _towerConfigsRepository = towerConfigsRepository;
+            _weaponFactory = weaponFactory;
+            _towerFactory = towerFactory;
             _levelRepository = levelRepository;
-            _towersRepository = towersRepository;
             _enemyFactory = enemyFactory;
             _coroutineRunner = coroutineRunner;
             _defeatModal = defeatModal;
@@ -48,17 +50,22 @@ namespace _Project.Scripts.Level
 
         public void Initialize()
         {
-            InitializeCastle();
+           Castle castle = (Castle)CreateTower(TowerType.Castle);
+           castle.OnCastleDestroy += GameOver;
             // _coroutineRunner.Run(StartWay(GetNextWay()));
         }
 
-        private void InitializeCastle()
+        private Tower.Tower CreateTower(TowerType towerType)
         {
-            GameObject castleObject = _container.InstantiatePrefab(_towerPrefabsDatabase.Get(TowerType.Castle));
-            CastleController castle = castleObject.GetComponent<CastleController>();
-            castle.OnCastleDestroy += GameOver;
-        }
+            Tower.Tower tower = _towerFactory.CreateTower(towerType, Vector3.zero);
+            Weapon.Weapon weapon = 
+                _weaponFactory.CreateWeapon(
+                    _towerConfigsRepository.Get(towerType).weaponType, tower.WeaponPoint.transform.position, tower.WeaponPoint.transform);
+            
+            tower.SetWeapon(weapon);
 
+            return tower;
+        }
         
         private Way GetNextWay() => _wayIndex < _levelRepository.LevelConfig.ways.Length ? _levelRepository.LevelConfig.ways[_wayIndex] : null;
 
@@ -67,7 +74,6 @@ namespace _Project.Scripts.Level
             _totalEnemyOnWay = way.enemies.Sum(e => e.enemyCount);
             
             yield return new WaitForSeconds(3f);
-            
             
             foreach (var wayEnemyData in way.enemies)
             {

@@ -1,21 +1,21 @@
-﻿using _Project.Scripts.Configs;
+﻿using Zenject;
 using UnityEngine;
-using Zenject;
+using _Project.Scripts.Configs;
 
-namespace _Project.Scripts.Tower.Weapon
+namespace _Project.Scripts.Weapon
 {
-    public class WeaponAim1
+    public class WeaponAim
     {
         private readonly Transform _baseTransform;
         private readonly Transform _weaponHead;
-        private readonly WeaponTargetFinder1 _targetFinder;
+        private readonly WeaponTargetFinder _targetFinder;
         private readonly float _rotationSpeed;
 
-        public WeaponAim1(
+        public WeaponAim(
             [Inject(Id = "WeaponBase")] Transform baseTransform,
             [Inject(Id = "WeaponHead")] Transform weaponHead,
-            WeaponTargetFinder1 targetFinder,
-            TowerConfig config)
+            WeaponTargetFinder targetFinder,
+            WeaponConfig config)
         {
             _baseTransform = baseTransform;
             _weaponHead = weaponHead;

@@ -5,32 +5,31 @@ using _Project.Scripts.Configs;
 using _Project.Scripts.Infrastructure.CoroutineRunner;
 using _Project.Scripts.Infrastructure.ObjectsPool;
 
-namespace _Project.Scripts.Tower.Weapon
+namespace _Project.Scripts.Weapon
 {
-    public class WeaponAttack1 : IInitializable, ITickable
+    public class WeaponAttack : IInitializable, ITickable
     {
-         private const float MAX_ANGLE_TO_ATTACK = 3f;
+        private const float MAX_ANGLE_TO_ATTACK = 3f;
         private const float ATTACK_RECOIL = 0.03f;
 
         private readonly Transform _projectileSpawnPoint;
         private readonly Transform _weaponHead;
         private readonly WeaponProjectile _projectile;
-        private readonly WeaponTargetFinder1 _targetFinder;
+        private readonly WeaponTargetFinder _targetFinder;
         
         private readonly float _damage;
         private readonly float _attackSpeed;
-        
         private float _attackCooldown;
         private Vector3 _weaponHeadInitialPosition;
         private ObjectsPool<WeaponProjectile> _projectilePool;
 
-        private readonly CoroutineRunner _coroutineRunner;
         private Coroutine _visualRoutine;
+        private readonly CoroutineRunner _coroutineRunner;
 
-        public WeaponAttack1(
+        public WeaponAttack(
             CoroutineRunner coroutineRunner, 
-            TowerConfig config, 
-            WeaponTargetFinder1 targetFinder,
+            WeaponConfig config, 
+            WeaponTargetFinder targetFinder,
             [Inject(Id = "WeaponHead")] Transform weaponHead,
             [Inject(Id = "ProjectileSpawnPoint")] Transform projectileSpawnPoint,
             WeaponProjectile projectile

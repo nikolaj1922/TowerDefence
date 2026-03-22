@@ -2,7 +2,7 @@
 using UnityEngine;
 using _Project.Scripts.Enemy;
 using _Project.Scripts.Configs;
-using _Project.Scripts.UI.HealthBar;
+using _Project.Scripts.Logic.Health;
 using _Project.Scripts.Repositories;
 
 namespace _Project.Scripts.DI.GameObjectInstaller

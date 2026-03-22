@@ -1,7 +1,7 @@
 ﻿using _Project.Scripts.Configs;
 using Zenject;
 using UnityEngine;
-using _Project.Scripts.UI.HealthBar;
+using _Project.Scripts.Logic.Health;
 
 namespace _Project.Scripts.Enemy
 {

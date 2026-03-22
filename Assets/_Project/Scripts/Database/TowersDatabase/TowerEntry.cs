@@ -1,6 +1,5 @@
 ﻿using System;
 using _Project.Scripts.Tower;
-using UnityEngine;
 
 namespace _Project.Scripts.Database.TowersDatabase
 {
@@ -8,6 +7,6 @@ namespace _Project.Scripts.Database.TowersDatabase
     public class TowerEntry
     {
         public TowerType type;
-        public GameObject prefab;
+        public Tower.Tower prefab;
     }
 }

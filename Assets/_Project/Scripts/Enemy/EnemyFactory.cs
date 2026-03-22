@@ -24,7 +24,7 @@ namespace _Project.Scripts.Enemy
         public void CreateEnemy(EnemyType type, Action onDeath)
         {
             Vector3 spawnPoint = _enemySpawner.GetRandomSpawnPoint(GameConstants.EnemySpawnOffset);
-            EnemyController enemy = GetEnemy(type);
+            Enemy enemy = GetEnemy(type);
 
             enemy.Agent.Warp(spawnPoint);
             Physics.SyncTransforms();
@@ -55,17 +55,8 @@ namespace _Project.Scripts.Enemy
             enemy.HealthModel.OnDeath+= enemy.Death.Die;
             enemy.SetStateMachine(enemyStateMachine);
         }
-        
-        // private EnemyConfig GetEnemyConfig(EnemyType type)
-        // {
-        //     return type switch
-        //     {
-        //         EnemyType.Ork => _enemyConfigsRepository.ForEnemy(EnemyType.Ork),
-        //         _ => throw new ArgumentOutOfRangeException(nameof(type), type, "Unknown enemy type")
-        //     };
-        // }
 
-        private EnemyController GetEnemy(EnemyType type)
+        private Enemy GetEnemy(EnemyType type)
         {
             return type switch
             {

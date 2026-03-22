@@ -1,8 +1,7 @@
 ﻿using System;
 using UnityEngine;
-using _Project.Scripts.Enemy;
 
-namespace _Project.Scripts.Tower.Weapon
+namespace _Project.Scripts.Weapon
 {
     public class WeaponProjectile: MonoBehaviour
     {
@@ -31,7 +30,7 @@ namespace _Project.Scripts.Tower.Weapon
 
         public void OnTriggerEnter(Collider other)
         {
-            if (!other.TryGetComponent(out EnemyController enemy))
+            if (!other.TryGetComponent(out Enemy.Enemy enemy))
                 return;
             
             // enemy.TakeDamage(_damage);

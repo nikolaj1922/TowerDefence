@@ -14,4 +14,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::_Project.Scripts.Database.EnemyDatabase
   _enemies:
   - type: 0
-    prefab: {fileID: 388476414, guid: 7df524699deb44341b3693c8538df185, type: 3}
+    prefab: {fileID: 5804415847503915, guid: 7df524699deb44341b3693c8538df185, type: 3}

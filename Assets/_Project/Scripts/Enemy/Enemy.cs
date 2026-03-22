@@ -1,14 +1,14 @@
 ﻿using Zenject;
 using UnityEngine;
 using UnityEngine.AI;
-using _Project.Scripts.UI.HealthBar;
+using _Project.Scripts.Logic.Health;
 using _Project.Scripts.Infrastructure.StateMachine;
 
 namespace _Project.Scripts.Enemy
 {
     [RequireComponent(typeof(NavMeshAgent), typeof(EnemyAttack), typeof(EnemyAgentMover))]
     [RequireComponent(typeof(EnemyAnimator), typeof(EnemyDeath), typeof(Collider))]
-    public class EnemyController : MonoBehaviour
+    public class Enemy : MonoBehaviour
     {
         private Collider _col;
 

@@ -1,5 +1,5 @@
 ﻿using _Project.Scripts.Configs;
-using _Project.Scripts.Services;
+using _Project.Scripts.Services.AssetProvider;
 using _Project.Scripts.Infrastructure.AssetPath;
 
 namespace _Project.Scripts.Repositories

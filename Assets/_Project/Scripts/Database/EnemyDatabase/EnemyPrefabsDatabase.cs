@@ -9,17 +9,17 @@ namespace _Project.Scripts.Database.EnemyDatabase
     {
         [SerializeField] private List<EnemyEntry> _enemies;
 
-        private Dictionary<EnemyType, GameObject> _map;
+        private Dictionary<EnemyType, Enemy.Enemy> _map;
 
         public void Init()
         {
-            _map = new Dictionary<EnemyType, GameObject>();
+            _map = new Dictionary<EnemyType, Enemy.Enemy>();
 
             foreach (var entry in _enemies)
                 _map[entry.type] = entry.prefab;
         }
 
-        public GameObject Get(EnemyType type)
+        public Enemy.Enemy Get(EnemyType type)
         {
             if (!_map.TryGetValue(type, out var prefab))
             {

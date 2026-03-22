@@ -1,28 +1,25 @@
 ﻿using System;
 using Zenject;
 using UnityEngine;
-using _Project.Scripts.UI.HealthBar;
-using _Project.Scripts.Tower.Weapon;
+using _Project.Scripts.Logic.Health;
 
 namespace _Project.Scripts.Tower.Castle
 {
-    public class CastleController : MonoBehaviour, IDamagable
+    public class Castle : Tower, IDamagable
     {
         public event Action OnCastleDestroy;
         
         [SerializeField] private GameObject _castleModel;
         [SerializeField] private GameObject _castleDamagedModel;
-
+        
         private HealthModel _healthModel;
-        private Weapon1 _weapon;
         private bool _damagedModel = false;
         private bool _isGameOver = false;
 
         [Inject]
-        public void Construct(HealthModel healthModel, Weapon1 weapon)
+        public void Construct(HealthModel healthModel)
         {
             _healthModel = healthModel;
-            _weapon = weapon;
         }
 
         private void Start()
@@ -30,12 +27,8 @@ namespace _Project.Scripts.Tower.Castle
             _healthModel.OnHealthChanged += TakeDamage;
         }
 
-        private void Update()
-        {
-            _weapon.Tick(Time.deltaTime);
-        }
-
         private void OnDisable() => _healthModel.OnHealthChanged -= TakeDamage;
+
         
         public void TakeDamage(float currentHealth)
         {
@@ -60,7 +53,7 @@ namespace _Project.Scripts.Tower.Castle
             
             _castleDamagedModel.SetActive(true);
             _castleModel.SetActive(false);
-            // Weapon.gameObject.SetActive(false);
+            _weapon.gameObject.SetActive(false);
         }
     }
 }

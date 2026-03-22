@@ -1,20 +1,19 @@
-﻿using _Project.Scripts.Configs;
-using _Project.Scripts.Enemy;
+﻿using Zenject;
 using UnityEngine;
-using Zenject;
+using _Project.Scripts.Configs;
 
-namespace _Project.Scripts.Tower.Weapon
+namespace _Project.Scripts.Weapon
 {
-    public class WeaponTargetFinder1 : ITickable
+    public class WeaponTargetFinder : ITickable
     {
-        private readonly LayerMask _enemiesLayerMask;
-        private readonly Collider[] _aimedEnemyColliders = new Collider[10];
         private readonly Vector3 _position;
         private readonly float _attackRange;
-        
-        public EnemyController Target { get; private set; }
+        private readonly LayerMask _enemiesLayerMask;
+        private readonly Collider[] _aimedEnemyColliders = new Collider[10];
 
-        public WeaponTargetFinder1(LayerMask enemiesLayerMask, TowerConfig config, Vector3 position)
+        public Enemy.Enemy Target { get; private set; }
+
+        public WeaponTargetFinder(LayerMask enemiesLayerMask, WeaponConfig config, Vector3 position)
         {
             _enemiesLayerMask = enemiesLayerMask;
             _attackRange = config.attackRange;
@@ -40,16 +39,16 @@ namespace _Project.Scripts.Tower.Weapon
             Target = GetClosestEnemy(overlappedEnemyCount);
         }
 
-        private EnemyController GetClosestEnemy(int count)
+        private Enemy.Enemy GetClosestEnemy(int count)
         {
-            EnemyController closest = null;
+            Enemy.Enemy closest = null;
             float closestDist = float.MaxValue;
 
             for (int i = 0; i < count; i++)
             {
                 var col = _aimedEnemyColliders[i];
 
-                if (!col.TryGetComponent(out EnemyController enemy))
+                if (!col.TryGetComponent(out Enemy.Enemy enemy))
                     continue;
 
                 if (enemy.HealthModel.CurrentHealth <= 0)
@@ -67,9 +66,6 @@ namespace _Project.Scripts.Tower.Weapon
             return closest;
         }
 
-        private bool IsTargetValid()
-        {
-            return Target != null && Target.HealthModel.CurrentHealth > 0;
-        }
+        private bool IsTargetValid() => Target != null && Target.HealthModel.CurrentHealth > 0;
     }
 }

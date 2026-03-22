@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using _Project.Scripts.Tower;
+using _Project.Scripts.Weapon;
 
 namespace _Project.Scripts.Configs
 {
@@ -7,12 +8,8 @@ namespace _Project.Scripts.Configs
     public class TowerConfig : ScriptableObject
     {
         public TowerType towerType;
-
-        public float damage;
-        public float attackRange;
-        public float attackSpeed;
-        public float rotationSpeed;
-
+        public WeaponType weaponType;
+        
         public float price;
         public float holdDistance;
     }
