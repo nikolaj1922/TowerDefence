@@ -9,7 +9,6 @@ namespace _Project.Scripts.DI.GameObjectInstaller
     public class TowerInstaller : MonoInstaller
     {
         [SerializeField] private TowerType _towerType;
-     
         
         private TowerConfigsRepository _configsRepository;
         

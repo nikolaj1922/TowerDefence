@@ -23,14 +23,13 @@ namespace _Project.Scripts.DI.GameObjectInstaller
         public override void InstallBindings()
         {
             WeaponConfig config = _configRepository.Get(_weaponType);
-
             Container.Bind<WeaponConfig>().FromInstance(config).AsSingle();
             
             Container.Bind<Transform>().WithId("WeaponBase").FromInstance(_weaponBase);
             Container.Bind<Transform>().WithId("WeaponHead").FromInstance(_weaponHead);
             Container.Bind<Transform>().WithId("ProjectileSpawnPoint").FromInstance(_projectileSpawnPoint);
             
-            Container.Bind<WeaponTargetFinder>().AsSingle().WithArguments(_enemyLayerMask, transform.position);
+            Container.BindInterfacesAndSelfTo<WeaponTargetFinder>().AsSingle().WithArguments(_enemyLayerMask, transform.position);
             Container.Bind<WeaponAim>().AsSingle();
             Container.BindInterfacesAndSelfTo<WeaponAttack>().AsSingle()
                 .WithArguments(_projectile);

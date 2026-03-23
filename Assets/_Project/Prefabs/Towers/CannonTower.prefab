@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 5770246459718784683}
   - component: {fileID: 1570586598466197659}
   - component: {fileID: 5958821942882050831}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: TowerModel
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -100,7 +100,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6405029471761671939}
   - component: {fileID: 2338393512434213384}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: CannonTower
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -145,9 +145,17 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 6405029471761671939}
     m_Modifications:
+    - target: {fileID: 141879128425091521, guid: b5ff6bac1833f49478bdf466c2ba62b1, type: 3}
+      propertyPath: m_Layer
+      value: 7
+      objectReference: {fileID: 0}
     - target: {fileID: 2788770021580157122, guid: b5ff6bac1833f49478bdf466c2ba62b1, type: 3}
       propertyPath: m_Name
       value: WeaponCannon
+      objectReference: {fileID: 0}
+    - target: {fileID: 2788770021580157122, guid: b5ff6bac1833f49478bdf466c2ba62b1, type: 3}
+      propertyPath: m_Layer
+      value: 7
       objectReference: {fileID: 0}
     - target: {fileID: 5892794615815076695, guid: b5ff6bac1833f49478bdf466c2ba62b1, type: 3}
       propertyPath: m_LocalPosition.x
@@ -188,6 +196,10 @@ PrefabInstance:
     - target: {fileID: 5892794615815076695, guid: b5ff6bac1833f49478bdf466c2ba62b1, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7763969958069225268, guid: b5ff6bac1833f49478bdf466c2ba62b1, type: 3}
+      propertyPath: m_Layer
+      value: 7
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

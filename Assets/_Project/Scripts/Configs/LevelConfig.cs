@@ -1,7 +1,7 @@
 ﻿using System;
+using UnityEngine;
 using System.Collections.Generic;
 using _Project.Scripts.Enemy;
-using UnityEngine;
 
 namespace _Project.Scripts.Configs
 {
@@ -9,6 +9,7 @@ namespace _Project.Scripts.Configs
     public class LevelConfig : ScriptableObject
     {
         public float castleHealth;
+        public Vector3 castlePosition;
         public Way[] ways;
     }
 

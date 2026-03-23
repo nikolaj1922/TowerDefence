@@ -17,27 +17,18 @@ namespace _Project.Scripts.Tower.Castle
         private bool _isGameOver = false;
 
         [Inject]
-        public void Construct(HealthModel healthModel)
-        {
-            _healthModel = healthModel;
-        }
-
-        private void Start()
-        {
-            _healthModel.OnHealthChanged += TakeDamage;
-        }
-
-        private void OnDisable() => _healthModel.OnHealthChanged -= TakeDamage;
-
+        public void Construct(HealthModel healthModel) =>  _healthModel = healthModel;
         
-        public void TakeDamage(float currentHealth)
+        public void TakeDamage(float damage)
         {
-            if (currentHealth / _healthModel.MaxHealth > 0.5f)
+            _healthModel.ChangeHealth(-damage);
+            
+            if (_healthModel.CurrentHealth / _healthModel.MaxHealth > 0.5f)
                 return;
 
             ChangeCastleModel();
 
-            if (currentHealth <= 0 && !_isGameOver)
+            if (_healthModel.CurrentHealth <= 0 && !_isGameOver)
             {
                 OnCastleDestroy?.Invoke();
                 _isGameOver = true;

@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 4352893974886025568}
   - component: {fileID: 1804714391965397680}
   - component: {fileID: 468862457436830802}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: TowerModel
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -99,7 +99,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 618821859475029963}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: TurretTower
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -134,6 +134,10 @@ PrefabInstance:
     - target: {fileID: 493707669747371315, guid: 07194f17402630d43a1e2db8f9ade54c, type: 3}
       propertyPath: m_Name
       value: Turret
+      objectReference: {fileID: 0}
+    - target: {fileID: 493707669747371315, guid: 07194f17402630d43a1e2db8f9ade54c, type: 3}
+      propertyPath: m_Layer
+      value: 7
       objectReference: {fileID: 0}
     - target: {fileID: 4439888980426749841, guid: 07194f17402630d43a1e2db8f9ade54c, type: 3}
       propertyPath: m_LocalPosition.x
@@ -174,6 +178,10 @@ PrefabInstance:
     - target: {fileID: 4439888980426749841, guid: 07194f17402630d43a1e2db8f9ade54c, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7794265258659231175, guid: 07194f17402630d43a1e2db8f9ade54c, type: 3}
+      propertyPath: m_Layer
+      value: 7
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

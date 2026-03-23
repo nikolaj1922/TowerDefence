@@ -78,7 +78,7 @@ namespace _Project.Scripts.Weapon
 
         private void OnProjectileHit(WeaponProjectile projectile)
         {
-            if (_targetFinder?.Target?.HealthModel.CurrentHealth <= 0)
+            if (_targetFinder.Target?.HealthModel.CurrentHealth <= 0)
                 _targetFinder.ResetTarget();
             
             _projectilePool.Release(projectile);

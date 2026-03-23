@@ -1,7 +1,6 @@
 ﻿using System;
 using UnityEngine;
 using _Project.Scripts.Enemy.States;
-using _Project.Scripts.Tower.Castle;
 using _Project.Scripts.Infrastructure;
 using _Project.Scripts.Infrastructure.StateMachine;
 
@@ -28,8 +27,16 @@ namespace _Project.Scripts.Enemy
 
             enemy.Agent.Warp(spawnPoint);
             Physics.SyncTransforms();
-            enemy.ResetComponents();
+            
+            enemy.Death.Initialize(onDeath: () => GetEnemyPool(type).Despawn(enemy));
+            enemy.HealthModel.OnDeath += onDeath;
+            enemy.HealthModel.OnDeath += enemy.Death.Die;
+            
+            enemy.SetStateMachine(CreateStateMachine(enemy));
+        }
 
+        private StateMachine CreateStateMachine(Enemy enemy)
+        {
             StateMachine enemyStateMachine = new(
                 new IState[] {
                     new EnemyIdleState(enemy.Mover, enemy.Attack, enemy.Animator), 
@@ -46,14 +53,9 @@ namespace _Project.Scripts.Enemy
                     new Transition<EnemyMoveState, EnemyDeathState>(() => enemy.HealthModel.CurrentHealth <= 0),
                     new Transition<EnemyAttackState, EnemyDeathState>(() => enemy.HealthModel.CurrentHealth <= 0),
                 }
-                );
+            );
 
-            // TODO
-            enemy.Mover.Initialize(Vector3.zero);
-            enemy.Death.Initialize(onDeath: () => GetEnemyPool(type).Despawn(enemy));
-            enemy.HealthModel.OnDeath+= onDeath;
-            enemy.HealthModel.OnDeath+= enemy.Death.Die;
-            enemy.SetStateMachine(enemyStateMachine);
+            return enemyStateMachine;
         }
 
         private Enemy GetEnemy(EnemyType type)

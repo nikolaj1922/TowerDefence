@@ -35,18 +35,18 @@ namespace _Project.Scripts.Enemy
             _attackTargets = new Collider[1];
         }
 
+        private void OnEnable()
+        {
+            _canAttack = true;
+            _attackTimer = 0f;
+        }
+        
         private void Update()
         {
             if(CanAttack())
                 StartAttack();
             
             TickAttackTimer();
-        }
-
-        private void OnEnable()
-        {
-            _canAttack = true;
-            _attackTimer = 0f;
         }
         
         private void StartAttack()

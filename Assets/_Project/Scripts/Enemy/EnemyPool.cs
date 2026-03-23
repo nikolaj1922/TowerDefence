@@ -6,12 +6,10 @@ namespace _Project.Scripts.Enemy
     {
         protected override void OnSpawned(Enemy enemy)
         {
+            enemy.ResetComponents();
             enemy.gameObject.SetActive(true);
         }
 
-        protected override void OnDespawned(Enemy enemy)
-        {
-            enemy.gameObject.SetActive(false);
-        }
+        protected override void OnDespawned(Enemy enemy) => enemy.gameObject.SetActive(false);
     }
 }

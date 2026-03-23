@@ -1,6 +1,5 @@
 ﻿using Zenject;
 using UnityEngine;
-using _Project.Scripts.Configs;
 using _Project.Scripts.Logic.Health;
 using _Project.Scripts.Repositories;
 
@@ -19,11 +18,9 @@ namespace _Project.Scripts.DI.GameObjectInstaller
         {
             base.InstallBindings();
             
-            LevelConfig levelConfig = _levelRepository.LevelConfig;
-            
-            HealthModel healthModel = new HealthModel(levelConfig.castleHealth);
+            HealthModel healthModel = new HealthModel(_levelRepository.LevelConfig.castleHealth);
             Container.Bind<HealthBarView>().FromInstance(_healthBarView).AsSingle();
-            Container.Bind<HealthController>().AsSingle();
+            Container.BindInterfacesAndSelfTo<HealthController>().AsSingle();
             Container.Bind<HealthModel>().FromInstance(healthModel).AsSingle();
         }
     }

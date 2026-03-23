@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::_Project.Scripts.Configs.EnemyConfig
   type: 0
   speed: 0.5
-  health: 10
+  health: 100
   damage: 5
   attackRange: 0.3
   attackCooldown: 2

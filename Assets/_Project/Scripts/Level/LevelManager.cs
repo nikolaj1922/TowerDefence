@@ -50,14 +50,14 @@ namespace _Project.Scripts.Level
 
         public void Initialize()
         {
-           Castle castle = (Castle)CreateTower(TowerType.Castle);
+           Castle castle = (Castle)CreateTower(TowerType.Castle, _levelRepository.LevelConfig.castlePosition);
            castle.OnCastleDestroy += GameOver;
-            // _coroutineRunner.Run(StartWay(GetNextWay()));
+           StartNextWay();
         }
 
-        private Tower.Tower CreateTower(TowerType towerType)
+        private Tower.Tower CreateTower(TowerType towerType, Vector3 position)
         {
-            Tower.Tower tower = _towerFactory.CreateTower(towerType, Vector3.zero);
+            Tower.Tower tower = _towerFactory.CreateTower(towerType, position);
             Weapon.Weapon weapon = 
                 _weaponFactory.CreateWeapon(
                     _towerConfigsRepository.Get(towerType).weaponType, tower.WeaponPoint.transform.position, tower.WeaponPoint.transform);
@@ -67,9 +67,11 @@ namespace _Project.Scripts.Level
             return tower;
         }
         
+        private void StartNextWay() => _coroutineRunner.Run(StartWayRoutine(GetNextWay()));
+        
         private Way GetNextWay() => _wayIndex < _levelRepository.LevelConfig.ways.Length ? _levelRepository.LevelConfig.ways[_wayIndex] : null;
 
-        private IEnumerator StartWay(Way way)
+        private IEnumerator StartWayRoutine(Way way)
         {
             _totalEnemyOnWay = way.enemies.Sum(e => e.enemyCount);
             
@@ -89,20 +91,23 @@ namespace _Project.Scripts.Level
         {
             _enemyDied++;
             
-            if (_enemyDied == _totalEnemyOnWay)
-            {
-                _wayIndex++;
-                
-                Way way = GetNextWay();
-                
-                if (way == null)
-                {
-                    Debug.Log("Level completed");
-                    return;
-                }
-                
-                _coroutineRunner.Run(StartWay(GetNextWay()));
+            if (_enemyDied != _totalEnemyOnWay)
+                return;
+            
+            _wayIndex++;
+            
+            if (GetNextWay() == null)
+            { 
+                CompleteLevel();
+                return;
             }
+            
+            StartNextWay();
+        }
+
+        private void CompleteLevel()
+        {
+            Debug.Log("Level completed");
         }
 
         private void GameOver()

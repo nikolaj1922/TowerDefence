@@ -1,4 +1,5 @@
 ﻿using System;
+using UnityEngine;
 using Zenject;
 
 namespace _Project.Scripts.Logic.Health
@@ -19,13 +20,12 @@ namespace _Project.Scripts.Logic.Health
             _model.OnHealthChanged += UpdateHealthBar;
             UpdateHealthBar(_model.CurrentHealth);
         }
-
-        public void ChangeHealth(float newHealth) => _model.ChangeHealth(newHealth);
         
         public void Dispose() => _model.OnHealthChanged -= UpdateHealthBar;
         
         private void UpdateHealthBar(float current)
         {
+            Debug.Log($"View: {_view}");
             if (_view != null)
                 _view.SetFill(current / _model.MaxHealth);
         }

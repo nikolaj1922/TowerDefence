@@ -24,10 +24,12 @@ namespace _Project.Scripts.DI.GameObjectInstaller
         {
             EnemyConfig config = _enemyRepository.ForEnemy(_enemyType);
             Container.Bind<EnemyConfig>().FromInstance(config).AsSingle();
+            
+            Debug.Log($"Instantiate health modal with {config.health} health");
 
             HealthModel healthModel = new HealthModel(config.health);
             Container.Bind<HealthBarView>().FromInstance(_healthBarView).AsSingle();
-            Container.Bind<HealthController>().AsSingle();
+            Container.BindInterfacesAndSelfTo<HealthController>().AsSingle();
             Container.Bind<HealthModel>().FromInstance(healthModel).AsSingle();
         }
     }

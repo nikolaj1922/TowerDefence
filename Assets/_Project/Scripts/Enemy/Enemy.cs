@@ -8,7 +8,7 @@ namespace _Project.Scripts.Enemy
 {
     [RequireComponent(typeof(NavMeshAgent), typeof(EnemyAttack), typeof(EnemyAgentMover))]
     [RequireComponent(typeof(EnemyAnimator), typeof(EnemyDeath), typeof(Collider))]
-    public class Enemy : MonoBehaviour
+    public class Enemy : MonoBehaviour, IDamagable
     {
         private Collider _col;
 
@@ -24,10 +24,7 @@ namespace _Project.Scripts.Enemy
         private StateMachine _stateMachine;
 
         [Inject]
-        private void Construct(HealthModel healthModel)
-        {
-            HealthModel = healthModel;
-        }
+        private void Construct(HealthModel healthModel) => HealthModel = healthModel;
 
         private void Awake()
         {
@@ -38,17 +35,25 @@ namespace _Project.Scripts.Enemy
             Death = GetComponent<EnemyDeath>();
             _col = GetComponent<Collider>();
         }
-        
+
+        private void Update() => _stateMachine?.Update();
+
         public void ResetComponents()
         {
+            _stateMachine = null;
+            HealthModel.Reset();
             _col.enabled = true;
             Attack.enabled = false;
             Mover.enabled = false;
             Agent.enabled = true;
         }
-        
-        private void Update() => _stateMachine?.Update();
 
+        public void TakeDamage(float damage)
+        {
+            Debug.Log($"Enemy take damage: {damage}");
+            HealthModel.ChangeHealth(-damage);
+        }
+        
         public void SetStateMachine(StateMachine stateMachine) => _stateMachine = stateMachine;
     }
 }

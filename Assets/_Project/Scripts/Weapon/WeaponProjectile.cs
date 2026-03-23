@@ -1,5 +1,6 @@
 ﻿using System;
 using UnityEngine;
+using _Project.Scripts.Logic.Health;
 
 namespace _Project.Scripts.Weapon
 {
@@ -30,10 +31,10 @@ namespace _Project.Scripts.Weapon
 
         public void OnTriggerEnter(Collider other)
         {
-            if (!other.TryGetComponent(out Enemy.Enemy enemy))
+            if (!other.TryGetComponent(out IDamagable damagable))
                 return;
             
-            // enemy.TakeDamage(_damage);
+            damagable.TakeDamage(_damage);
             OnHit?.Invoke();
         }
     }
