@@ -31,7 +31,15 @@ namespace _Project.Scripts.Infrastructure.StateMachine
             }
         }
 
-        
+        public void ResetState()
+        {
+            _currentState = _states[0];
+
+            if (_currentState is IEnterableState enterable)
+                enterable.Enter();
+        }
+
+
         private void SwitchState(Type to)
         {
             if(_currentState is IExitableState exitableState)

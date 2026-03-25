@@ -1,27 +1,25 @@
-﻿using Zenject;
-using UnityEngine;
+﻿using UnityEngine;
 using _Project.Scripts.Logic.Health;
-using _Project.Scripts.Repositories;
+using _Project.Scripts.UI.HealthBar;
+using Zenject;
 
 namespace _Project.Scripts.DI.GameObjectInstaller
 {
     public class CastleInstaller : TowerInstaller
     {
         [SerializeField] private HealthBarView _healthBarView;
+        private HealthModel _healthModel;
 
-        private LevelRepository _levelRepository;
-        
         [Inject]
-        private void Construct(LevelRepository levelRepository) =>  _levelRepository = levelRepository;
+        public void Construct([Inject(Id = "CastleHealthModel")] HealthModel castleHealthModel) => 
+            _healthModel = castleHealthModel;
         
         public override void InstallBindings()
         {
             base.InstallBindings();
             
-            HealthModel healthModel = new HealthModel(_levelRepository.LevelConfig.castleHealth);
             Container.Bind<HealthBarView>().FromInstance(_healthBarView).AsSingle();
-            Container.BindInterfacesAndSelfTo<HealthController>().AsSingle();
-            Container.Bind<HealthModel>().FromInstance(healthModel).AsSingle();
+            Container.BindInterfacesAndSelfTo<HealthController>().AsSingle().WithArguments(_healthModel);
         }
     }
 }

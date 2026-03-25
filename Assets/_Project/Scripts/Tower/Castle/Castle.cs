@@ -2,6 +2,7 @@
 using Zenject;
 using UnityEngine;
 using _Project.Scripts.Logic.Health;
+using _Project.Scripts.Infrastructure.StateMachine;
 
 namespace _Project.Scripts.Tower.Castle
 {
@@ -11,37 +12,30 @@ namespace _Project.Scripts.Tower.Castle
         
         [SerializeField] private GameObject _castleModel;
         [SerializeField] private GameObject _castleDamagedModel;
-        
-        private HealthModel _healthModel;
-        private bool _damagedModel = false;
-        private bool _isGameOver = false;
+
+        public HealthModel HealthModel { get; private set; }
+
+        private StateMachine _stateMachine;
 
         [Inject]
-        public void Construct(HealthModel healthModel) =>  _healthModel = healthModel;
+        public void Construct([Inject(Id = "CastleHealthModel")] HealthModel healthModel) => HealthModel = healthModel;
+        
+        private void Update() => _stateMachine?.Update();
+        
+        public void SetStateMachine(StateMachine stateMachine) => _stateMachine = stateMachine;
         
         public void TakeDamage(float damage)
         {
-            _healthModel.ChangeHealth(-damage);
+            HealthModel.ChangeHealth(-damage);
             
-            if (_healthModel.CurrentHealth / _healthModel.MaxHealth > 0.5f)
+            if (HealthModel.CurrentHealth > 0)
                 return;
-
-            ChangeCastleModel();
-
-            if (_healthModel.CurrentHealth <= 0 && !_isGameOver)
-            {
-                OnCastleDestroy?.Invoke();
-                _isGameOver = true;
-            }
+            
+            OnCastleDestroy?.Invoke();
         }
 
-        private void ChangeCastleModel()
+        public void Collapse()
         {
-            if (_damagedModel)
-                return;
-            
-            _damagedModel = true;
-            
             _castleDamagedModel.SetActive(true);
             _castleModel.SetActive(false);
             _weapon.gameObject.SetActive(false);

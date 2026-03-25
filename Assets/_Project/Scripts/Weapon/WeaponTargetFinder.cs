@@ -1,6 +1,7 @@
 ﻿using Zenject;
 using UnityEngine;
 using _Project.Scripts.Configs;
+using _Project.Scripts.Logic.Health;
 
 namespace _Project.Scripts.Weapon
 {
@@ -10,11 +11,17 @@ namespace _Project.Scripts.Weapon
         private readonly float _attackRange;
         private readonly LayerMask _enemiesLayerMask;
         private readonly Collider[] _aimedEnemyColliders = new Collider[10];
+        private readonly HealthModel _castleHealthModel;
 
         public Enemy.Enemy Target { get; private set; }
 
-        public WeaponTargetFinder(LayerMask enemiesLayerMask, WeaponConfig config, Vector3 position)
+        public WeaponTargetFinder(
+            [Inject(Id = "CastleHealthModel")] HealthModel healthModel,
+            LayerMask enemiesLayerMask, 
+            WeaponConfig config, 
+            Vector3 position)
         {
+            _castleHealthModel = healthModel;
             _enemiesLayerMask = enemiesLayerMask;
             _attackRange = config.attackRange;
             _position = position;
@@ -24,12 +31,20 @@ namespace _Project.Scripts.Weapon
         
         public void Tick()
         {
+            if (_castleHealthModel.CurrentHealth <= 0)
+            {
+                Target = null;
+                return;
+            }
+            
             if (Target == null || !IsTargetValid())
                 SearchForTarget();
         }
 
         private void SearchForTarget()
         {
+            Target = null;
+            
             int overlappedEnemyCount = Physics.OverlapSphereNonAlloc(
                 _position, _attackRange, _aimedEnemyColliders, _enemiesLayerMask);
 
@@ -66,6 +81,11 @@ namespace _Project.Scripts.Weapon
             return closest;
         }
 
-        private bool IsTargetValid() => Target != null && Target.HealthModel.CurrentHealth > 0;
+        private bool IsTargetValid() =>
+            Target != null
+            && Target.HealthModel.CurrentHealth > 0
+            && IsTargetInRange();
+        
+        private bool IsTargetInRange() => (Target.transform.position - _position).sqrMagnitude <= _attackRange * _attackRange;
     }
 }

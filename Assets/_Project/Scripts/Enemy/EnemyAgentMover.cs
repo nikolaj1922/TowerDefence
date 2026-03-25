@@ -2,7 +2,7 @@
 using UnityEngine;
 using UnityEngine.AI;
 using _Project.Scripts.Configs;
-using _Project.Scripts.Repositories;
+using _Project.Scripts.ConfigRepositories;
 
 namespace _Project.Scripts.Enemy
 {
@@ -16,44 +16,40 @@ namespace _Project.Scripts.Enemy
         private float _attackRange;
         private Vector3 _destination;
         
-        public bool IsMoving { get; private set; } = false;
-        public bool IsCastleReached { get; private set; } = false;
+        public bool IsMoving { get; private set; } = true;
+        public bool IsTargetReached { get; private set; }
 
         [Inject]
-        public void Construct(EnemyConfig config, LevelRepository repository)
+        public void Construct(EnemyConfig config, GameRepository repository)
         {
             _speed = config.speed;
             _attackRange = config.attackRange;
-            _destination = repository.LevelConfig.castlePosition;
-
-            IsMoving = true;
+            _destination = repository.GameConfig.castlePosition;
         }
 
-        private void Awake()
-        {
-            _navMeshAgent = GetComponent<NavMeshAgent>();
-        }
+        private void Awake() => _navMeshAgent = GetComponent<NavMeshAgent>();
 
         private void OnEnable()
         {
-            IsMoving = false;
-            IsCastleReached = false;
-        }
+            if (!_navMeshAgent.isOnNavMesh)
+                return;
 
-        private void Start()
-        {
-            _navMeshAgent = GetComponent<NavMeshAgent>();
+            _navMeshAgent.ResetPath();
+            _navMeshAgent.SetDestination(_destination);
+            
+           
+            IsTargetReached = false;
             _navMeshAgent.speed = _speed;
-            _navMeshAgent.destination = _destination;
             _navMeshAgent.stoppingDistance = CASTLE_SIZE + _navMeshAgent.radius + _attackRange;
         }
 
         private void Update()
         {
-            if (_navMeshAgent.pathPending || _navMeshAgent.remainingDistance > _navMeshAgent.stoppingDistance) return;
+            if (_navMeshAgent.pathPending || IsTargetNotReached()) return;
             
-            IsMoving = false;
-            IsCastleReached = true;
+            IsTargetReached = true;
         }
+
+        private bool IsTargetNotReached() => _navMeshAgent.remainingDistance > _navMeshAgent.stoppingDistance;
     }
 }

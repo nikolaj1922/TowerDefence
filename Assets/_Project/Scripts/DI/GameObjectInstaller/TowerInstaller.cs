@@ -2,7 +2,7 @@
 using UnityEngine;
 using _Project.Scripts.Tower;
 using _Project.Scripts.Configs;
-using _Project.Scripts.Repositories;
+using _Project.Scripts.ConfigRepositories;
 
 namespace _Project.Scripts.DI.GameObjectInstaller
 {

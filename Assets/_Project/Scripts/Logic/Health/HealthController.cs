@@ -1,6 +1,6 @@
 ﻿using System;
-using UnityEngine;
 using Zenject;
+using _Project.Scripts.UI.HealthBar;
 
 namespace _Project.Scripts.Logic.Health
 {
@@ -9,7 +9,7 @@ namespace _Project.Scripts.Logic.Health
         private readonly HealthBarView _view;
         private readonly HealthModel _model;
 
-        public HealthController(HealthModel model,  HealthBarView view)
+        public HealthController(HealthBarView view, HealthModel model)
         {
             _model = model;
             _view = view;
@@ -25,7 +25,6 @@ namespace _Project.Scripts.Logic.Health
         
         private void UpdateHealthBar(float current)
         {
-            Debug.Log($"View: {_view}");
             if (_view != null)
                 _view.SetFill(current / _model.MaxHealth);
         }

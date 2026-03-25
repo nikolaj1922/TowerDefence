@@ -3,7 +3,8 @@ using UnityEngine;
 using _Project.Scripts.Enemy;
 using _Project.Scripts.Configs;
 using _Project.Scripts.Logic.Health;
-using _Project.Scripts.Repositories;
+using _Project.Scripts.ConfigRepositories;
+using _Project.Scripts.UI.HealthBar;
 
 namespace _Project.Scripts.DI.GameObjectInstaller
 {
@@ -11,26 +12,20 @@ namespace _Project.Scripts.DI.GameObjectInstaller
     {
         [SerializeField] private EnemyType _enemyType;
         [SerializeField] private HealthBarView _healthBarView;
-
         private EnemyConfigsRepository _enemyRepository;
         
         [Inject]
-        public void Construct(EnemyConfigsRepository enemyRepository)
-        {
-            _enemyRepository = enemyRepository;
-        }
+        public void Construct(EnemyConfigsRepository enemyRepository) => _enemyRepository = enemyRepository;
         
         public override void InstallBindings()
         {
-            EnemyConfig config = _enemyRepository.ForEnemy(_enemyType);
+            EnemyConfig config = _enemyRepository.Get(_enemyType);
             Container.Bind<EnemyConfig>().FromInstance(config).AsSingle();
             
-            Debug.Log($"Instantiate health modal with {config.health} health");
-
             HealthModel healthModel = new HealthModel(config.health);
             Container.Bind<HealthBarView>().FromInstance(_healthBarView).AsSingle();
-            Container.BindInterfacesAndSelfTo<HealthController>().AsSingle();
-            Container.Bind<HealthModel>().FromInstance(healthModel).AsSingle();
+            Container.BindInterfacesAndSelfTo<HealthController>().AsSingle().WithArguments(healthModel);
+            Container.BindInterfacesAndSelfTo<HealthModel>().FromInstance(healthModel).AsSingle();
         }
     }
 }

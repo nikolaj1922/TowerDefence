@@ -6,9 +6,11 @@ namespace _Project.Scripts.Enemy
 {
     public class EnemyDeath : MonoBehaviour
     {
-        private Action _onDeath;
-        
-        public void Initialize(Action onDeath = null) => _onDeath = onDeath;
+        private event Action OnDeath;
+
+        private void OnDisable() => OnDeath = null;
+
+        public void Initialize(Action onDeath = null) => OnDeath = onDeath;
         
         public void Die()
         {
@@ -30,7 +32,7 @@ namespace _Project.Scripts.Enemy
                 yield return null;
             }
             
-            _onDeath?.Invoke();
+            OnDeath?.Invoke();
         }
     }
 }

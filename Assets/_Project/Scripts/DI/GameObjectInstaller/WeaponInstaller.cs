@@ -2,7 +2,7 @@
 using UnityEngine;
 using _Project.Scripts.Weapon;
 using _Project.Scripts.Configs;
-using _Project.Scripts.Repositories;
+using _Project.Scripts.ConfigRepositories;
 
 namespace _Project.Scripts.DI.GameObjectInstaller
 {
@@ -24,7 +24,7 @@ namespace _Project.Scripts.DI.GameObjectInstaller
         {
             WeaponConfig config = _configRepository.Get(_weaponType);
             Container.Bind<WeaponConfig>().FromInstance(config).AsSingle();
-            
+
             Container.Bind<Transform>().WithId("WeaponBase").FromInstance(_weaponBase);
             Container.Bind<Transform>().WithId("WeaponHead").FromInstance(_weaponHead);
             Container.Bind<Transform>().WithId("ProjectileSpawnPoint").FromInstance(_projectileSpawnPoint);

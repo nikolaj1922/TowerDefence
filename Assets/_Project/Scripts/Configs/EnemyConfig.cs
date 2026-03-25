@@ -14,5 +14,7 @@ namespace _Project.Scripts.Configs
         public float damage;
         public float attackRange;
         public float attackCooldown;
+
+        public int coinsReward;
     }
 }

@@ -10,32 +10,41 @@ namespace _Project.Scripts.Weapon
         
         [SerializeField] private float _speed;
 
-        private Vector3 _targetPosition;
+        private Enemy.Enemy _target;
         private float _damage;
         
         private void Update()
         {
-            if (_targetPosition == Vector3.zero)
+            if (_target == null)
                 return;
-            
-            transform.position = 
-                Vector3.MoveTowards(transform.position, _targetPosition, _speed * Time.deltaTime);
-        }
 
-        public void Initialize(Vector3 targetPosition, float damage, Action onHit = null)
+            LookAtTarget();
+            MoveToTarget();
+        }   
+
+        public void Initialize(Enemy.Enemy target, float damage, Action onHit = null)
         {
-            _targetPosition = targetPosition;
+            _target = target;
             _damage = damage;
             OnHit += onHit;
         }
 
-        public void OnTriggerEnter(Collider other)
+        private void OnTriggerEnter(Collider other)
         {
             if (!other.TryGetComponent(out IDamagable damagable))
+            {
+                Destroy(gameObject);
                 return;
+            }
             
             damagable.TakeDamage(_damage);
             OnHit?.Invoke();
         }
+        
+        private void LookAtTarget() =>  transform.LookAt(_target.AttackPoint.transform);
+        
+        private void MoveToTarget() =>         
+            transform.position = 
+                Vector3.MoveTowards(transform.position, _target.AttackPoint.transform.position, _speed * Time.deltaTime);
     }
 }

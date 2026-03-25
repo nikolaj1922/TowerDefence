@@ -9,8 +9,10 @@ namespace _Project.Scripts.Configs
     {
         public TowerType towerType;
         public WeaponType weaponType;
-        
-        public float price;
-        public float holdDistance;
+
+        public bool canBuild;
+        public Sprite icon;
+        public int coinPrice;
+        public float buildRadius;
     }
 }

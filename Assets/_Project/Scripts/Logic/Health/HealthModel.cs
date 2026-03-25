@@ -16,28 +16,22 @@ namespace _Project.Scripts.Logic.Health
             get => _currentHealth;
             private set
             {
-                Debug.Log($"Set health: {value}");
                 _currentHealth = value;
                 OnHealthChanged?.Invoke(_currentHealth);
 
                 if (value <= 0)
-                {
                     OnDeath?.Invoke();
-                    OnDeath = null;
-                }
             }
         }
 
         public HealthModel(float maxHealth)
         {
-            Debug.Log($"Set health: {maxHealth}");
-            
             MaxHealth = maxHealth;
             _currentHealth = maxHealth;
         }
 
         public void ChangeHealth(float value) => CurrentHealth = Mathf.Clamp(_currentHealth + value, 0f, MaxHealth);
 
-        public void Reset() => CurrentHealth = MaxHealth;
+        public void Reset() =>  CurrentHealth = MaxHealth;
     }
 }

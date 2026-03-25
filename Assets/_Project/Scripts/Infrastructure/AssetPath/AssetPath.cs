@@ -2,11 +2,9 @@
 {
     public static class AssetPath
     {
-        public static string Enemies = "Enemies";
-        public static string Level = "Level/LevelConfig";
-        public static string Towers = "Towers";
-        public static string Weapons = "Weapons";
-        public static string SpawnPoint = "LevelCreation/SpawnPoint";
-        public static string DefeatModal = "UI/DefeatModal";
+        public static readonly string Enemies = "Enemies";
+        public static readonly string Game = "Game/GameConfig";
+        public static readonly string Towers = "Towers";
+        public static readonly string Weapons = "Weapons";
     }
 }

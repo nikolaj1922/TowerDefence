@@ -18,42 +18,40 @@ namespace _Project.Scripts.Enemy
         public EnemyAgentMover Mover { get; private set; }
         public EnemyAnimator Animator { get; private set; }
         public EnemyDeath Death { get; private set; }
+        public StateMachine StateMachine { private set; get; }
+
+        public bool isInitialized;
 
         [field: SerializeField] public Transform AttackPoint { get; private set; }
-
-        private StateMachine _stateMachine;
-
+        
         [Inject]
         private void Construct(HealthModel healthModel) => HealthModel = healthModel;
 
         private void Awake()
         {
             Agent = GetComponent<NavMeshAgent>();
-            Attack = GetComponent<EnemyAttack>();
             Mover = GetComponent<EnemyAgentMover>();
-            Animator = GetComponent<EnemyAnimator>();
             Death = GetComponent<EnemyDeath>();
+            Attack = GetComponent<EnemyAttack>();
+            Animator = GetComponent<EnemyAnimator>();
+
             _col = GetComponent<Collider>();
         }
 
-        private void Update() => _stateMachine?.Update();
+        private void Update() => StateMachine?.Update();
 
         public void ResetComponents()
         {
-            _stateMachine = null;
             HealthModel.Reset();
+            
             _col.enabled = true;
-            Attack.enabled = false;
             Mover.enabled = false;
             Agent.enabled = true;
+            Attack.enabled = false;
         }
 
-        public void TakeDamage(float damage)
-        {
-            Debug.Log($"Enemy take damage: {damage}");
-            HealthModel.ChangeHealth(-damage);
-        }
+        public void TakeDamage(float damage) => HealthModel.ChangeHealth(-damage);
         
-        public void SetStateMachine(StateMachine stateMachine) => _stateMachine = stateMachine;
+        public void SetStateMachine(StateMachine stateMachine) => StateMachine = stateMachine;
     }
 }

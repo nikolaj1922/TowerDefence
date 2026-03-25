@@ -3,14 +3,14 @@ using UnityEngine;
 using System.Collections;
 using _Project.Scripts.Configs;
 using _Project.Scripts.Infrastructure.CoroutineRunner;
+using _Project.Scripts.Infrastructure.GameConstants;
 using _Project.Scripts.Infrastructure.ObjectsPool;
 
 namespace _Project.Scripts.Weapon
 {
     public class WeaponAttack : IInitializable, ITickable
     {
-        private const float MAX_ANGLE_TO_ATTACK = 3f;
-        private const float ATTACK_RECOIL = 0.03f;
+     
 
         private readonly Transform _projectileSpawnPoint;
         private readonly Transform _weaponHead;
@@ -71,7 +71,7 @@ namespace _Project.Scripts.Weapon
             
             projectile.transform.position = _projectileSpawnPoint.position;
             projectile.Initialize(
-                targetPosition: _targetFinder.Target.transform.position,
+                target: _targetFinder.Target,
                 damage: _damage,
                 onHit: () => OnProjectileHit(projectile));
         }
@@ -89,7 +89,7 @@ namespace _Project.Scripts.Weapon
             if (_targetFinder.Target == null)
                 return false;
             
-            return _attackCooldown <= 0 && GetAngleToTarget(_targetFinder.Target.AttackPoint.position) <= MAX_ANGLE_TO_ATTACK;
+            return _attackCooldown <= 0 && GetAngleToTarget(_targetFinder.Target.AttackPoint.position) <= GameConstants.MAX_ANGLE_TO_ATTACK;
         }
 
         private float GetAngleToTarget(Vector3 targetPosition)
@@ -100,7 +100,7 @@ namespace _Project.Scripts.Weapon
 
         private void MoveHead()
         {
-            _weaponHead.position -= _weaponHead.forward * ATTACK_RECOIL;
+            _weaponHead.position -= _weaponHead.forward * GameConstants.ATTACK_RECOIL;
 
             if (_visualRoutine != null)
                 _coroutineRunner.Stop(_visualRoutine);

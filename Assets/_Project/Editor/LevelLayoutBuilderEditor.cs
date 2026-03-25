@@ -1,6 +1,6 @@
 ﻿using UnityEditor;
 using UnityEngine;
-using _Project.Scripts.Level.Builder;
+using _Project.Scripts.Logic.Game.Builder;
 
 namespace _Project.Editor
 {
