@@ -7,7 +7,6 @@ namespace _Project.Scripts.Enemy
     {
         private static readonly int Attack = Animator.StringToHash("Attack");
         private static readonly int Die = Animator.StringToHash("Die");
-        private static readonly int Victory = Animator.StringToHash("Victory");
         private static readonly int Run = Animator.StringToHash("Run");
         private static readonly int Idle = Animator.StringToHash("Idle");
         
@@ -20,8 +19,6 @@ namespace _Project.Scripts.Enemy
         public void PlayAttack() => _animator.Play(Attack);
         
         public void PlayDeath() => _animator.Play(Die);
-        
-        public void PlayVictory() => _animator.Play(Victory);
         
         public void PlayIdle() => _animator.Play(Idle);
     }

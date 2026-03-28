@@ -16,7 +16,6 @@ namespace _Project.Scripts.Enemy
         private float _attackRange;
         private Vector3 _destination;
         
-        public bool IsMoving { get; private set; } = true;
         public bool IsTargetReached { get; private set; }
 
         [Inject]

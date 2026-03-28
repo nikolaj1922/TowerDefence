@@ -1,37 +1,38 @@
 ﻿using System;
 using UnityEngine;
-using System.Collections;
+using Cysharp.Threading.Tasks;
 
 namespace _Project.Scripts.Enemy
 {
     public class EnemyDeath : MonoBehaviour
     {
         private event Action OnDeath;
-
+        
+        private const float DEATH_TIME = 2f;
+        
         private void OnDisable() => OnDeath = null;
 
         public void Initialize(Action onDeath = null) => OnDeath = onDeath;
-        
+
         public void Die()
         {
             GetComponent<Collider>().enabled = false;
-            StartCoroutine(DieRoutine());
+            DieRoutineAsync().Forget();
         }
 
-        private IEnumerator DieRoutine()
+        private async UniTaskVoid DieRoutineAsync()
         {
-            yield return new WaitForSeconds(2f);
+            await UniTask.Delay(TimeSpan.FromSeconds(DEATH_TIME), cancellationToken: this.GetCancellationTokenOnDestroy());
 
-            float elapsed = 0;
-
-            while (elapsed < 2f)
+            float elapsed = 0f;
+            while (elapsed < DEATH_TIME)
             {
-                transform.position += 1f * Time.deltaTime * Vector3.down;
+                transform.position += Vector3.down * Time.deltaTime;
                 elapsed += Time.deltaTime;
-                
-                yield return null;
+
+                await UniTask.Yield(PlayerLoopTiming.Update, this.GetCancellationTokenOnDestroy());
             }
-            
+
             OnDeath?.Invoke();
         }
     }

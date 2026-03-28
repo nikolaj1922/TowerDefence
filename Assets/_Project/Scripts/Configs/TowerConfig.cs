@@ -13,6 +13,6 @@ namespace _Project.Scripts.Configs
         public bool canBuild;
         public Sprite icon;
         public int coinPrice;
-        public float buildRadius;
+        public float occupiedRadius;
     }
 }

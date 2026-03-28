@@ -4,13 +4,12 @@ using _Project.Scripts.Configs;
 
 namespace _Project.Scripts.Tower
 {
-    [RequireComponent(typeof(SphereCollider))]
     public class Tower : MonoBehaviour
     {
-        private SphereCollider _buildCollider;
-        protected Weapon.Weapon _weapon;
+        [SerializeField] private GameObject _occupiedArea;
         private TowerConfig _config;
-        
+        protected Weapon.Weapon _weapon;
+
         [field: SerializeField] public Transform WeaponPoint { get; private set; }
 
         [Inject]
@@ -18,8 +17,8 @@ namespace _Project.Scripts.Tower
 
         private void Awake()
         {
-            _buildCollider = GetComponent<SphereCollider>();
-            _buildCollider.radius = _config.buildRadius;
+            _occupiedArea.transform.localScale = 
+                new Vector3(_config.occupiedRadius, _occupiedArea.transform.localScale.y, _config.occupiedRadius);
         }
 
         public void SetWeapon(Weapon.Weapon weapon) => _weapon = weapon;

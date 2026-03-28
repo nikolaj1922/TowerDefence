@@ -1,7 +1,8 @@
-﻿using UnityEngine;
+﻿using Zenject;
+using UnityEngine;
 using _Project.Scripts.Logic.Health;
 using _Project.Scripts.UI.HealthBar;
-using Zenject;
+using _Project.Scripts.Infrastructure.GameConstants;
 
 namespace _Project.Scripts.DI.GameObjectInstaller
 {
@@ -11,7 +12,7 @@ namespace _Project.Scripts.DI.GameObjectInstaller
         private HealthModel _healthModel;
 
         [Inject]
-        public void Construct([Inject(Id = "CastleHealthModel")] HealthModel castleHealthModel) => 
+        public void Construct([Inject(Id = GameConstants.CASTLE_HEALTH_MODEL_INJECT_ID)] HealthModel castleHealthModel) => 
             _healthModel = castleHealthModel;
         
         public override void InstallBindings()

@@ -1,5 +1,4 @@
 ﻿using _Project.Scripts.Infrastructure.StateMachine;
-using UnityEngine;
 
 namespace _Project.Scripts.Enemy.States
 {

@@ -1,68 +1,97 @@
-﻿using Zenject;
-using UnityEngine;
+﻿using System;
+using Zenject;
 using System.Linq;
-using System.Collections;
+using System.Threading;
+using Cysharp.Threading.Tasks; 
 using _Project.Scripts.Enemy;
+using _Project.Scripts.Tower;
 using _Project.Scripts.Configs;
-using _Project.Scripts.ConfigRepositories;
-using _Project.Scripts.Infrastructure.CoroutineRunner;
 using _Project.Scripts.Logic.Health;
+using _Project.Scripts.ConfigRepositories;
+using _Project.Scripts.Infrastructure.GameConstants;
 
 namespace _Project.Scripts.Logic.Game
 {
     public class WaveManager : ITickable
     {
+        public event Action<int> OnTimerStart;
+        public event Action OnCompleteLevel;
+        
         [Inject] private DiContainer _container;
-        private CoroutineRunner _coroutineRunner;
+        private HealthModel _castleHealthModel;
         private EnemyFactory _enemyFactory;
         private GameRepository _gameRepository;
-        private HealthModel _castleHealthModel; 
-        
-        public int WaveIndex { get; private set; } = 0;
-        public int TotalEnemyKilled { get; private set; }
+        private TowerPlacement _towerPlacement;
 
+        private int _waveIndex = 0;
+        private int _totalEnemyKilled = 0;
         private int _enemyKilledOnWave = 0;
         private int _totalEnemyOnWave = 0;
-        
-        private Coroutine _waveRoutine;
+
+        private CancellationTokenSource _waveCancelToken;
         
         [Inject]
         private void Construct(
             EnemyFactory enemyFactory,
-            CoroutineRunner coroutineRunner,
             GameRepository gameRepository,
-            [Inject(Id = "CastleHealthModel")] HealthModel healthModel
+            TowerPlacement towerPlacement,
+            [Inject(Id = GameConstants.CASTLE_HEALTH_MODEL_INJECT_ID)] HealthModel healthModel
         )
         {
+            _towerPlacement = towerPlacement;
             _castleHealthModel = healthModel;
             _gameRepository = gameRepository;
             _enemyFactory = enemyFactory;
-            _coroutineRunner = coroutineRunner;
         }
 
         public void Tick()
         {
-            if (_castleHealthModel.CurrentHealth <= 0 && _waveRoutine != null)
-                _coroutineRunner.Stop(_waveRoutine);
+            if (_castleHealthModel.CurrentHealth > 0)
+                return;
+            
+            _waveCancelToken?.Cancel();
+            _waveCancelToken?.Dispose();
+            _waveCancelToken = null;
         }
 
-        public void StartNextWave() => _waveRoutine = _coroutineRunner.Run(StartWaveRoutine(GetNextWave()));
-        
-        private Wave GetNextWave() => WaveIndex < _gameRepository.GameConfig.waves.Length ? _gameRepository.GameConfig.waves[WaveIndex] : null;
+        public void StartTimer(int waveCount) =>  OnTimerStart?.Invoke(waveCount);
 
-        private IEnumerator StartWaveRoutine(Wave wave)
+        public void StartNextWave()
+        {
+            _waveCancelToken?.Cancel();
+            _waveCancelToken?.Dispose();
+            _waveCancelToken = new CancellationTokenSource();
+            
+            var wave = GetNextWave();
+            if (wave == null)
+                return;
+
+            StartWave(wave, _waveCancelToken.Token).Forget();
+        }
+        
+        public int GetRewardForWaves() =>
+            (_waveIndex + 1)
+                      * _gameRepository.GameConfig.coinsPerWave
+                      + _totalEnemyKilled * _gameRepository.GameConfig.coinsPerKill;
+        
+        private Wave GetNextWave() =>_waveIndex < _gameRepository.GameConfig.waves.Length ? _gameRepository.GameConfig.waves[_waveIndex] : null;
+
+        private async UniTaskVoid StartWave(Wave wave, CancellationToken token)
         {
             _enemyKilledOnWave = 0;
             _totalEnemyOnWave = wave.enemyGroups.Sum(e => e.enemyCount);
-            
-            yield return new WaitForSeconds(3f);
             
             foreach (var waveEnemyData in wave.enemyGroups)
             {
                 for (int i = 0; i < waveEnemyData.enemyCount; i++)
                 {
                     _enemyFactory.CreateEnemy(waveEnemyData.enemyType, onDeath: OnEnemyDeath);
-                    yield return new WaitForSeconds(wave.spawnFrequency);   
+
+                    await UniTask.WaitForSeconds(
+                        wave.spawnFrequency,
+                        false, 
+                        PlayerLoopTiming.Update, 
+                        token);
                 }
             }
         }
@@ -70,25 +99,20 @@ namespace _Project.Scripts.Logic.Game
         private void OnEnemyDeath()
         {
             _enemyKilledOnWave++;
-            TotalEnemyKilled++;
+            _totalEnemyKilled++;
             
             if (_enemyKilledOnWave != _totalEnemyOnWave)
                 return;
             
-            WaveIndex++;
+            _waveIndex++;
             
             if (GetNextWave() == null)
             { 
-                CompleteLevel();
+                OnCompleteLevel?.Invoke();
                 return;
             }
             
-            StartNextWave();
-        }
-
-        private void CompleteLevel()
-        {
-            Debug.Log("Level completed");
+            StartTimer(_waveIndex + 1);
         }
     }
 }

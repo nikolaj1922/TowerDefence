@@ -5,12 +5,12 @@ using _Project.Scripts.Tower;
 using _Project.Scripts.Weapon;
 using _Project.Scripts.Logic.Coins;
 using _Project.Scripts.Tower.Castle;
+using _Project.Scripts.Services.SaveLoad;
 using _Project.Scripts.ConfigRepositories;
 using _Project.Scripts.Tower.Castle.States;
 using _Project.Scripts.UI.CreateTowerPanel;
 using _Project.Scripts.Infrastructure.GameConstants;
 using _Project.Scripts.Infrastructure.StateMachine;
-using _Project.Scripts.Services.SaveLoad;
 
 namespace _Project.Scripts.Logic.Game
 {
@@ -18,8 +18,8 @@ namespace _Project.Scripts.Logic.Game
     {
         [Inject] private DiContainer _container;
 
+        private UIFactory _uiFactory;
         private WaveManager _waveManager;
-        private UIManager _uiManager;
         private CoinCounterModel _coinCounterModel;
         
         private TowerFactory _towerFactory;
@@ -27,17 +27,18 @@ namespace _Project.Scripts.Logic.Game
         private GameRepository _gameRepository;
         private TowerConfigsRepository _towerConfigsRepository;
 
+        private Castle _castle;
+        private ISaveLoad _saveLoad;
         private TowerPlacement _towerPlacement;
         private CreateTowerPanel _createTowerPanel;
-        private ISaveLoad _saveLoad;
-        
+
         [Inject]
         private void Construct(
             TowerFactory towerFactory,
             WeaponFactory weaponFactory,
             GameRepository gameRepository,
             TowerConfigsRepository towerConfigsRepository,
-            UIManager uiManager,
+            UIFactory uiFactory,
             TowerPlacement towerPlacement,
             WaveManager waveManager,
             CoinCounterModel coinCounterModel,
@@ -50,57 +51,76 @@ namespace _Project.Scripts.Logic.Game
             _weaponFactory = weaponFactory;
             _towerFactory = towerFactory;
             _gameRepository = gameRepository;
-            _uiManager = uiManager;
+            _uiFactory = uiFactory;
             _waveManager = waveManager;
             _saveLoad = saveLoad;
         }
 
         public void Initialize()
         { 
-            _uiManager.CreateCoinCounterPanel();
-            _createTowerPanel = _uiManager.CreateTowerPanel(onCreateTowerClick: CreateTower);
-            _createTowerPanel.OnShowPanel += _towerPlacement.DisableTowerPlacement;
-            _createTowerPanel.OnHidePanel += _towerPlacement.EnableTowerPlacement;
+            _uiFactory.CreateCoinCounterPanel();
+            _uiFactory.CreateWaveCounterPanel();
+            
+            _createTowerPanel = _uiFactory.CreateTowerPanel(onCreateTowerClick: CreateTower);
+            
             _towerPlacement.OnPlaceClicked += _createTowerPanel.ShowPanel;
             
+            _waveManager.OnCompleteLevel += GameVictory;
+            _waveManager.StartTimer(waveCount: 1);
+            
             CreateCastle();
-            _waveManager.StartNextWave();
+        }
+        
+        public void Dispose()
+        {
+            _towerPlacement.OnPlaceClicked -= _createTowerPanel.ShowPanel;
+            _castle.OnCastleDestroy -= GameOver;
+            _waveManager.OnCompleteLevel -= GameVictory;
         }
 
         private void CreateCastle()
         {
-            Castle castle = (Castle)CreateTower(TowerType.Castle, _gameRepository.GameConfig.castlePosition, 0);
+            _castle = (Castle)CreateTower(
+                TowerType.Castle, 
+                _gameRepository.GameConfig.castlePosition,
+                coinPrice: 0, 
+                isInitial: true);
 
             StateMachine stateMachine = new StateMachine(
                 new IState[]
                 {
                     new EntireState(),
-                    new CollapseState(castle)
+                    new CollapseState(_castle)
                 },
                 new ITransition[]
                 {
                     new Transition<EntireState, CollapseState>(
-                        () => castle.HealthModel.CurrentHealth / castle.HealthModel.MaxHealth < GameConstants.CASTLE_COLLAPSE_HEALTH_PERCENT)
+                        () => _castle.HealthModel.CurrentHealth / _castle.HealthModel.MaxHealth < GameConstants.CASTLE_COLLAPSE_HEALTH_PERCENT)
                 }
             );
             
-            castle.SetStateMachine(stateMachine);
-            
-            castle.OnCastleDestroy += GameOver;
+            _castle.SetStateMachine(stateMachine);
+            _castle.OnCastleDestroy += GameOver;
         }
 
-        private void GameOver()
+        private void EndLevel(string headerText)
         {
-            int wavesSurvived = _waveManager.WaveIndex + 1;
-            int metaCoinsAdded =
-                wavesSurvived * _gameRepository.GameConfig.coinsPerWave
-                + _waveManager.TotalEnemyKilled * _gameRepository.GameConfig.coinsPerKill;
-            
-            _saveLoad.AddMetaCoins(metaCoinsAdded);
-            _uiManager.CreateDefeatModal(metaCoinsAdded);
+            int metaAdded = _waveManager.GetRewardForWaves();
+            _saveLoad.AddMetaCoins(metaAdded);
+            _uiFactory.CreateEndGameModal(metaAdded, headerText);
         }
 
-        private Tower.Tower CreateTower(TowerType towerType, Vector3 position, int coinPrice)
+        private void GameOver() => EndLevel("Defeat!");
+        
+        private void GameVictory() => EndLevel("Victory!");
+        
+        private void PurchaseTower(Tower.Tower tower, int coinPrice)
+        {
+            _coinCounterModel.RemoveCoins(coinPrice);
+            _createTowerPanel.HidePanel();
+        }
+
+        private Tower.Tower CreateTower(TowerType towerType, Vector3 position, int coinPrice, bool isInitial = false)
         {
             Tower.Tower tower = _towerFactory.CreateTower(towerType, position);
             Weapon.Weapon weapon = 
@@ -110,17 +130,20 @@ namespace _Project.Scripts.Logic.Game
                     tower.WeaponPoint.transform);
             
             tower.SetWeapon(weapon);
-            _createTowerPanel.HidePanel();
-            _coinCounterModel.RemoveCoins(coinPrice);
+
+            if (isInitial)
+                return tower;
+
+            PurchaseTower(tower, coinPrice);
 
             return tower;
         }
-
-        public void Dispose()
-        {
-            _createTowerPanel.OnShowPanel -= _towerPlacement.DisableTowerPlacement;
-            _createTowerPanel.OnHidePanel -= _towerPlacement.EnableTowerPlacement;
-            _towerPlacement.OnPlaceClicked -= _createTowerPanel.ShowPanel;
-        }
     }
+    
+    public delegate Tower.Tower CreateTowerDelegate(
+        TowerType towerType,
+        Vector3 position,
+        int coinPrice,
+        bool isInitial
+    );
 }

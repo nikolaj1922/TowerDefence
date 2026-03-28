@@ -1,8 +1,8 @@
-﻿using _Project.Scripts.Logic.Coins;
-using TMPro;
+﻿using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.Events;
+using _Project.Scripts.Logic.Coins;
 
 namespace _Project.Scripts.UI.CreateTowerPanel
 {
@@ -11,8 +11,8 @@ namespace _Project.Scripts.UI.CreateTowerPanel
         [SerializeField] private Image _preview;
         [SerializeField] private Button _createTowerButton;
         [SerializeField] private TextMeshProUGUI _priceText;
+        [SerializeField] private HorizontalLayoutGroup _layoutGroup;
 
-        private UnityAction _onClick;
         private int _price;
         
         private void OnDestroy() =>  _createTowerButton.onClick.RemoveAllListeners();
@@ -24,14 +24,17 @@ namespace _Project.Scripts.UI.CreateTowerPanel
             _preview.sprite = preview;
             _priceText.text = _price.ToString();
             _createTowerButton.onClick.AddListener(onClick);
+            
+            _priceText.ForceMeshUpdate();
+            LayoutRebuilder.ForceRebuildLayoutImmediate(_layoutGroup.GetComponent<RectTransform>());
 
-            coinCounterModel.OnCoinChanged += UpdateButton;
+            coinCounterModel.OnCoinChanged += UpdateButtonStatus;
+            coinCounterModel.UpdateSubscribers();
         }
-
-        private void UpdateButton(int currentCoin)
+        
+        private void UpdateButtonStatus(int currentCoin)
         {
             bool isCoinEnough = currentCoin >= _price;
-            
             _createTowerButton.interactable = isCoinEnough;
             _priceText.color = isCoinEnough ? Color.white : Color.red;
         }

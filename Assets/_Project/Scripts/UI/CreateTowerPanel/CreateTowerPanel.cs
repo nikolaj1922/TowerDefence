@@ -1,4 +1,4 @@
-using System;
+using DG.Tweening;
 using UnityEngine;
 using UnityEngine.UI;
 using _Project.Scripts.Infrastructure.GameConstants;
@@ -7,9 +7,6 @@ namespace _Project.Scripts.UI.CreateTowerPanel
 {
     public class CreateTowerPanel : MonoBehaviour
     {
-        public event Action OnShowPanel;
-        public event Action OnHidePanel;
-        
         private RectTransform _rectTransform;
         public Vector3 CreateTowerPosition { get; private set; }
 
@@ -23,15 +20,15 @@ namespace _Project.Scripts.UI.CreateTowerPanel
 
         public void HidePanel()
         {
-            _rectTransform.anchoredPosition = new Vector2(0, -GameConstants.TOWER_PANEL_OFFSET);
-            OnHidePanel?.Invoke();
+            _rectTransform.DOAnchorPos(new Vector2(0, -GameConstants.PANEL_OFFSET), 0.2f)
+                .SetEase(Ease.InOutQuad);
         }
 
         public void ShowPanel(Vector3 clickPosition)
         {
             CreateTowerPosition = clickPosition;
-            _rectTransform.anchoredPosition = new Vector2(0, GameConstants.TOWER_PANEL_OFFSET);
-            OnShowPanel?.Invoke();
+            _rectTransform.DOAnchorPos(new Vector2(0, GameConstants.PANEL_OFFSET), 0.2f)
+                .SetEase(Ease.InOutQuad);
         }
     }
 }

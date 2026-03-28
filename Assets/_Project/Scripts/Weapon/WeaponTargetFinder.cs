@@ -1,6 +1,7 @@
 ﻿using Zenject;
 using UnityEngine;
 using _Project.Scripts.Configs;
+using _Project.Scripts.Infrastructure.GameConstants;
 using _Project.Scripts.Logic.Health;
 
 namespace _Project.Scripts.Weapon
@@ -16,7 +17,7 @@ namespace _Project.Scripts.Weapon
         public Enemy.Enemy Target { get; private set; }
 
         public WeaponTargetFinder(
-            [Inject(Id = "CastleHealthModel")] HealthModel healthModel,
+            [Inject(Id = GameConstants.CASTLE_HEALTH_MODEL_INJECT_ID)] HealthModel healthModel,
             LayerMask enemiesLayerMask, 
             WeaponConfig config, 
             Vector3 position)

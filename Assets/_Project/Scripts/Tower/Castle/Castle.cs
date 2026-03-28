@@ -1,4 +1,5 @@
 ﻿using System;
+using _Project.Scripts.Infrastructure.GameConstants;
 using Zenject;
 using UnityEngine;
 using _Project.Scripts.Logic.Health;
@@ -12,13 +13,13 @@ namespace _Project.Scripts.Tower.Castle
         
         [SerializeField] private GameObject _castleModel;
         [SerializeField] private GameObject _castleDamagedModel;
-
-        public HealthModel HealthModel { get; private set; }
-
+        [SerializeField] private ParticleSystem _onCollapseEffect;
         private StateMachine _stateMachine;
 
+        public HealthModel HealthModel { get; private set; }
+        
         [Inject]
-        public void Construct([Inject(Id = "CastleHealthModel")] HealthModel healthModel) => HealthModel = healthModel;
+        public void Construct([Inject(Id = GameConstants.CASTLE_HEALTH_MODEL_INJECT_ID)] HealthModel healthModel) => HealthModel = healthModel;
         
         private void Update() => _stateMachine?.Update();
         
@@ -36,6 +37,8 @@ namespace _Project.Scripts.Tower.Castle
 
         public void Collapse()
         {
+            Instantiate(_onCollapseEffect, transform.position, Quaternion.identity);
+            
             _castleDamagedModel.SetActive(true);
             _castleModel.SetActive(false);
             _weapon.gameObject.SetActive(false);

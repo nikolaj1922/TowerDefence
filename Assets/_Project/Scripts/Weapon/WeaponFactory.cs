@@ -19,6 +19,7 @@ namespace _Project.Scripts.Weapon
         {
             GameObject weaponObject = _container.InstantiatePrefab(_weaponPrefabsDatabase.Get(type), position,
                 Quaternion.identity, parent);
+            weaponObject.transform.localScale = parent.localScale;
             Weapon weapon = weaponObject.GetComponent<Weapon>();
 
             return weapon;

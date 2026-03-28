@@ -1,6 +1,6 @@
-﻿using _Project.Scripts.Configs;
-using Zenject;
+﻿using Zenject;
 using UnityEngine;
+using _Project.Scripts.Configs;
 using _Project.Scripts.Logic.Health;
 
 namespace _Project.Scripts.Enemy
@@ -74,7 +74,7 @@ namespace _Project.Scripts.Enemy
             {
                 if (!target.TryGetComponent<IDamagable>(out var damagable))
                     return;
-                
+
                 damagable.TakeDamage(_damage);
             } 
         }

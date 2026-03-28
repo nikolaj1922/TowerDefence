@@ -12374,15 +12374,16 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::_Project.Scripts.DI.SceneContext.LevelScene.LevelSceneInstaller
   _camera: {fileID: 330585545}
-  _towerLayerMask:
+  _towerOccupiedLayerMask:
     serializedVersion: 2
-    m_Bits: 128
+    m_Bits: 2048
   _groundLayerMask:
     serializedVersion: 2
     m_Bits: 1024
   _hud: {fileID: 6232578078217462524}
-  _defeatModal: {fileID: 4189764462493680703, guid: 588f0bdaf21b93c4fb9d4a139efd3704, type: 3}
+  _endGameModal: {fileID: 4189764462493680703, guid: 588f0bdaf21b93c4fb9d4a139efd3704, type: 3}
   _coinCounterPanel: {fileID: 2894671282677012521, guid: 0d0c84fe175bed34cad7a884afddb360, type: 3}
+  _waveCounterPanel: {fileID: 4143589084553967469, guid: b53f73133fa879d46bda5c91864f850d, type: 3}
   _createTowerPanel: {fileID: 4518683133134812616, guid: fc2c2a5affe624f438691e6eb865f5df, type: 3}
   _createTowerItemButton: {fileID: 7214205501385807217, guid: a65f321222fb9a24898ac5f5be2eef78, type: 3}
 --- !u!1001 &338856743
@@ -71903,6 +71904,26 @@ PrefabInstance:
     - target: {fileID: 2937844056808388303, guid: 0c13c41088f653647a376aca506b81d3, type: 3}
       propertyPath: m_Name
       value: HUD
+      objectReference: {fileID: 0}
+    - target: {fileID: 9206832482453867527, guid: 0c13c41088f653647a376aca506b81d3, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 9206832482453867527, guid: 0c13c41088f653647a376aca506b81d3, type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 9206832482453867527, guid: 0c13c41088f653647a376aca506b81d3, type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 24.56
+      objectReference: {fileID: 0}
+    - target: {fileID: 9206832482453867527, guid: 0c13c41088f653647a376aca506b81d3, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 96.9216
+      objectReference: {fileID: 0}
+    - target: {fileID: 9206832482453867527, guid: 0c13c41088f653647a376aca506b81d3, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: -38
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

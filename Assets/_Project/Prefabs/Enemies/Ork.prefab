@@ -214,6 +214,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fe26fa65e8ca473b9c97b956e5df966b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::_Project.Scripts.Enemy.Enemy
+  isInitialized: 0
   <AttackPoint>k__BackingField: {fileID: 1816095473402699668}
 --- !u!114 &4632995313129484344
 MonoBehaviour:
@@ -239,6 +240,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c215c0118bdc43d1876ab3df313dac99, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::_Project.Scripts.Enemy.EnemyDeath
+  _deathEffect: {fileID: 7226888052703040407, guid: 7ec363c8df426644ea85f8d6d570561c, type: 3}
 --- !u!114 &6747568525429956210
 MonoBehaviour:
   m_ObjectHideFlags: 0

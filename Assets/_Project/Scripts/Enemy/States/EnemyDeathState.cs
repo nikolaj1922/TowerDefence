@@ -1,5 +1,5 @@
-﻿using _Project.Scripts.Infrastructure.StateMachine;
-using UnityEngine.AI;
+﻿using UnityEngine.AI;
+using _Project.Scripts.Infrastructure.StateMachine;
 
 namespace _Project.Scripts.Enemy.States
 {

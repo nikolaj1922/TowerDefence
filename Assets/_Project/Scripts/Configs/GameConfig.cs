@@ -15,6 +15,7 @@ namespace _Project.Scripts.Configs
         public int coinsPerKill;
         
         public Wave[] waves;
+        public int timeBetweenWaves;
     }
 
     [Serializable]

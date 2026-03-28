@@ -1,6 +1,7 @@
 ﻿using Zenject;
 using _Project.Scripts.ConfigRepositories;
 using _Project.Scripts.Services.SaveLoad;
+using Cysharp.Threading.Tasks;
 
 namespace _Project.Scripts.Infrastructure.Game
 {
@@ -36,7 +37,7 @@ namespace _Project.Scripts.Infrastructure.Game
             _towerConfigsRepository.Load();
             _enemyConfigsRepository.Load();
             _weaponConfigsRepository.Load();
-            _sceneLoader.LoadScene(GameConstants.GameConstants.MENU_SCENE);
+            _sceneLoader.LoadScene(GameConstants.GameConstants.MENU_SCENE).Forget();
         }
     }
 }

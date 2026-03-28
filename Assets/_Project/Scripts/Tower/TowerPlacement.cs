@@ -2,6 +2,8 @@
 using Zenject;
 using UnityEngine;
 using _Project.Scripts.Infrastructure.GameConstants;
+using UnityEngine.EventSystems;
+using System.Collections.Generic;
 
 namespace _Project.Scripts.Tower
 {
@@ -10,62 +12,69 @@ namespace _Project.Scripts.Tower
         public event Action<Vector3> OnPlaceClicked;
         
         private readonly Camera _camera;
-        private readonly LayerMask _towerLayer;
         private readonly LayerMask _groundLayer;
+        private readonly LayerMask _towerOccupiedLayer;
 
-        private bool _canSelectPlace;
-
-        public TowerPlacement(Camera camera, LayerMask towerLayer, LayerMask groundLayer)
+        public TowerPlacement(Camera camera, LayerMask towerOccupiedLayer, LayerMask groundLayer)
         {
             _camera = camera;
-            _towerLayer = towerLayer;
+            _towerOccupiedLayer = towerOccupiedLayer;
             _groundLayer = groundLayer;
         }
 
         public void Tick()
         {
-            if (!_canSelectPlace) return; 
-            
-#if UNITY_EDITOR || UNITY_STANDALONE
-            if (Input.GetMouseButtonDown(0))
-                TryPlaceTower(Input.mousePosition);
-#else
-            if(Input.touchCount > 0)
-            {
-                var touch = Input.GetTouch(0);
-                    
-                if(touch.phase == TouchPhase.Began)
-                    TryPlaceTower(touch.position);
-            }
-#endif
-        }
+            #if UNITY_EDITOR || UNITY_STANDALONE
+                if (Input.GetMouseButtonDown(0))
+                {
+                    if (IsPointerOverUIElement(Input.mousePosition))
+                        return;
 
-        public void DisableTowerPlacement() => _canSelectPlace = false;
+                    TryPlaceTower(Input.mousePosition);
+                }
+            #else
+                if(Input.touchCount > 0)
+                {
+                    var touch = Input.GetTouch(0);
+                    if(touch.phase == TouchPhase.Began)
+                    {
+                        if (UIHelper.IsPointerOverUIElement(touch.position))
+                            return;
+
+                        TryPlaceTower(touch.position);
+                    }
+                }
+            #endif
+        }
         
-        public void EnableTowerPlacement() => _canSelectPlace = true; 
+        private bool IsPointerOverUIElement(Vector2 screenPosition)
+        {
+            var eventData = new PointerEventData(EventSystem.current)
+            {
+                position = screenPosition
+            };
+
+            var results = new List<RaycastResult>();
+            EventSystem.current.RaycastAll(eventData, results);
+
+            return results.Count > 0;
+        }
 
         private void TryPlaceTower(Vector3 position)
         {
-            if (!CanPlaceTower(position))
-                return;
+            Ray ray = _camera.ScreenPointToRay(position);
 
-            GetGroundTowerPosition(position);
+            if (!Physics.Raycast(
+                    ray,
+                    out RaycastHit hit,
+                    GameConstants.TOWER_PLACEMENT_RAYCAST_DISTANCE,
+                    _towerOccupiedLayer))
+                PlaceTower(position);
         }
         
-        private bool CanPlaceTower(Vector3 mousePosition)
+        private void PlaceTower(Vector3 position)
         {
-            Ray ray = _camera.ScreenPointToRay(mousePosition);
-
-            return !Physics.Raycast(
-                ray,
-                out RaycastHit hit,
-                GameConstants.TOWER_PLACEMENT_RAYCAST_DISTANCE,
-                _towerLayer);
-        }
-
-        private void GetGroundTowerPosition(Vector3 mousePosition)
-        {
-            Ray ray = _camera.ScreenPointToRay(mousePosition);
+            Ray ray = _camera.ScreenPointToRay(position);
             
             if (Physics.Raycast(
                     ray, 

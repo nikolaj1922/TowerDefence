@@ -13,24 +13,24 @@ namespace _Project.Scripts.Enemy
 {
     public class EnemyFactory
     {
-        private readonly EnemySpawner _enemySpawner;
         private readonly EnemyPool _orksPool;
+        private readonly HealthModel _castleHealthModel;
+        private readonly EnemySpawner _enemySpawner;
         private readonly CoinCounterModel _coinCounterModel;
         private readonly EnemyConfigsRepository _configsRepository;
-        private readonly HealthModel _castleHealthModel;
-        
+
         public EnemyFactory(
-            [Inject(Id = "CastleHealthModel")] HealthModel healthModel,
-            EnemyConfigsRepository configsRepository,
-            CoinCounterModel coinCounterModel,
+            EnemyPool orksPool,
             EnemySpawner enemySpawner,
-            EnemyPool orksPool
+            CoinCounterModel coinCounterModel,
+            EnemyConfigsRepository configsRepository,
+            [Inject(Id = GameConstants.CASTLE_HEALTH_MODEL_INJECT_ID)] HealthModel healthModel
         )
         {
-            _configsRepository = configsRepository;
-            _coinCounterModel = coinCounterModel;
-            _enemySpawner = enemySpawner;
             _orksPool = orksPool;
+            _enemySpawner = enemySpawner;
+            _coinCounterModel = coinCounterModel;
+            _configsRepository = configsRepository;
             _castleHealthModel = healthModel;
         }
 
@@ -71,7 +71,6 @@ namespace _Project.Scripts.Enemy
                     new EnemyIdleState(enemy.Mover, enemy.Attack, enemy.Animator), 
                     new EnemyAttackState(enemy.Attack),
                     new EnemyDeathState(enemy.Animator, enemy.Agent),
-                    new EnemyVictoryState(enemy.Mover, enemy.Attack, enemy.Animator)
                 },
                 new ITransition[]
                 {

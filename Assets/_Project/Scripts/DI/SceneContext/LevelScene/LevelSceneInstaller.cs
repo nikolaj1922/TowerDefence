@@ -1,28 +1,31 @@
 ﻿using Zenject;
 using UnityEngine;
 using _Project.Scripts.Enemy;
-using _Project.Scripts.Logic.Game;
 using _Project.Scripts.Tower;
 using _Project.Scripts.Weapon;
+using _Project.Scripts.Logic.Game;
 using _Project.Scripts.Logic.Coins;
-using _Project.Scripts.UI.DefeatModal;
+using _Project.Scripts.Logic.Health;
+using _Project.Scripts.UI.EndGameModal;
+using _Project.Scripts.UI.WaveCounter;
+using _Project.Scripts.UI.CoinCounter;
+using _Project.Scripts.ConfigRepositories;
 using _Project.Scripts.UI.CreateTowerPanel;
 using _Project.Scripts.Database.EnemyDatabase;
-using _Project.Scripts.Logic.Health;
-using _Project.Scripts.ConfigRepositories;
-using _Project.Scripts.UI.CoinCounter;
+using _Project.Scripts.Infrastructure.GameConstants;
 
 namespace _Project.Scripts.DI.SceneContext.LevelScene
 {
     public class LevelSceneInstaller : MonoInstaller
     {
         [SerializeField] private Camera _camera;
-        [SerializeField] private LayerMask _towerLayerMask;
+        [SerializeField] private LayerMask _towerOccupiedLayerMask;
         [SerializeField] private LayerMask _groundLayerMask;
 
         [SerializeField] private RectTransform _hud;
-        [SerializeField] private DefeatModal _defeatModal;
+        [SerializeField] private EndGameModal _endGameModal;
         [SerializeField] private CoinCounterPanel _coinCounterPanel;
+        [SerializeField] private WaveCounterPanel _waveCounterPanel;
         [SerializeField] private CreateTowerPanel _createTowerPanel;
         [SerializeField] private CreateTowerItemButton _createTowerItemButton;
 
@@ -55,16 +58,17 @@ namespace _Project.Scripts.DI.SceneContext.LevelScene
 
         private void BindLevel()
         {
-            Container.Bind<RectTransform>().WithId("HUD").FromInstance(_hud);
-            Container.BindInterfacesAndSelfTo<TowerPlacement>().AsSingle().WithArguments(_towerLayerMask, _groundLayerMask);
+            Container.Bind<RectTransform>().WithId(GameConstants.HUD_INJECT_ID).FromInstance(_hud);
+            Container.BindInterfacesAndSelfTo<TowerPlacement>().AsSingle().WithArguments(_towerOccupiedLayerMask, _groundLayerMask);
 
             Container.Bind<CoinCounterModel>().AsSingle();
+            Container.Bind<EndGameModal>().FromInstance(_endGameModal).AsSingle();
             Container.BindInterfacesAndSelfTo<WaveManager>().AsSingle();
-            Container.BindInterfacesAndSelfTo<UIManager>().AsSingle().WithArguments(
-                _defeatModal, 
+            Container.BindInterfacesAndSelfTo<UIFactory>().AsSingle().WithArguments(
                 _createTowerPanel, 
                 _createTowerItemButton, 
-                _coinCounterPanel);
+                _coinCounterPanel,
+                _waveCounterPanel);
             Container.BindInterfacesAndSelfTo<GameManager>().AsSingle();
         }
 
@@ -73,7 +77,7 @@ namespace _Project.Scripts.DI.SceneContext.LevelScene
             HealthModel healthModel = new HealthModel(_gameRepository.GameConfig.castleHealth);
             Container
                 .Bind<HealthModel>()
-                .WithId("CastleHealthModel")
+                .WithId(GameConstants.CASTLE_HEALTH_MODEL_INJECT_ID)
                 .FromInstance(healthModel)
                 .AsSingle();
         }

@@ -1,19 +1,17 @@
 ﻿using Zenject;
 using UnityEngine;
+using _Project.Scripts.Services.SaveLoad;
 using _Project.Scripts.ConfigRepositories;
 using _Project.Scripts.Services.AssetProvider;
 using _Project.Scripts.Database.EnemyDatabase;
 using _Project.Scripts.Database.TowersDatabase;
 using _Project.Scripts.Database.WeaponDatabase;
 using _Project.Scripts.Infrastructure.SceneLoader;
-using _Project.Scripts.Infrastructure.CoroutineRunner;
-using _Project.Scripts.Services.SaveLoad;
 
 namespace _Project.Scripts.DI.ProjectContext
 {
     public class ProjectContextInstaller : MonoInstaller
     {
-        [SerializeField] private CoroutineRunner _coroutineRunner;
         [SerializeField] private EnemyPrefabsDatabase _enemyPrefabsDatabase;
         [SerializeField] private TowerPrefabsDatabase _towerPrefabsDatabase;
         [SerializeField] private WeaponPrefabsDatabase _weaponPrefabsDatabase;
@@ -23,7 +21,6 @@ namespace _Project.Scripts.DI.ProjectContext
             BindPrefabDatabases(); 
             
             Container.BindInterfacesAndSelfTo<AssetProvider>().AsSingle();
-            Container.Bind<CoroutineRunner>().FromComponentInNewPrefab(_coroutineRunner).AsSingle().NonLazy();
             Container.Bind<SceneLoader>().AsSingle().NonLazy();
             Container.Bind<ISaveLoad>().To<SaveLoad>().AsSingle();
 

@@ -4,20 +4,23 @@ namespace _Project.Scripts.Logic.Coins
 {
     public class CoinCounterModel
     {
-        public event Action<int> OnCoinChanged; 
+        public event Action<int> OnCoinChanged;
+
+        private int _coins;
+        public int Coins
+        {
+            get => _coins;
+            private set
+            {
+                _coins = value;
+                OnCoinChanged?.Invoke(_coins);
+            }
+        }
         
-        public int Coins { get; private set; }
+        public void UpdateSubscribers() => OnCoinChanged?.Invoke(_coins);
 
-        public void AddCoins(int coins)
-        {
-            Coins += coins;
-            OnCoinChanged?.Invoke(Coins);
-        }
-
-        public void RemoveCoins(int coins)
-        {
-            Coins -= coins;
-            OnCoinChanged?.Invoke(Coins);
-        }
+        public void AddCoins(int coins) => Coins += coins;
+        
+        public void RemoveCoins(int coins) => Coins -= coins;
     }
 }

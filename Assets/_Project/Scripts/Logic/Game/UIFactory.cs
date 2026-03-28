@@ -1,65 +1,67 @@
-﻿using System;
-using Zenject;
+﻿using Zenject;
 using UnityEngine;
-using Object = UnityEngine.Object;
-using _Project.Scripts.Tower;
 using _Project.Scripts.Configs;
+using Object = UnityEngine.Object;
 using _Project.Scripts.Logic.Coins;
-using _Project.Scripts.ConfigRepositories;
-using _Project.Scripts.UI.DefeatModal;
+using _Project.Scripts.UI.WaveCounter;
 using _Project.Scripts.UI.CoinCounter;
+using _Project.Scripts.UI.EndGameModal;
+using _Project.Scripts.ConfigRepositories;
 using _Project.Scripts.UI.CreateTowerPanel;
 using _Project.Scripts.Infrastructure.GameConstants;
 
 namespace _Project.Scripts.Logic.Game
 {
-    public class UIManager
+    public class UIFactory
     {
         [Inject] private DiContainer _container;
-        private DefeatModal _defeatModal;
         private RectTransform _hud;
+        private EndGameModal _endGameModal;
         private CoinCounterModel _coinCounterModel;
+        private CoinCounterPanel _coinCounterPanel;
+        private WaveCounterPanel _waveCounterPanel;
         private CreateTowerPanel _createTowerPanel;
         private CreateTowerItemButton _createTowerItemButton;
         private TowerConfigsRepository _towerConfigsRepository;
-        private CoinCounterPanel _coinCounterPanel;
-        
         private Vector3 _createTowerPosition;
 
         [Inject]
         public void Construct(
-            [Inject(Id = "HUD")] RectTransform hud,
+            [Inject(Id = GameConstants.HUD_INJECT_ID)] RectTransform hud,
             CoinCounterModel coinCounterModel,
-            DefeatModal defeatModal, 
+            EndGameModal endGameModal, 
             CreateTowerPanel createTowerPanel,
             CreateTowerItemButton createTowerItemButton,
             TowerConfigsRepository towerConfigsRepository,
-            CoinCounterPanel coinCounterPanel
+            CoinCounterPanel coinCounterPanel,
+            WaveCounterPanel waveCounterPanel
         )
         {
             _hud = hud;
             _coinCounterModel = coinCounterModel;
-            _defeatModal = defeatModal;
+            _endGameModal = endGameModal;
             _createTowerPanel = createTowerPanel;
             _createTowerItemButton = createTowerItemButton;
             _towerConfigsRepository = towerConfigsRepository;
             _coinCounterPanel = coinCounterPanel;
+            _waveCounterPanel = waveCounterPanel;
         }
 
-        public void CreateDefeatModal(int metaCoinsAdded)
+        public void CreateEndGameModal(int metaCoinsAdded, string headerText)
         {
-            DefeatModal defeatModal = _container.InstantiatePrefabForComponent<DefeatModal>(_defeatModal);
-            defeatModal.Initialize();
-            defeatModal.SetMetaCoinText(metaCoinsAdded);
+            EndGameModal endGameModal = _container.InstantiatePrefabForComponent<EndGameModal>(_endGameModal);
+            endGameModal.SetMetaCoinText(metaCoinsAdded);
+            endGameModal.SetHeaderText(headerText);
         }
 
-        public void CreateCoinCounterPanel() => _container.InstantiatePrefabForComponent<CoinCounterPanel>(_coinCounterPanel.gameObject, _hud);
+        public void CreateCoinCounterPanel() => _container.InstantiatePrefab(_coinCounterPanel.gameObject, _hud);
+        public void CreateWaveCounterPanel() => _container.InstantiatePrefab(_waveCounterPanel.gameObject, _hud);
 
-        public CreateTowerPanel CreateTowerPanel(Func<TowerType, Vector3, int, Tower.Tower> onCreateTowerClick)
+        public CreateTowerPanel CreateTowerPanel(CreateTowerDelegate onCreateTowerClick)
         {
             CreateTowerPanel panel = Object.Instantiate(_createTowerPanel, _hud);
             RectTransform rect = panel.GetComponent<RectTransform>();
-            rect.anchoredPosition = new Vector2(0, -GameConstants.TOWER_PANEL_OFFSET);
+            rect.anchoredPosition = new Vector2(0, -GameConstants.PANEL_OFFSET);
             
             foreach (TowerConfig towerConfig in _towerConfigsRepository.GetBuildable())
                 CreateTowerItemButton(towerConfig, rect, panel, onCreateTowerClick);
@@ -71,13 +73,13 @@ namespace _Project.Scripts.Logic.Game
             TowerConfig config, 
             RectTransform parent, 
             CreateTowerPanel panel,
-            Func<TowerType, Vector3, int, Tower.Tower> onClick)
+            CreateTowerDelegate onClick)
         {
             CreateTowerItemButton towerButton = Object.Instantiate(_createTowerItemButton, parent);
             towerButton.Initialize(
                 config.coinPrice, 
                 config.icon,
-                onClick: () => onClick(config.towerType, panel.CreateTowerPosition, config.coinPrice),
+                onClick: () => onClick(config.towerType, panel.CreateTowerPosition, config.coinPrice, false),
                 _coinCounterModel
                 );
         }

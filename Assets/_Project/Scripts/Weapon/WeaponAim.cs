@@ -1,19 +1,22 @@
 ﻿using Zenject;
 using UnityEngine;
 using _Project.Scripts.Configs;
+using _Project.Scripts.Infrastructure.GameConstants;
 
 namespace _Project.Scripts.Weapon
 {
     public class WeaponAim
     {
+        private const float MIN_MAGNITUDE = 0.001f; 
+        
         private readonly Transform _baseTransform;
         private readonly Transform _weaponHead;
         private readonly WeaponTargetFinder _targetFinder;
         private readonly float _rotationSpeed;
 
         public WeaponAim(
-            [Inject(Id = "WeaponBase")] Transform baseTransform,
-            [Inject(Id = "WeaponHead")] Transform weaponHead,
+            [Inject(Id = GameConstants.WEAPON_BASE_INJECT_ID)] Transform baseTransform,
+            [Inject(Id = GameConstants.WEAPON_HEAD_INJECT_ID)] Transform weaponHead,
             WeaponTargetFinder targetFinder,
             WeaponConfig config)
         {
@@ -58,7 +61,7 @@ namespace _Project.Scripts.Weapon
             Vector3 baseDirection = targetPosition - _baseTransform.position;
             baseDirection.y = 0f;
 
-            if (baseDirection.sqrMagnitude > 0.001f)
+            if (baseDirection.sqrMagnitude > MIN_MAGNITUDE)
                 _baseTransform.rotation = Quaternion.Slerp(
                     _baseTransform.rotation,
                     Quaternion.LookRotation(baseDirection),

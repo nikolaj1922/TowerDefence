@@ -3,6 +3,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using _Project.Scripts.Infrastructure.GameConstants;
 using _Project.Scripts.Infrastructure.SceneLoader;
+using Cysharp.Threading.Tasks;
 
 namespace _Project.Scripts.UI.MainMenu
 {
@@ -20,7 +21,7 @@ namespace _Project.Scripts.UI.MainMenu
         [Inject]
         public void Construct(SceneLoader sceneLoader) => _sceneLoader = sceneLoader;
 
-        private void OnStartClick() => _sceneLoader.LoadScene(GameConstants.LEVEL_SCENE);
+        private void OnStartClick() => _sceneLoader.LoadScene(GameConstants.LEVEL_SCENE).Forget();
     }
 }
 
