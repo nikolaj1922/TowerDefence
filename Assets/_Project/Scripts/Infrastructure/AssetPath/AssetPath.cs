@@ -2,9 +2,9 @@
 {
     public static class AssetPath
     {
-        public static readonly string Enemies = "Enemies";
-        public static readonly string Game = "Game/GameConfig";
-        public static readonly string Towers = "Towers";
-        public static readonly string Weapons = "Weapons";
+        public const string ENEMIES = "Enemies";
+        public const string GAME_CONFIG = "Game/GameConfig";
+        public const string TOWERS = "Towers";
+        public const string WEAPONS = "Weapons";
     }
 }

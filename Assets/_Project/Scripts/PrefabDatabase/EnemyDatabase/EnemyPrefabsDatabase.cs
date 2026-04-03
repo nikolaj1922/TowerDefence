@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using _Project.Scripts.Enemy;
 
-namespace _Project.Scripts.Database.EnemyDatabase
+namespace _Project.Scripts.PrefabDatabase.EnemyDatabase
 {
     [CreateAssetMenu(menuName = "Game/Enemy Database")]
     public class EnemyPrefabsDatabase : ScriptableObject

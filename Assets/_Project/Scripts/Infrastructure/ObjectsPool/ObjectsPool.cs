@@ -8,7 +8,7 @@ namespace _Project.Scripts.Infrastructure.ObjectsPool
     {
         private GameObject _parent;
         private readonly T _prefab;
-        private readonly List<T> _pool = new List<T>();
+        private readonly List<T> _pool = new();
 
         public ObjectsPool(T prefab)
         {

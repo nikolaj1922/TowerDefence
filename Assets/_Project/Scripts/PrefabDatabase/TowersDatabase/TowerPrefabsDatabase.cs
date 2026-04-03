@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using _Project.Scripts.Tower;
 
-namespace _Project.Scripts.Database.TowersDatabase
+namespace _Project.Scripts.PrefabDatabase.TowersDatabase
 {
     [CreateAssetMenu(menuName = "Game/Tower Database")]
     public class TowerPrefabsDatabase : ScriptableObject

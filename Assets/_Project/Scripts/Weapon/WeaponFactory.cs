@@ -1,6 +1,6 @@
 ﻿using Zenject;
 using UnityEngine;
-using _Project.Scripts.Database.WeaponDatabase;
+using _Project.Scripts.PrefabDatabase.WeaponDatabase;
 
 namespace _Project.Scripts.Weapon
 {

@@ -12,6 +12,7 @@ namespace _Project.Scripts.DI.GameObjectInstaller
     {
         [SerializeField] private EnemyType _enemyType;
         [SerializeField] private HealthBarView _healthBarView;
+        
         private EnemyConfigsRepository _enemyRepository;
         
         [Inject]

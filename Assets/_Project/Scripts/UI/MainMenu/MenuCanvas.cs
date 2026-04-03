@@ -14,13 +14,13 @@ namespace _Project.Scripts.UI.MainMenu
         [Header("Buttons")]
         [SerializeField] private Button _goToLevelsMenuButton;
         
+        [Inject]
+        public void Construct(SceneLoader sceneLoader) => _sceneLoader = sceneLoader;
+        
         private void Awake() =>  _goToLevelsMenuButton.onClick.AddListener(OnStartClick);
 
         private void OnDisable() => _goToLevelsMenuButton.onClick.RemoveListener(OnStartClick);
-
-        [Inject]
-        public void Construct(SceneLoader sceneLoader) => _sceneLoader = sceneLoader;
-
+        
         private void OnStartClick() => _sceneLoader.LoadScene(GameConstants.LEVEL_SCENE).Forget();
     }
 }

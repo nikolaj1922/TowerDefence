@@ -7,13 +7,13 @@ namespace _Project.Scripts.Infrastructure.Game
 {
     public class GameBoostrapper : IInitializable
     {
-        private readonly SceneLoader.SceneLoader _sceneLoader;
+        private readonly ISaveLoad _saveLoad;
         private readonly GameRepository _gameRepository;
+        private readonly SceneLoader.SceneLoader _sceneLoader;
         private readonly WeaponConfigsRepository _weaponConfigsRepository;
         private readonly EnemyConfigsRepository _enemyConfigsRepository;
         private readonly TowerConfigsRepository _towerConfigsRepository;
-        private readonly ISaveLoad _saveLoad;
-        
+
         public GameBoostrapper(
             TowerConfigsRepository towerConfigsRepository,
             EnemyConfigsRepository enemyConfigsRepository, 
@@ -29,7 +29,7 @@ namespace _Project.Scripts.Infrastructure.Game
             _gameRepository = gameRepository;
             _sceneLoader = sceneLoader;
         }
-        
+
         public void Initialize()
         {
             _saveLoad.LoadProgress();

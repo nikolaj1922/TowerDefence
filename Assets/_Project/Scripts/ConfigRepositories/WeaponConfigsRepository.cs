@@ -14,7 +14,7 @@ namespace _Project.Scripts.ConfigRepositories
 
         public WeaponConfigsRepository(IAssetProvider assets) => _assets = assets;
 
-        public void Load() => _weapons = _assets.LoadAll<WeaponConfig>(AssetPath.Weapons)
+        public void Load() => _weapons = _assets.LoadAll<WeaponConfig>(AssetPath.WEAPONS)
             .ToDictionary(t => t.weaponType, t => t);
 
         public WeaponConfig Get(WeaponType towerType) => _weapons.GetValueOrDefault(towerType);

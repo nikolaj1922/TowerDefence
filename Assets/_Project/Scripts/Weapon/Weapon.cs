@@ -10,9 +10,6 @@ namespace _Project.Scripts.Weapon
         [Inject]
         public void Construct(WeaponAim aim) => _aim = aim;
 
-        private void Update()
-        {
-            _aim.Tick(Time.deltaTime);
-        }
+        private void Update() => _aim.Tick(Time.deltaTime);
     }
 }

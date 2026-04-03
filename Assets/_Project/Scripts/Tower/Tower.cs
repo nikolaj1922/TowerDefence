@@ -7,6 +7,7 @@ namespace _Project.Scripts.Tower
     public class Tower : MonoBehaviour
     {
         [SerializeField] private GameObject _occupiedArea;
+        
         private TowerConfig _config;
         protected Weapon.Weapon _weapon;
 

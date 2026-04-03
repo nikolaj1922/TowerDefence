@@ -1,7 +1,7 @@
 ﻿using System;
 using _Project.Scripts.Tower;
 
-namespace _Project.Scripts.Database.TowersDatabase
+namespace _Project.Scripts.PrefabDatabase.TowersDatabase
 {
     [Serializable]
     public class TowerEntry

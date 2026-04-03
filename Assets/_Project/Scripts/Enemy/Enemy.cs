@@ -11,7 +11,9 @@ namespace _Project.Scripts.Enemy
     public class Enemy : MonoBehaviour, IDamagable
     {
         private Collider _col;
+        public bool isInitialized;
 
+        [field: SerializeField] public Transform AttackPoint { get; private set; }
         public HealthModel HealthModel { get; private set; }
         public NavMeshAgent Agent { get; private set; }
         public EnemyAttack Attack { get; private set; }
@@ -19,10 +21,6 @@ namespace _Project.Scripts.Enemy
         public EnemyAnimator Animator { get; private set; }
         public EnemyDeath Death { get; private set; }
         public StateMachine StateMachine { private set; get; }
-
-        public bool isInitialized;
-
-        [field: SerializeField] public Transform AttackPoint { get; private set; }
         
         [Inject]
         private void Construct(HealthModel healthModel) => HealthModel = healthModel;

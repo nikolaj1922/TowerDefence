@@ -33,8 +33,9 @@ namespace _Project.Scripts.DI.GameObjectInstaller
             
             Container.BindInterfacesAndSelfTo<WeaponTargetFinder>().AsSingle().WithArguments(_enemyLayerMask, transform.position);
             Container.Bind<WeaponAim>().AsSingle();
+            Container.BindInterfacesAndSelfTo<WeaponAttackFX>().AsSingle().WithArguments(_onAttackEffect);
             Container.BindInterfacesAndSelfTo<WeaponAttack>().AsSingle()
-                .WithArguments(_projectile, _onAttackEffect);
+                .WithArguments(_projectile);
         }
     }
 }

@@ -8,10 +8,11 @@ namespace _Project.Scripts.Enemy
     [RequireComponent(typeof(EnemyAnimator))]
     public class EnemyAttack : MonoBehaviour
     {
+        private const int MAX_TARGETS = 1;
+        private const float ATTACK_HEIGHT_OFFSET_MULTIPLIER = 0.5f;
+        
         private EnemyAnimator _animator;
-        
         private bool _canAttack = true;
-        
         private float _damage;
         private float _attackCooldown;
         private float _attackRange;
@@ -32,7 +33,7 @@ namespace _Project.Scripts.Enemy
         private void Awake()
         {
             _animator = GetComponent<EnemyAnimator>();
-            _attackTargets = new Collider[1];
+            _attackTargets = new Collider[MAX_TARGETS];
         }
 
         private void OnEnable()
@@ -89,7 +90,7 @@ namespace _Project.Scripts.Enemy
 
         private Vector3 GetHitPosition() => new Vector3(
                                                 transform.position.x, 
-                                                transform.position.y + _attackRadius / 2, 
+                                                transform.position.y + _attackRadius * ATTACK_HEIGHT_OFFSET_MULTIPLIER, 
                                                 transform.position.z)
                                                 + transform.forward * _attackRange;
     }

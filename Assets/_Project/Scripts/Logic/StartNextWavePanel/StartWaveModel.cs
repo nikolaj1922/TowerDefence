@@ -1,0 +1,31 @@
+﻿using System;
+using _Project.Scripts.ConfigRepositories;
+
+namespace _Project.Scripts.Logic.StartNextWavePanel
+{
+    public class StartWaveModel
+    {
+        public event Action<int> OnTickTimer;
+        public event Action OnEndTimer;
+
+        private readonly int _timeBetweenWaves;
+        private int _currentTimeBetweenWaves;
+        public int CurrentTimeBetweenWaves
+        {
+            get => _currentTimeBetweenWaves;
+            private set {
+                _currentTimeBetweenWaves = value;
+                OnTickTimer?.Invoke(_currentTimeBetweenWaves);
+                
+                if(value <= 0)
+                    OnEndTimer?.Invoke();
+            }
+        }
+
+        public StartWaveModel(GameRepository gameRepository) => _timeBetweenWaves = gameRepository.GameConfig.timeBetweenWaves;
+
+        public void TickTimer() => CurrentTimeBetweenWaves--;
+
+        public void ResetTimer() => CurrentTimeBetweenWaves = _timeBetweenWaves;
+    }
+}

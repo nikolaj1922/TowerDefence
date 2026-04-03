@@ -6,11 +6,12 @@ namespace _Project.Scripts.ConfigRepositories
 {
     public class GameRepository
     {
-        public GameConfig GameConfig { get; private set; }
         private readonly IAssetProvider _assets;
         
+        public GameConfig GameConfig { get; private set; }
+
         public GameRepository(IAssetProvider assets) => _assets = assets;
 
-        public void Load() => GameConfig = _assets.Load<GameConfig>(AssetPath.Game);
+        public void Load() => GameConfig = _assets.Load<GameConfig>(AssetPath.GAME_CONFIG);
     }
 }

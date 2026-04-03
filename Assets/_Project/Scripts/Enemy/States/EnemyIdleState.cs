@@ -4,10 +4,10 @@ namespace _Project.Scripts.Enemy.States
 {
     public class EnemyIdleState: IEnterableState
     {
-        private readonly EnemyAgentMover _enemyAgentMover;
         private readonly EnemyAttack _enemyAttack;
         private readonly EnemyAnimator _enemyAnimator;
-        
+        private readonly EnemyAgentMover _enemyAgentMover;
+
         public EnemyIdleState(EnemyAgentMover enemyAgentMover, EnemyAttack enemyAttack, EnemyAnimator enemyAnimator)
         {
             _enemyAgentMover = enemyAgentMover;

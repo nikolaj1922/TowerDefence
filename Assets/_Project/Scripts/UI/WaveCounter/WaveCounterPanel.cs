@@ -9,10 +9,9 @@ namespace _Project.Scripts.UI.WaveCounter
 {
     public class WaveCounterPanel : MonoBehaviour
     {
+        private const float ANIMATION_DURATION = 0.2f;
         public event Action OnForceWaveClick;
         
-        private const float ANIMATION_DURATION = 0.2f;
-
         [SerializeField] private Button _forceWaveButton;
         [SerializeField] private TextMeshProUGUI _waveTimerText;
         [SerializeField] private TextMeshProUGUI _waveCountText;

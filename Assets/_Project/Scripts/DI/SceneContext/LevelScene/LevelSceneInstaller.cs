@@ -1,9 +1,10 @@
 ﻿using Zenject;
 using UnityEngine;
+using _Project.Scripts.UI;
 using _Project.Scripts.Enemy;
 using _Project.Scripts.Tower;
 using _Project.Scripts.Weapon;
-using _Project.Scripts.Logic.Game;
+using _Project.Scripts.Logic.Level;
 using _Project.Scripts.Logic.Coins;
 using _Project.Scripts.Logic.Health;
 using _Project.Scripts.UI.EndGameModal;
@@ -11,8 +12,9 @@ using _Project.Scripts.UI.WaveCounter;
 using _Project.Scripts.UI.CoinCounter;
 using _Project.Scripts.ConfigRepositories;
 using _Project.Scripts.UI.CreateTowerPanel;
-using _Project.Scripts.Database.EnemyDatabase;
+using _Project.Scripts.PrefabDatabase.EnemyDatabase;
 using _Project.Scripts.Infrastructure.GameConstants;
+using _Project.Scripts.Tower.Castle;
 
 namespace _Project.Scripts.DI.SceneContext.LevelScene
 {
@@ -21,14 +23,13 @@ namespace _Project.Scripts.DI.SceneContext.LevelScene
         [SerializeField] private Camera _camera;
         [SerializeField] private LayerMask _towerOccupiedLayerMask;
         [SerializeField] private LayerMask _groundLayerMask;
-
         [SerializeField] private RectTransform _hud;
         [SerializeField] private EndGameModal _endGameModal;
         [SerializeField] private CoinCounterPanel _coinCounterPanel;
         [SerializeField] private WaveCounterPanel _waveCounterPanel;
         [SerializeField] private CreateTowerPanel _createTowerPanel;
         [SerializeField] private CreateTowerItemButton _createTowerItemButton;
-
+        
         private GameRepository _gameRepository;
         private EnemyPrefabsDatabase _enemyPrefabsDatabase;
 
@@ -64,12 +65,10 @@ namespace _Project.Scripts.DI.SceneContext.LevelScene
             Container.Bind<CoinCounterModel>().AsSingle();
             Container.Bind<EndGameModal>().FromInstance(_endGameModal).AsSingle();
             Container.BindInterfacesAndSelfTo<WaveManager>().AsSingle();
-            Container.BindInterfacesAndSelfTo<UIFactory>().AsSingle().WithArguments(
-                _createTowerPanel, 
-                _createTowerItemButton, 
-                _coinCounterPanel,
-                _waveCounterPanel);
-            Container.BindInterfacesAndSelfTo<GameManager>().AsSingle();
+            Container.Bind<TowerService>().AsSingle();
+            Container.Bind<CastleInitializer>().AsSingle();
+            Container.Bind<EndGameService>().AsSingle();
+            Container.BindInterfacesAndSelfTo<LevelBootstrapper>().AsSingle();
         }
 
         private void BindCastleHealthModel()
@@ -87,6 +86,11 @@ namespace _Project.Scripts.DI.SceneContext.LevelScene
             Container.Bind<EnemyFactory>().AsSingle();
             Container.Bind<TowerFactory>().AsSingle();
             Container.Bind<WeaponFactory>().AsSingle();
+            Container.BindInterfacesAndSelfTo<UIFactory>().AsSingle().WithArguments(
+                _createTowerPanel, 
+                _createTowerItemButton, 
+                _coinCounterPanel,
+                _waveCounterPanel);
         }
 
         private void BindEnemyPools()

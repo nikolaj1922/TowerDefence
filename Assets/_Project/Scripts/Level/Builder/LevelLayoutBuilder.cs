@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace _Project.Scripts.Logic.Game.Builder
+namespace _Project.Scripts.Level.Builder
 {
     public class LevelLayoutBuilder : MonoBehaviour
     {

@@ -5,9 +5,9 @@ namespace _Project.Scripts.Enemy.States
 {
     public class EnemyDeathState : IEnterableState
     {
-        private readonly EnemyAnimator _enemyAnimator;
         private readonly NavMeshAgent _agent;
-        
+        private readonly EnemyAnimator _enemyAnimator;
+
         public EnemyDeathState(EnemyAnimator enemyAnimator, NavMeshAgent agent)
         {
             _enemyAnimator = enemyAnimator;

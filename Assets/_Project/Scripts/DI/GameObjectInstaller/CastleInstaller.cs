@@ -9,6 +9,7 @@ namespace _Project.Scripts.DI.GameObjectInstaller
     public class CastleInstaller : TowerInstaller
     {
         [SerializeField] private HealthBarView _healthBarView;
+        
         private HealthModel _healthModel;
 
         [Inject]

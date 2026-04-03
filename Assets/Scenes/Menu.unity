@@ -240,7 +240,7 @@ Light:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1022969759}
   m_Enabled: 1
-  serializedVersion: 13
+  serializedVersion: 12
   m_Type: 1
   m_Color: {r: 1, g: 0.95686275, b: 0.8392157, a: 1}
   m_Intensity: 1
@@ -292,7 +292,7 @@ Light:
   m_UseBoundingSphereOverride: 0
   m_UseViewFrustumForShadowCasterCull: 1
   m_ForceVisible: 0
-  m_ShapeRadius: 0
+  m_ShadowRadius: 0
   m_ShadowAngle: 0
   m_LightUnit: 1
   m_LuxAtDistance: 1
@@ -419,7 +419,6 @@ Canvas:
   m_OverridePixelPerfect: 0
   m_SortingBucketNormalizedSize: 0
   m_VertexColorAlwaysGammaSpace: 0
-  m_UseReflectionProbes: 0
   m_AdditionalShaderChannelsFlag: 25
   m_UpdateRectTransformForStandalone: 0
   m_SortingLayerID: 0
@@ -680,11 +679,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2129626390151629500, guid: f3aaba9f92d50f947811905c21551e0b, type: 3}
       propertyPath: m_SizeDelta.x
-      value: 24.56
+      value: 65.32
+      objectReference: {fileID: 0}
+    - target: {fileID: 2129626390151629500, guid: f3aaba9f92d50f947811905c21551e0b, type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 40.22
       objectReference: {fileID: 0}
     - target: {fileID: 2129626390151629500, guid: f3aaba9f92d50f947811905c21551e0b, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 96.9216
+      value: 72.12225
       objectReference: {fileID: 0}
     - target: {fileID: 2129626390151629500, guid: f3aaba9f92d50f947811905c21551e0b, type: 3}
       propertyPath: m_AnchoredPosition.y
@@ -779,6 +782,14 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7389770124156515306, guid: f3aaba9f92d50f947811905c21551e0b, type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7389770124156515306, guid: f3aaba9f92d50f947811905c21551e0b, type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7389770124156515306, guid: f3aaba9f92d50f947811905c21551e0b, type: 3}
       propertyPath: m_AnchoredPosition.x
       value: 0
       objectReference: {fileID: 0}
@@ -795,8 +806,8 @@ PrefabInstance:
 SceneRoots:
   m_ObjectHideFlags: 0
   m_Roots:
+  - {fileID: 2112006451}
   - {fileID: 1146183345}
   - {fileID: 1022969761}
   - {fileID: 1090887426}
   - {fileID: 475780384}
-  - {fileID: 2112006451}

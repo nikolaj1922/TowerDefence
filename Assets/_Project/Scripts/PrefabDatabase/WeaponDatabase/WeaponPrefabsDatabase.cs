@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using _Project.Scripts.Weapon;
 
-namespace _Project.Scripts.Database.WeaponDatabase
+namespace _Project.Scripts.PrefabDatabase.WeaponDatabase
 {
     [CreateAssetMenu(menuName = "Game/Weapon Database")]
     public class WeaponPrefabsDatabase : ScriptableObject

@@ -1,6 +1,6 @@
 using Zenject;
 using UnityEngine;
-using _Project.Scripts.Logic.StartWave;
+using _Project.Scripts.Logic.StartNextWavePanel;
 using _Project.Scripts.UI.WaveCounter;
 
 namespace _Project.Scripts.DI.GameObjectInstaller

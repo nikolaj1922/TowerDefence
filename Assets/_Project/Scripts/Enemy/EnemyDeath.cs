@@ -6,9 +6,9 @@ namespace _Project.Scripts.Enemy
 {
     public class EnemyDeath : MonoBehaviour
     {
-        private event Action OnDeath;
-        
         private const float DEATH_TIME = 2f;
+        
+        private event Action OnDeath;
         
         private void OnDisable() => OnDeath = null;
 

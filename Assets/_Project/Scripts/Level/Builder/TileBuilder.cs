@@ -2,7 +2,7 @@ using Unity.AI.Navigation;
 using UnityEngine;
 using UnityEditor;
 
-namespace _Project.Scripts.Logic.Game.Builder
+namespace _Project.Scripts.Level.Builder
 {
     public class TileBuilder : MonoBehaviour
     {

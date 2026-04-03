@@ -3,9 +3,9 @@ using UnityEngine;
 using _Project.Scripts.Services.SaveLoad;
 using _Project.Scripts.ConfigRepositories;
 using _Project.Scripts.Services.AssetProvider;
-using _Project.Scripts.Database.EnemyDatabase;
-using _Project.Scripts.Database.TowersDatabase;
-using _Project.Scripts.Database.WeaponDatabase;
+using _Project.Scripts.PrefabDatabase.EnemyDatabase;
+using _Project.Scripts.PrefabDatabase.TowersDatabase;
+using _Project.Scripts.PrefabDatabase.WeaponDatabase;
 using _Project.Scripts.Infrastructure.SceneLoader;
 
 namespace _Project.Scripts.DI.ProjectContext

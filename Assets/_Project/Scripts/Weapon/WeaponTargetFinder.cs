@@ -8,10 +8,12 @@ namespace _Project.Scripts.Weapon
 {
     public class WeaponTargetFinder : ITickable
     {
+        private const int MAX_TARGETS = 10;
+        
         private readonly Vector3 _position;
         private readonly float _attackRange;
         private readonly LayerMask _enemiesLayerMask;
-        private readonly Collider[] _aimedEnemyColliders = new Collider[10];
+        private readonly Collider[] _aimedEnemyColliders = new Collider[MAX_TARGETS];
         private readonly HealthModel _castleHealthModel;
 
         public Enemy.Enemy Target { get; private set; }
@@ -37,15 +39,16 @@ namespace _Project.Scripts.Weapon
                 Target = null;
                 return;
             }
+
+            if (!IsTargetValid())
+                Target = null;
             
-            if (Target == null || !IsTargetValid())
+            if (Target == null)
                 SearchForTarget();
         }
 
         private void SearchForTarget()
         {
-            Target = null;
-            
             int overlappedEnemyCount = Physics.OverlapSphereNonAlloc(
                 _position, _attackRange, _aimedEnemyColliders, _enemiesLayerMask);
 

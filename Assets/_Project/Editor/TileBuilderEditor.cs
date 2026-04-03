@@ -1,7 +1,7 @@
 ﻿using System;
 using UnityEditor;
 using UnityEngine;
-using _Project.Scripts.Logic.Game.Builder;
+using _Project.Scripts.Level.Builder;
 
 
 namespace _Project.Editor
