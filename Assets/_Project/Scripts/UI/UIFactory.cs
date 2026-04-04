@@ -38,8 +38,8 @@ namespace _Project.Scripts.UI
         )
         {
             _hud = hud;
-            _coinCounterModel = coinCounterModel;
             _endGameModal = endGameModal;
+            _coinCounterModel = coinCounterModel;
             _createTowerPanel = createTowerPanel;
             _createTowerItemButton = createTowerItemButton;
             _towerConfigsRepository = towerConfigsRepository;
@@ -49,7 +49,7 @@ namespace _Project.Scripts.UI
 
         public void CreateEndGameModal(int metaCoinsAdded, string headerText)
         {
-            EndGameModal.EndGameModal endGameModal = _container.InstantiatePrefabForComponent<EndGameModal.EndGameModal>(_endGameModal);
+            EndGameModal.EndGameModal endGameModal = _container.InstantiatePrefabForComponent<EndGameModal.EndGameModal>(_endGameModal, _hud);
             endGameModal.SetMetaCoinText(metaCoinsAdded);
             endGameModal.SetHeaderText(headerText);
         }
@@ -85,7 +85,7 @@ namespace _Project.Scripts.UI
         }
     }
     
-    public delegate Tower.Tower CreateTowerDelegate(
+    public delegate void CreateTowerDelegate(
         TowerType towerType,
         Vector3 position,
         int coinPrice

@@ -1,9 +1,11 @@
 ﻿using System;
 using Zenject;
 using UnityEngine;
-using _Project.Scripts.Infrastructure.GameConstants;
 using UnityEngine.EventSystems;
 using System.Collections.Generic;
+using _Project.Scripts.Infrastructure.GameConstants;
+using _Project.Scripts.Logic.Level;
+using _Project.Scripts.Services.Analytics;
 
 namespace _Project.Scripts.Tower
 {
@@ -12,12 +14,21 @@ namespace _Project.Scripts.Tower
         public event Action<Vector3> OnPlaceClicked;
         
         private readonly Camera _camera;
+        private readonly AnalyticsService _analyticsService;
+        private readonly WaveManager _waveManager;
         private readonly LayerMask _groundLayer;
         private readonly LayerMask _towerOccupiedLayer;
 
-        public TowerPlacement(Camera camera, LayerMask towerOccupiedLayer, LayerMask groundLayer)
+        public TowerPlacement(
+            Camera camera,
+            AnalyticsService analyticsService,
+            WaveManager waveManager,
+            LayerMask towerOccupiedLayer, 
+            LayerMask groundLayer)
         {
             _camera = camera;
+            _waveManager = waveManager;
+            _analyticsService = analyticsService;
             _towerOccupiedLayer = towerOccupiedLayer;
             _groundLayer = groundLayer;
         }
@@ -64,12 +75,17 @@ namespace _Project.Scripts.Tower
         {
             Ray ray = _camera.ScreenPointToRay(position);
 
-            if (!Physics.Raycast(
+            if (Physics.Raycast(
                     ray,
                     out RaycastHit hit,
                     GameConstants.TOWER_PLACEMENT_RAYCAST_DISTANCE,
                     _towerOccupiedLayer))
-                PlaceTower(position);
+            {
+                _analyticsService.BuildRejected("too_close_to_tower", _waveManager.CurrentWave);
+                return;
+            }
+            
+            PlaceTower(position);
         }
         
         private void PlaceTower(Vector3 position)

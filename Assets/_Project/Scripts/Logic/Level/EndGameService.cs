@@ -1,5 +1,6 @@
-﻿using _Project.Scripts.Services.SaveLoad;
-using _Project.Scripts.UI;
+﻿using _Project.Scripts.UI;
+using _Project.Scripts.Services.SaveLoad;
+using _Project.Scripts.Services.Analytics;
 
 namespace _Project.Scripts.Logic.Level
 {
@@ -8,15 +9,30 @@ namespace _Project.Scripts.Logic.Level
         private readonly UIFactory _uiFactory;
         private readonly WaveManager _waveManager;
         private readonly ISaveLoad _saveLoad;
+        private readonly AnalyticsService _analyticsService;
 
-        public EndGameService(UIFactory uiFactory, WaveManager waveManager, ISaveLoad saveLoad)
+        public EndGameService(
+            UIFactory uiFactory, 
+            WaveManager waveManager, 
+            ISaveLoad saveLoad,
+            AnalyticsService analyticsService)
         {
+            _analyticsService = analyticsService;
             _uiFactory = uiFactory;
             _waveManager = waveManager;
             _saveLoad = saveLoad;
         }
-        
-        public void GameOver() => EndLevel("Defeat!");
+
+        public void GameOver(int towersBuilt)
+        {
+            _analyticsService.GameOver(
+                _waveManager.CurrentWave, 
+                _waveManager.TotalEnemyKilled, 
+                towersBuilt, 
+                _waveManager.GetRewardForWaves());
+            
+            EndLevel("Defeat!");
+        }
         
         public void GameVictory() => EndLevel("Victory!");
         

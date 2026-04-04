@@ -60,7 +60,6 @@ namespace _Project.Scripts.DI.SceneContext.LevelScene
         private void BindLevel()
         {
             Container.Bind<RectTransform>().WithId(GameConstants.HUD_INJECT_ID).FromInstance(_hud);
-            Container.BindInterfacesAndSelfTo<TowerPlacement>().AsSingle().WithArguments(_towerOccupiedLayerMask, _groundLayerMask);
 
             Container.Bind<CoinCounterModel>().AsSingle();
             Container.Bind<EndGameModal>().FromInstance(_endGameModal).AsSingle();
@@ -68,6 +67,10 @@ namespace _Project.Scripts.DI.SceneContext.LevelScene
             Container.Bind<TowerService>().AsSingle();
             Container.Bind<CastleInitializer>().AsSingle();
             Container.Bind<EndGameService>().AsSingle();
+            Container
+                .BindInterfacesAndSelfTo<TowerPlacement>()
+                .AsSingle()
+                .WithArguments(_towerOccupiedLayerMask, _groundLayerMask);
             Container.BindInterfacesAndSelfTo<LevelBootstrapper>().AsSingle();
         }
 

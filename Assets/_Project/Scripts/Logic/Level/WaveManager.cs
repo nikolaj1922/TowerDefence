@@ -6,6 +6,7 @@ using Cysharp.Threading.Tasks;
 using _Project.Scripts.Enemy;
 using _Project.Scripts.Configs;
 using _Project.Scripts.Logic.Health;
+using _Project.Scripts.Services.Analytics;
 using _Project.Scripts.ConfigRepositories;
 using _Project.Scripts.Infrastructure.GameConstants;
 
@@ -15,24 +16,30 @@ namespace _Project.Scripts.Logic.Level
     {
         public event Action<int> OnWaveTimerStart;
         public event Action OnCompleteLevel;
-        
+        public event Action<int> OnCompleteWave;
+
+        private AnalyticsService _analyticsService;
         private HealthModel _castleHealthModel;
         private EnemyFactory _enemyFactory;
         private GameRepository _gameRepository;
         private int _waveIndex = 0;
-        private int _totalEnemyKilled = 0;
         private int _enemyKilledOnWave = 0;
-        private int _totalEnemyOnWave = 0;
-
-        private CancellationTokenSource _waveCancelToken;
+        private int _totalEnemiesOnWave = 0;
         
+        private CancellationTokenSource _waveCancelToken;
+
+        public int CurrentWave => _waveIndex + 1;
+        public int TotalEnemyKilled { get; private set; }
+
         [Inject]
         private void Construct(
             EnemyFactory enemyFactory,
             GameRepository gameRepository,
-            [Inject(Id = GameConstants.CASTLE_HEALTH_MODEL_INJECT_ID)] HealthModel healthModel
+            [Inject(Id = GameConstants.CASTLE_HEALTH_MODEL_INJECT_ID)] HealthModel healthModel,
+            AnalyticsService analyticsService
         )
         {
+            _analyticsService = analyticsService;
             _castleHealthModel = healthModel;
             _gameRepository = gameRepository;
             _enemyFactory = enemyFactory;
@@ -42,20 +49,15 @@ namespace _Project.Scripts.Logic.Level
         {
             if (_castleHealthModel.CurrentHealth > 0)
                 return;
-            
-            _waveCancelToken?.Cancel();
-            _waveCancelToken?.Dispose();
-            _waveCancelToken = null;
+
+            ResetWaveToken();
         }
 
         public void StartTimer(int waveCount) => OnWaveTimerStart?.Invoke(waveCount);
 
         public void StartNextWave()
         {
-            _waveCancelToken?.Cancel();
-            _waveCancelToken?.Dispose();
-            _waveCancelToken = new CancellationTokenSource();
-            
+            UpdateWaveToken();
             Wave wave = GetNextWave();
             
             if (wave == null)
@@ -65,8 +67,8 @@ namespace _Project.Scripts.Logic.Level
         }
         
         public int GetRewardForWaves() =>
-            (_waveIndex + 1) * _gameRepository.GameConfig.coinsPerWave
-            + _totalEnemyKilled * _gameRepository.GameConfig.coinsPerKill;
+            (CurrentWave) * _gameRepository.GameConfig.coinsPerWave
+            + TotalEnemyKilled * _gameRepository.GameConfig.coinsPerKill;
         
         private Wave GetNextWave() => 
             _waveIndex < _gameRepository.GameConfig.waves.Length 
@@ -75,8 +77,10 @@ namespace _Project.Scripts.Logic.Level
 
         private async UniTaskVoid StartWave(Wave wave, CancellationToken token)
         {
+            _totalEnemiesOnWave = wave.enemyGroups.Sum(e => e.enemyCount);
             _enemyKilledOnWave = 0;
-            _totalEnemyOnWave = wave.enemyGroups.Sum(e => e.enemyCount);
+
+            _analyticsService.WaveStarted(CurrentWave, _totalEnemiesOnWave);
             
             foreach (var waveEnemyData in wave.enemyGroups)
             {
@@ -96,10 +100,12 @@ namespace _Project.Scripts.Logic.Level
         private void OnEnemyDeath()
         {
             _enemyKilledOnWave++;
-            _totalEnemyKilled++;
+            TotalEnemyKilled++;
             
-            if (_enemyKilledOnWave != _totalEnemyOnWave)
+            if (_enemyKilledOnWave != _totalEnemiesOnWave)
                 return;
+            
+            OnCompleteWave?.Invoke(CurrentWave);
             
             _waveIndex++;
             
@@ -109,7 +115,21 @@ namespace _Project.Scripts.Logic.Level
                 return;
             }
             
-            StartTimer(_waveIndex + 1);
+            StartTimer(CurrentWave);
+        }
+        
+        private void ResetWaveToken()
+        {
+            _waveCancelToken?.Cancel();
+            _waveCancelToken?.Dispose();
+            _waveCancelToken = null;
+        }
+
+        private void UpdateWaveToken()
+        {
+            _waveCancelToken?.Cancel();
+            _waveCancelToken?.Dispose();
+            _waveCancelToken = new CancellationTokenSource();
         }
     }
 }

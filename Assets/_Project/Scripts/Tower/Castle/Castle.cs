@@ -10,6 +10,7 @@ namespace _Project.Scripts.Tower.Castle
     public class Castle : Tower, IDamagable
     {
         public event Action OnCastleDestroy;
+        public event Action<float> OnCastleDamaged;
         
         [SerializeField] private GameObject _castleModel;
         [SerializeField] private GameObject _castleDamagedModel;
@@ -28,9 +29,12 @@ namespace _Project.Scripts.Tower.Castle
         public void TakeDamage(float damage)
         {
             HealthModel.ChangeHealth(-damage);
-            
+
             if (HealthModel.CurrentHealth > 0)
+            {
+                OnCastleDamaged?.Invoke(HealthModel.CurrentHealth);
                 return;
+            }
             
             OnCastleDestroy?.Invoke();
         }
