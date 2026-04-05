@@ -4,6 +4,13 @@
 
 Проект использует `Zenject`, `UniTask`, `DOTween`, `NavMesh` и конфиги на `ScriptableObject`.
 
+## Аналитика
+
+Аналитика работает через Firebase. Для работы необходимо скачать 2 файла отсюда: 
+`https://www.dropbox.com/scl/fo/nev9xnyi4if3gi98mnubn/AHVi9kkFH0pgX5RaNy1Lrm4?rlkey=rdtr0i64yfgfsvfrqyrw1mj45&st=sysel6vb&dl=0`
+
+Положить в `Assets/Firebase/Plugins/x86_64`
+
 ## Обзор
 
 Игровой цикл организован так:
