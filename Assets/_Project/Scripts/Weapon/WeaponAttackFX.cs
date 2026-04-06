@@ -36,8 +36,12 @@ namespace _Project.Scripts.Weapon
             _onAttackEffect = onAttackEffect;
         }
         
-        public void Initialize() => _weaponHeadInitialPosition = _weaponHead.position;
-        
+        public void Initialize()
+        {
+            _weaponBase.transform.localScale = _weaponBase.transform.parent.localScale;
+            _weaponHeadInitialPosition = _weaponHead.position;
+        }
+
         public void PlayRecoil()
         {
             if (!_weaponHead)
@@ -66,35 +70,25 @@ namespace _Project.Scripts.Weapon
             if (!_weaponHead)
                 return;
 
-            try
+            float elapsed = 0f;
+            Vector3 startPos = _weaponHead.position;
+
+            while (elapsed < _attackSpeed)
             {
-                float elapsed = 0f;
-                Vector3 startPos = _weaponHead.position;
-
-                while (elapsed < _attackSpeed)
-                {
-                    if (token.IsCancellationRequested || !_weaponHead)
-                        return;
-                
-                    _weaponHead.position = Vector3.Lerp(
-                        startPos, 
-                        _weaponHeadInitialPosition, 
-                        elapsed / _attackSpeed);
-                
-                    elapsed += Time.deltaTime;
-                
-                    await UniTask.Yield(PlayerLoopTiming.Update, token);
-                }
-
-                if (!_weaponHead)
+                if (token.IsCancellationRequested || !_weaponHead)
                     return;
-
-                _weaponHead.position = _weaponHeadInitialPosition;
+                
+                _weaponHead.position = Vector3.Lerp(
+                    startPos,
+                    _weaponHeadInitialPosition,
+                    elapsed / _attackSpeed);
+                
+                elapsed += Time.deltaTime;
+                
+                await UniTask.Yield(PlayerLoopTiming.Update, token);
             }
-            catch (OperationCanceledException)
-            {
-                return;
-            }
+            
+            _weaponHead.position = _weaponHeadInitialPosition;
         }
         
         private void CancelVisualTask()

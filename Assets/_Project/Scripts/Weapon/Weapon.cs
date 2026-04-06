@@ -5,11 +5,11 @@ namespace _Project.Scripts.Weapon
 {
     public class Weapon : MonoBehaviour
     {
-        private WeaponAim _aim;
+        private WeaponLookToTarget _lookToTarget;
 
         [Inject]
-        public void Construct(WeaponAim aim) => _aim = aim;
+        public void Construct(WeaponLookToTarget lookToTarget) => _lookToTarget = lookToTarget;
 
-        private void Update() => _aim.Tick(Time.deltaTime);
+        private void Update() => _lookToTarget.Tick(Time.deltaTime);
     }
 }

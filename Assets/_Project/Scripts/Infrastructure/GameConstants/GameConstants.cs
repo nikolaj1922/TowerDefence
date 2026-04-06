@@ -7,7 +7,7 @@
         public const string LEVEL_SCENE = "Level";
         public const float ENEMY_SPAWN_OFFSET = 1f;
         public const float TOWER_PLACEMENT_RAYCAST_DISTANCE = 100f;
-        public const float MAX_ANGLE_TO_ATTACK = 3f;
+        public const float MAX_ANGLE_TO_ATTACK = 10f;
         public const float ATTACK_RECOIL = 0.03f;
         public const float CASTLE_COLLAPSE_HEALTH_PERCENT = 0.4f;
         public const string PLAYER_PROGRESS = "PlayerProgress";

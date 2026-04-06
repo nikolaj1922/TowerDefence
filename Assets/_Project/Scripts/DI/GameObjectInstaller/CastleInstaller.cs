@@ -13,8 +13,14 @@ namespace _Project.Scripts.DI.GameObjectInstaller
         private HealthModel _healthModel;
 
         [Inject]
-        public void Construct([Inject(Id = GameConstants.CASTLE_HEALTH_MODEL_INJECT_ID)] HealthModel castleHealthModel) => 
+        public void Construct(
+            [Inject(Id = GameConstants.CASTLE_HEALTH_MODEL_INJECT_ID)]
+            HealthModel castleHealthModel
+        )
+        {
             _healthModel = castleHealthModel;
+        } 
+           
         
         public override void InstallBindings()
         {

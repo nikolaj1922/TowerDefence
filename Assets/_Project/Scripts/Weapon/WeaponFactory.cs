@@ -1,13 +1,13 @@
 ﻿using Zenject;
 using UnityEngine;
-using _Project.Scripts.PrefabDatabase.WeaponDatabase;
+using _Project.Scripts.Database.WeaponPrefabDatabase;
 
 namespace _Project.Scripts.Weapon
 {
     public class WeaponFactory
     {
         private readonly DiContainer _container;
-        private readonly  WeaponPrefabsDatabase _weaponPrefabsDatabase;
+        private readonly WeaponPrefabsDatabase _weaponPrefabsDatabase;
         
         public WeaponFactory(WeaponPrefabsDatabase weaponPrefabsDatabase, DiContainer container)
         {
@@ -19,7 +19,6 @@ namespace _Project.Scripts.Weapon
         {
             GameObject weaponObject = _container.InstantiatePrefab(_weaponPrefabsDatabase.Get(type), position,
                 Quaternion.identity, parent);
-            weaponObject.transform.localScale = parent.localScale;
             Weapon weapon = weaponObject.GetComponent<Weapon>();
 
             return weapon;

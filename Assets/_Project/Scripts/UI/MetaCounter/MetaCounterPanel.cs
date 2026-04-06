@@ -10,19 +10,20 @@ namespace _Project.Scripts.UI.MetaCounter
     {
         [SerializeField] private TextMeshProUGUI _metaCounterText;
         [SerializeField] private HorizontalLayoutGroup _layoutGroup;
+        
         private ISaveLoad _saveLoad; 
         
         [Inject]
         public void Construct(ISaveLoad saveLoad) => _saveLoad  = saveLoad;
 
-        private void Awake()
+        private void Awake() => UpdateView();
+
+        public void UpdateView()
         {
             _metaCounterText.text = _saveLoad.PlayerProgress.metaCoinsCount.ToString();
             _metaCounterText.ForceMeshUpdate();
             
-            LayoutRebuilder.ForceRebuildLayoutImmediate(
-                _layoutGroup.GetComponent<RectTransform>()
-            );
-        } 
+            LayoutRebuilder.ForceRebuildLayoutImmediate(_layoutGroup.GetComponent<RectTransform>());
+        }
     }
 }

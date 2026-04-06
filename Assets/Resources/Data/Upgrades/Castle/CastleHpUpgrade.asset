@@ -1,0 +1,30 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5742802c1a2f4dcaaa867bba42d59e53, type: 3}
+  m_Name: CastleHpUpgrade
+  m_EditorClassIdentifier: Assembly-CSharp::_Project.Scripts.Configs.Upgrades.CastleHpUpgradeConfig
+  id: e7a9e027-4997-4440-bcdc-0aebc8562b3d
+  title: Castle Hp
+  previewIcon: {fileID: -1986729151, guid: 98b301ce9e9db854cbcd7cb697c83edc, type: 3}
+  levels:
+  - level: 1
+    price: 10
+    multiplier: 1.2
+    description: Increase castle hp (+20%)
+  - level: 2
+    price: 20
+    multiplier: 1.4
+    description: Increase castle hp (+40%)
+  - level: 3
+    price: 30
+    multiplier: 1.6
+    description: Increase castle hp (+60%)

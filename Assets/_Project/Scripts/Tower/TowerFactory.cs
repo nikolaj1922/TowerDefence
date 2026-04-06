@@ -1,6 +1,6 @@
-﻿using Zenject;
+﻿using _Project.Scripts.Database.TowersPrefabDatabase;
+using Zenject;
 using UnityEngine;
-using _Project.Scripts.PrefabDatabase.TowersDatabase;
 
 namespace _Project.Scripts.Tower
 {

@@ -46,7 +46,7 @@ namespace _Project.Scripts.Logic.Level
         public void Initialize()
         {
             CreateUI();
-            CreateCastle();
+            // CreateCastle();
             
             _towerPlacement.OnPlaceClicked += _createTowerPanel.ShowPanel;
             _waveManager.OnCompleteLevel += GameVictory;

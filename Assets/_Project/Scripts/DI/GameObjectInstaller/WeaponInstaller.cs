@@ -32,7 +32,7 @@ namespace _Project.Scripts.DI.GameObjectInstaller
             Container.Bind<Transform>().WithId(GameConstants.PROJECTILE_POINT_INJECT_ID).FromInstance(_projectileSpawnPoint);
             
             Container.BindInterfacesAndSelfTo<WeaponTargetFinder>().AsSingle().WithArguments(_enemyLayerMask, transform.position);
-            Container.Bind<WeaponAim>().AsSingle();
+            Container.Bind<WeaponLookToTarget>().AsSingle();
             Container.BindInterfacesAndSelfTo<WeaponAttackFX>().AsSingle().WithArguments(_onAttackEffect);
             Container.BindInterfacesAndSelfTo<WeaponAttack>().AsSingle()
                 .WithArguments(_projectile);

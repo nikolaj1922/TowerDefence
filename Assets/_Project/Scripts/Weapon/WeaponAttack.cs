@@ -48,7 +48,7 @@ namespace _Project.Scripts.Weapon
         {
             if (!HasRequiredTransforms())
                 return;
-
+            
             if (CanAttack())
                 Attack();
             

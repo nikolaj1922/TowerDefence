@@ -7,14 +7,15 @@ using _Project.Scripts.Weapon;
 using _Project.Scripts.Logic.Level;
 using _Project.Scripts.Logic.Coins;
 using _Project.Scripts.Logic.Health;
-using _Project.Scripts.UI.EndGameModal;
 using _Project.Scripts.UI.WaveCounter;
 using _Project.Scripts.UI.CoinCounter;
 using _Project.Scripts.ConfigRepositories;
+using _Project.Scripts.Database.EnemyPrefabDatabase;
 using _Project.Scripts.UI.CreateTowerPanel;
-using _Project.Scripts.PrefabDatabase.EnemyDatabase;
 using _Project.Scripts.Infrastructure.GameConstants;
+using _Project.Scripts.Services.SaveLoad;
 using _Project.Scripts.Tower.Castle;
+using _Project.Scripts.UI.Modals.EndGameModal;
 
 namespace _Project.Scripts.DI.SceneContext.LevelScene
 {
@@ -29,13 +30,21 @@ namespace _Project.Scripts.DI.SceneContext.LevelScene
         [SerializeField] private WaveCounterPanel _waveCounterPanel;
         [SerializeField] private CreateTowerPanel _createTowerPanel;
         [SerializeField] private CreateTowerItemButton _createTowerItemButton;
-        
+
+        private ISaveLoad _saveLoad;
         private GameRepository _gameRepository;
         private EnemyPrefabsDatabase _enemyPrefabsDatabase;
 
+        private PlayerProgress Progress => _saveLoad.PlayerProgress;
+
         [Inject]
-        public void Construct(EnemyPrefabsDatabase enemyPrefabsDatabase, GameRepository gameRepository)
+        public void Construct(
+            EnemyPrefabsDatabase enemyPrefabsDatabase, 
+            GameRepository gameRepository,
+            ISaveLoad saveLoad
+            )
         {
+            _saveLoad = saveLoad;
             _enemyPrefabsDatabase = enemyPrefabsDatabase;
             _gameRepository = gameRepository;
         }
@@ -73,7 +82,8 @@ namespace _Project.Scripts.DI.SceneContext.LevelScene
 
         private void BindCastleHealthModel()
         {
-            HealthModel healthModel = new HealthModel(_gameRepository.GameConfig.castleHealth);
+            float finalCastleHp = Progress.upgrades.castleHpMultiplier * _gameRepository.GameConfig.castleHealth;
+            HealthModel healthModel = new HealthModel(finalCastleHp);
             Container
                 .Bind<HealthModel>()
                 .WithId(GameConstants.CASTLE_HEALTH_MODEL_INJECT_ID)
