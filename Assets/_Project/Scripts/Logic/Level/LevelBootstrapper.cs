@@ -6,6 +6,7 @@ using _Project.Scripts.Tower;
 using _Project.Scripts.Logic.Coins;
 using _Project.Scripts.Tower.Castle;
 using _Project.Scripts.ConfigRepositories;
+using _Project.Scripts.Services.Upgrade;
 using _Project.Scripts.UI.CreateTowerPanel;
 
 namespace _Project.Scripts.Logic.Level
@@ -21,6 +22,7 @@ namespace _Project.Scripts.Logic.Level
         private EndGameService _endGameService;
         private CreateTowerPanel _createTowerPanel;
         private CastleInitializer _castleInitializer;
+        private UpgradeService _upgradeService;
 
         [Inject]
         private void Construct(
@@ -31,7 +33,8 @@ namespace _Project.Scripts.Logic.Level
             CoinCounterModel coinCounterModel,
             TowerService towerService,
             CastleInitializer castleInitializer,
-            EndGameService endGameService
+            EndGameService endGameService,
+            UpgradeService upgradeService
             )
         {
             _castleInitializer = castleInitializer;
@@ -41,12 +44,13 @@ namespace _Project.Scripts.Logic.Level
             _waveManager = waveManager;
             _towerService = towerService;
             _endGameService = endGameService;
+            _upgradeService = upgradeService;
         }
 
         public void Initialize()
         {
             CreateUI();
-            // CreateCastle();
+            CreateCastle();
             
             _towerPlacement.OnPlaceClicked += _createTowerPanel.ShowPanel;
             _waveManager.OnCompleteLevel += GameVictory;
@@ -82,7 +86,14 @@ namespace _Project.Scripts.Logic.Level
             Vector3 position, 
             int coinPrice)
         {
-            Tower.Tower tower = _towerService.CreateAndPurchase(towerType, position, coinPrice);
+            Tower.Tower tower = _towerService.CreateAndPurchase(
+                towerType, 
+                position, 
+                coinPrice,
+                _upgradeService.GetUpgradeMultiplier(UpgradeIdMatcher.TOWER_DAMAGE_ID),
+                _upgradeService.GetUpgradeMultiplier(UpgradeIdMatcher.TOWER_ATTACK_SPEED_ID)
+                );
+            
             _createTowerPanel.HidePanel();
             return tower;
         }

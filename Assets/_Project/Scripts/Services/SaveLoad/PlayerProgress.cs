@@ -13,7 +13,7 @@ namespace _Project.Scripts.Services.SaveLoad
         public BoughtUpgrade GetUpgrade(string id) =>
             upgrades.boughtUpgradeLevelsById.FirstOrDefault(x => x.id == id);
 
-        public int GetUpgradeLevel(string id) => GetUpgrade(id)?.level ?? 0;
+        public int GetUpgradeLevel(string id) => GetUpgrade(id)?.level ?? 1;
 
         public void SetUpgradeLevel(string id, int level)
         {
@@ -39,12 +39,6 @@ namespace _Project.Scripts.Services.SaveLoad
     [Serializable]
     public class PlayerUpgrades
     {
-        public float castleHpMultiplier = 1f;
-        public float castleAttackSpeedMultiplier = 1f;
-        public float castleDamageMultiplier = 1f;
-        public float towerAttackSpeedMultiplier = 1f;
-        public float towerDamageMultiplier = 1f;
-        
         public List<BoughtUpgrade> boughtUpgradeLevelsById = new();
     }
 

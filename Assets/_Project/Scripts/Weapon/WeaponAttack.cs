@@ -16,6 +16,7 @@ namespace _Project.Scripts.Weapon
         private readonly WeaponProjectile _projectile;
         private readonly WeaponTargetFinder _targetFinder;
         private readonly WeaponAttackFX _weaponAttackFX;
+        private readonly Weapon _weapon;
         
         private readonly float _damage;
         private readonly float _attackSpeed;
@@ -23,6 +24,7 @@ namespace _Project.Scripts.Weapon
         private ObjectsPool<WeaponProjectile> _projectilePool;
         
         public WeaponAttack(
+            Weapon weapon,
             WeaponConfig config, 
             WeaponTargetFinder targetFinder,
             [Inject(Id = GameConstants.WEAPON_HEAD_INJECT_ID)] Transform weaponHead,
@@ -32,7 +34,8 @@ namespace _Project.Scripts.Weapon
             WeaponAttackFX weaponAttackFX
             )
         {
-            _damage = config.damage; 
+            _damage = config.damage;
+            _weapon = weapon;
             _attackSpeed = config.attackSpeed;
             _targetFinder = targetFinder;
             _weaponHead = weaponHead;
@@ -60,7 +63,7 @@ namespace _Project.Scripts.Weapon
             _weaponAttackFX.PlayRecoil();
             _weaponAttackFX.CreateAttackFX();
             SpawnProjectile();
-            _attackCooldown = _attackSpeed;
+            _attackCooldown = _attackSpeed * _weapon.AttackSpeedMultiplier;
         }
         
         private void SpawnProjectile()
@@ -74,7 +77,7 @@ namespace _Project.Scripts.Weapon
             projectile.transform.position = _projectileSpawnPoint.position;
             projectile.Initialize(
                 target: _targetFinder.Target,
-                damage: _damage,
+                damage: _damage * _weapon.DamageMultiplier,
                 onHit: () => OnProjectileHit(projectile));
         }
         

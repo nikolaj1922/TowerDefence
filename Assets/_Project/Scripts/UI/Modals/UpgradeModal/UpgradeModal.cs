@@ -3,11 +3,10 @@ using UnityEngine;
 using UnityEngine.UI;
 using System.Collections.Generic;
 using _Project.Scripts.Database;
+using _Project.Scripts.UI.MetaCounter;
+using _Project.Scripts.Services.SaveLoad;
 using _Project.Scripts.Database.ModalsPrefabDatabase;
 using _Project.Scripts.Infrastructure.ModalCreator;
-using _Project.Scripts.Services.SaveLoad;
-using _Project.Scripts.UI.MetaCounter;
-using _Project.Scripts.UI.Modals.UpgradeModal.UpgradeItem;
 
 namespace _Project.Scripts.UI.Modals.UpgradeModal
 {

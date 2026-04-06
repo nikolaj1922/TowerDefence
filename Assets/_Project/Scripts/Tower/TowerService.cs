@@ -29,23 +29,25 @@ namespace _Project.Scripts.Tower
             _weaponFactory = weaponFactory;
         }
         
-        public Tower Create(TowerType towerType, Vector3 position)
+        public Tower Create(TowerType towerType, Vector3 position, float damageMultiplier, float attackSpeedMultiplier)
         {
             Tower tower = _towerFactory.CreateTower(towerType, position);
             Weapon.Weapon weapon = 
                 _weaponFactory.CreateWeapon(
                     _towerConfigsRepository.Get(towerType).weaponType, 
                     tower.WeaponPoint.transform.position, 
-                    tower.WeaponPoint.transform);
+                    tower.WeaponPoint.transform, 
+                    damageMultiplier, 
+                    attackSpeedMultiplier);
             
             tower.SetWeapon(weapon);
             
             return tower;
         }
 
-        public Tower CreateAndPurchase(TowerType towerType, Vector3 position, int coinPrice)
+        public Tower CreateAndPurchase(TowerType towerType, Vector3 position, int coinPrice, float damageMultiplier, float attackSpeedMultiplier)
         {
-            Tower tower = Create(towerType, position);
+            Tower tower = Create(towerType, position, damageMultiplier, attackSpeedMultiplier);
             Purchase(coinPrice);
 
             return tower;

@@ -14,12 +14,19 @@ namespace _Project.Scripts.Weapon
             _container = container;
             _weaponPrefabsDatabase = weaponPrefabsDatabase;
         }
-        
-        public Weapon CreateWeapon(WeaponType type, Vector3 position, Transform parent)
+
+        public Weapon CreateWeapon(
+            WeaponType type, 
+            Vector3 position, 
+            Transform parent, 
+            float damageMultiplier,
+            float attackSpeedMultiplier)
+
         {
             GameObject weaponObject = _container.InstantiatePrefab(_weaponPrefabsDatabase.Get(type), position,
                 Quaternion.identity, parent);
             Weapon weapon = weaponObject.GetComponent<Weapon>();
+            weapon.SetMultipliers(damageMultiplier, attackSpeedMultiplier);
 
             return weapon;
         }

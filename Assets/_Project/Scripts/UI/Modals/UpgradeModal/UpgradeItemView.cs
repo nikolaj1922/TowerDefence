@@ -2,9 +2,8 @@
 using System;
 using UnityEngine;
 using UnityEngine.UI;
-using _Project.Scripts.Configs.Upgrades;
 
-namespace _Project.Scripts.UI.Modals.UpgradeModal.UpgradeItem
+namespace _Project.Scripts.UI.Modals.UpgradeModal
 {
     public class UpgradeItemView : MonoBehaviour
     {
@@ -16,9 +15,7 @@ namespace _Project.Scripts.UI.Modals.UpgradeModal.UpgradeItem
         [SerializeField] private TextMeshProUGUI _price;
         [SerializeField] private TextMeshProUGUI _title;
         [SerializeField] private TextMeshProUGUI _description;
-
-        private UpgradeLevel _upgradeLevelToBuy;
-
+        
         private void Awake() => _buyButton.onClick.AddListener(OnBuyButtonClick);
 
         private void OnDestroy() => _buyButton.onClick.RemoveListener(OnBuyButtonClick);

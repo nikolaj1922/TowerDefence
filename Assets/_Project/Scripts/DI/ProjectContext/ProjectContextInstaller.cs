@@ -10,6 +10,7 @@ using _Project.Scripts.Database.ModalsPrefabDatabase;
 using _Project.Scripts.Database.TowersPrefabDatabase;
 using _Project.Scripts.Database.WeaponPrefabDatabase;
 using _Project.Scripts.Infrastructure.ModalCreator;
+using _Project.Scripts.Services.Upgrade;
 
 namespace _Project.Scripts.DI.ProjectContext
 {
@@ -24,18 +25,19 @@ namespace _Project.Scripts.DI.ProjectContext
         
         public override void InstallBindings()
         {
-            BindPrefabDatabases(); 
-            Container.Bind<UpgradesDatabase>().FromInstance(_upgradesDatabase).AsSingle();
+            BindDatabases(); 
 
+            
             Container.Bind<ModalCreator>().AsSingle();
             Container.BindInterfacesAndSelfTo<AssetProvider>().AsSingle();
             Container.Bind<SceneLoader>().AsSingle().NonLazy();
             Container.Bind<ISaveLoad>().To<SaveLoad>().AsSingle();
-
+            Container.Bind<UpgradeService>().AsSingle();
+            
             BindConfigRepositories();
         }
 
-        private void BindPrefabDatabases()
+        private void BindDatabases()
         {
             _modalPrefabsDatabase.Init();
             _enemyPrefabsDatabase.Init();
@@ -45,6 +47,7 @@ namespace _Project.Scripts.DI.ProjectContext
             Container.Bind<ModalsPrefabDatabase>().FromInstance(_modalPrefabsDatabase).AsSingle();
             Container.Bind<EnemyPrefabsDatabase>().FromInstance(_enemyPrefabsDatabase).AsSingle();
             Container.Bind<WeaponPrefabsDatabase>().FromInstance(_weaponPrefabsDatabase).AsSingle();
+            Container.Bind<UpgradesDatabase>().FromInstance(_upgradesDatabase).AsSingle();
         }
 
         private void BindConfigRepositories()

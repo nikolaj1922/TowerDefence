@@ -7,15 +7,15 @@ using _Project.Scripts.Weapon;
 using _Project.Scripts.Logic.Level;
 using _Project.Scripts.Logic.Coins;
 using _Project.Scripts.Logic.Health;
+using _Project.Scripts.Tower.Castle;
 using _Project.Scripts.UI.WaveCounter;
 using _Project.Scripts.UI.CoinCounter;
+using _Project.Scripts.Services.Upgrade;
 using _Project.Scripts.ConfigRepositories;
-using _Project.Scripts.Database.EnemyPrefabDatabase;
 using _Project.Scripts.UI.CreateTowerPanel;
-using _Project.Scripts.Infrastructure.GameConstants;
-using _Project.Scripts.Services.SaveLoad;
-using _Project.Scripts.Tower.Castle;
 using _Project.Scripts.UI.Modals.EndGameModal;
+using _Project.Scripts.Database.EnemyPrefabDatabase;
+using _Project.Scripts.Infrastructure.GameConstants;
 
 namespace _Project.Scripts.DI.SceneContext.LevelScene
 {
@@ -31,20 +31,18 @@ namespace _Project.Scripts.DI.SceneContext.LevelScene
         [SerializeField] private CreateTowerPanel _createTowerPanel;
         [SerializeField] private CreateTowerItemButton _createTowerItemButton;
 
-        private ISaveLoad _saveLoad;
         private GameRepository _gameRepository;
         private EnemyPrefabsDatabase _enemyPrefabsDatabase;
-
-        private PlayerProgress Progress => _saveLoad.PlayerProgress;
-
+        private UpgradeService _upgradeService;
+        
         [Inject]
         public void Construct(
             EnemyPrefabsDatabase enemyPrefabsDatabase, 
             GameRepository gameRepository,
-            ISaveLoad saveLoad
+            UpgradeService upgradeService
             )
         {
-            _saveLoad = saveLoad;
+            _upgradeService = upgradeService;
             _enemyPrefabsDatabase = enemyPrefabsDatabase;
             _gameRepository = gameRepository;
         }
@@ -82,7 +80,9 @@ namespace _Project.Scripts.DI.SceneContext.LevelScene
 
         private void BindCastleHealthModel()
         {
-            float finalCastleHp = Progress.upgrades.castleHpMultiplier * _gameRepository.GameConfig.castleHealth;
+            float finalCastleHp 
+                = _upgradeService.GetUpgradeMultiplier(UpgradeIdMatcher.CASTLE_HP_ID) * _gameRepository.GameConfig.castleHealth;
+            
             HealthModel healthModel = new HealthModel(finalCastleHp);
             Container
                 .Bind<HealthModel>()

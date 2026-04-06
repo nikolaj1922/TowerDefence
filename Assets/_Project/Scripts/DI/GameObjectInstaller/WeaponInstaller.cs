@@ -16,6 +16,7 @@ namespace _Project.Scripts.DI.GameObjectInstaller
         [SerializeField] private LayerMask _enemyLayerMask;
         [SerializeField] private WeaponType _weaponType;
         [SerializeField] private ParticleSystem _onAttackEffect;
+        [SerializeField] private Weapon.Weapon _weapon;
         
         private WeaponConfigsRepository _configRepository;
         
@@ -33,6 +34,7 @@ namespace _Project.Scripts.DI.GameObjectInstaller
             
             Container.BindInterfacesAndSelfTo<WeaponTargetFinder>().AsSingle().WithArguments(_enemyLayerMask, transform.position);
             Container.Bind<WeaponLookToTarget>().AsSingle();
+            Container.Bind<Weapon.Weapon>().FromInstance(_weapon);
             Container.BindInterfacesAndSelfTo<WeaponAttackFX>().AsSingle().WithArguments(_onAttackEffect);
             Container.BindInterfacesAndSelfTo<WeaponAttack>().AsSingle()
                 .WithArguments(_projectile);
