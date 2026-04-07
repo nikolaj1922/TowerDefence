@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections.Generic;
-using _Project.Scripts.Enemy;
+using _Project.Scripts.Enemies;
 
 namespace _Project.Scripts.PrefabDatabase.EnemyDatabase
 {
@@ -9,17 +9,17 @@ namespace _Project.Scripts.PrefabDatabase.EnemyDatabase
     {
         [SerializeField] private List<EnemyEntry> _enemies;
 
-        private Dictionary<EnemyType, Enemy.Enemy> _map;
+        private Dictionary<EnemyType, Enemy> _map;
 
         public void Init()
         {
-            _map = new Dictionary<EnemyType, Enemy.Enemy>();
+            _map = new Dictionary<EnemyType, Enemy>();
 
             foreach (var entry in _enemies)
                 _map[entry.type] = entry.prefab;
         }
 
-        public Enemy.Enemy Get(EnemyType type)
+        public Enemy Get(EnemyType type)
         {
             if (!_map.TryGetValue(type, out var prefab))
             {

@@ -1,9 +1,6 @@
 ﻿using Zenject;
 using UnityEngine;
 using _Project.Scripts.UI;
-using _Project.Scripts.Enemy;
-using _Project.Scripts.Tower;
-using _Project.Scripts.Weapon;
 using _Project.Scripts.Logic.Level;
 using _Project.Scripts.Logic.Coins;
 using _Project.Scripts.Logic.Health;
@@ -11,10 +8,13 @@ using _Project.Scripts.UI.EndGameModal;
 using _Project.Scripts.UI.WaveCounter;
 using _Project.Scripts.UI.CoinCounter;
 using _Project.Scripts.ConfigRepositories;
+using _Project.Scripts.Enemies;
 using _Project.Scripts.UI.CreateTowerPanel;
 using _Project.Scripts.PrefabDatabase.EnemyDatabase;
 using _Project.Scripts.Infrastructure.GameConstants;
-using _Project.Scripts.Tower.Castle;
+using _Project.Scripts.Towers;
+using _Project.Scripts.Towers.Castle;
+using _Project.Scripts.Weapons;
 
 namespace _Project.Scripts.DI.SceneContext.LevelScene
 {
@@ -95,7 +95,7 @@ namespace _Project.Scripts.DI.SceneContext.LevelScene
 
         private void BindEnemyPools()
         {
-            Container.BindMemoryPool<Enemy.Enemy, EnemyPool>()
+            Container.BindMemoryPool<Enemy, EnemyPool>()
                 .FromComponentInNewPrefab(_enemyPrefabsDatabase.Get(EnemyType.Ork))
                 .UnderTransformGroup("Enemies");
         }

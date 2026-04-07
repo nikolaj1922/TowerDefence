@@ -2,8 +2,8 @@
 using System.Collections.Generic;
 using _Project.Scripts.Configs;
 using _Project.Scripts.Services.AssetProvider;
-using _Project.Scripts.Weapon;
 using _Project.Scripts.Infrastructure.AssetPath;
+using _Project.Scripts.Weapons;
 
 namespace _Project.Scripts.ConfigRepositories
 {

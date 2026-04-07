@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections.Generic;
-using _Project.Scripts.Weapon;
+using _Project.Scripts.Weapons;
 
 namespace _Project.Scripts.PrefabDatabase.WeaponDatabase
 {
@@ -9,17 +9,17 @@ namespace _Project.Scripts.PrefabDatabase.WeaponDatabase
     {
         [SerializeField] private List<WeaponEntry> _weapons;
 
-        private Dictionary<WeaponType, Weapon.Weapon> _map;
+        private Dictionary<WeaponType, Weapon> _map;
 
         public void Init()
         {
-            _map = new Dictionary<WeaponType, Weapon.Weapon>();
+            _map = new Dictionary<WeaponType, Weapon>();
 
             foreach (var entry in _weapons)
                 _map[entry.type] = entry.prefab;
         }
 
-        public Weapon.Weapon Get(WeaponType type)
+        public Weapon Get(WeaponType type)
         {
             if (!_map.TryGetValue(type, out var prefab))
             {

@@ -1,6 +1,6 @@
-﻿using UnityEngine;
-using _Project.Scripts.Tower;
-using _Project.Scripts.Weapon;
+﻿using _Project.Scripts.Towers;
+using UnityEngine;
+using _Project.Scripts.Weapons;
 
 namespace _Project.Scripts.Configs
 {

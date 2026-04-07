@@ -2,11 +2,11 @@
 using Zenject;
 using System.Linq;
 using System.Threading;
-using Cysharp.Threading.Tasks; 
-using _Project.Scripts.Enemy;
+using Cysharp.Threading.Tasks;
 using _Project.Scripts.Configs;
 using _Project.Scripts.Logic.Health;
 using _Project.Scripts.ConfigRepositories;
+using _Project.Scripts.Enemies;
 using _Project.Scripts.Infrastructure.GameConstants;
 
 namespace _Project.Scripts.Logic.Level

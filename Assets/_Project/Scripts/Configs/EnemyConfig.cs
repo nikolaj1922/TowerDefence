@@ -1,5 +1,5 @@
-﻿using UnityEngine;
-using _Project.Scripts.Enemy;
+﻿using _Project.Scripts.Enemies;
+using UnityEngine;
 
 namespace _Project.Scripts.Configs
 {

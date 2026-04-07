@@ -1,5 +1,5 @@
 ﻿using System;
-using _Project.Scripts.Enemy;
+using _Project.Scripts.Enemies;
 
 namespace _Project.Scripts.PrefabDatabase.EnemyDatabase
 {
@@ -7,6 +7,6 @@ namespace _Project.Scripts.PrefabDatabase.EnemyDatabase
     public class EnemyEntry
     {
         public EnemyType type;
-        public Enemy.Enemy prefab;
+        public Enemy prefab;
     }
 }

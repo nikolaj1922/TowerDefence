@@ -1,7 +1,7 @@
 ﻿using System.Linq;
 using System.Collections.Generic;
-using _Project.Scripts.Enemy;
 using _Project.Scripts.Configs;
+using _Project.Scripts.Enemies;
 using _Project.Scripts.Services.AssetProvider;
 using _Project.Scripts.Infrastructure.AssetPath;
 

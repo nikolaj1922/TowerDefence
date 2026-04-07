@@ -2,13 +2,13 @@
 using UnityEngine;
 using _Project.Scripts.Configs;
 using Object = UnityEngine.Object;
-using _Project.Scripts.Tower;
 using _Project.Scripts.Logic.Coins;
 using _Project.Scripts.UI.WaveCounter;
 using _Project.Scripts.UI.CoinCounter;
 using _Project.Scripts.ConfigRepositories;
 using _Project.Scripts.UI.CreateTowerPanel;
 using _Project.Scripts.Infrastructure.GameConstants;
+using _Project.Scripts.Towers;
 
 namespace _Project.Scripts.UI
 {
@@ -85,7 +85,7 @@ namespace _Project.Scripts.UI
         }
     }
     
-    public delegate Tower.Tower CreateTowerDelegate(
+    public delegate Tower CreateTowerDelegate(
         TowerType towerType,
         Vector3 position,
         int coinPrice

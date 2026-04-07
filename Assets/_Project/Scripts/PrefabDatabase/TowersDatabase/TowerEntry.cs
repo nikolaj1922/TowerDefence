@@ -1,5 +1,5 @@
 ﻿using System;
-using _Project.Scripts.Tower;
+using _Project.Scripts.Towers;
 
 namespace _Project.Scripts.PrefabDatabase.TowersDatabase
 {
@@ -7,6 +7,6 @@ namespace _Project.Scripts.PrefabDatabase.TowersDatabase
     public class TowerEntry
     {
         public TowerType type;
-        public Tower.Tower prefab;
+        public Tower prefab;
     }
 }

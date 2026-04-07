@@ -2,10 +2,10 @@
 using Zenject;
 using UnityEngine;
 using _Project.Scripts.UI;
-using _Project.Scripts.Tower;
 using _Project.Scripts.Logic.Coins;
-using _Project.Scripts.Tower.Castle;
 using _Project.Scripts.ConfigRepositories;
+using _Project.Scripts.Towers;
+using _Project.Scripts.Towers.Castle;
 using _Project.Scripts.UI.CreateTowerPanel;
 
 namespace _Project.Scripts.Logic.Level
@@ -77,12 +77,12 @@ namespace _Project.Scripts.Logic.Level
         
         private void GameVictory() => _endGameService.GameVictory();
         
-        private Tower.Tower CreateTower(
+        private Tower CreateTower(
             TowerType towerType, 
             Vector3 position, 
             int coinPrice)
         {
-            Tower.Tower tower = _towerService.CreateAndPurchase(towerType, position, coinPrice);
+            Tower tower = _towerService.CreateAndPurchase(towerType, position, coinPrice);
             _createTowerPanel.HidePanel();
             return tower;
         }

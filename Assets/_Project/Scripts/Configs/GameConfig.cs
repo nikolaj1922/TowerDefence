@@ -1,7 +1,7 @@
 ﻿using System;
 using UnityEngine;
 using System.Collections.Generic;
-using _Project.Scripts.Enemy;
+using _Project.Scripts.Enemies;
 
 namespace _Project.Scripts.Configs
 {
