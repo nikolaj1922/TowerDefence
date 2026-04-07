@@ -43,7 +43,7 @@ namespace _Project.Scripts.Enemy
             Physics.SyncTransforms();
             enemy.ResetComponents();
 
-            if (!enemy.isInitialized)
+            if (!enemy.IsInitialized)
                 InitializeEnemy(enemy, type, onDeath);
             
             if (enemy.StateMachine != null)
@@ -56,7 +56,7 @@ namespace _Project.Scripts.Enemy
 
         private void InitializeEnemy(Enemy enemy, EnemyType type, Action onDeath)
         {
-            enemy.isInitialized = true;
+            enemy.SetInitialized();
             enemy.Death.Initialize(onDeath: () => GetEnemyPool(type).Despawn(enemy));
             enemy.HealthModel.OnDeath += onDeath;
             enemy.HealthModel.OnDeath += enemy.Death.Die;
