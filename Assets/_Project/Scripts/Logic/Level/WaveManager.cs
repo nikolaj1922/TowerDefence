@@ -1,10 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
 using Zenject;
 using System.Linq;
 using System.Threading;
-using Cysharp.Threading.Tasks;
+using Cysharp.Threading.Tasks; 
 using _Project.Scripts.Configs;
+using _Project.Scripts.Services.Analytics;
 using _Project.Scripts.Enemies;
 using _Project.Scripts.ConfigRepositories;
 
@@ -14,23 +14,29 @@ namespace _Project.Scripts.Logic.Level
     {
         public event Action<int> OnWaveTimerStart;
         public event Action OnCompleteLevel;
-        
+        public event Action<int> OnCompleteWave;
+
         private EnemyFactory _enemyFactory;
         private GameRepository _gameRepository;
+        private AnalyticsService _analyticsService;
         private int _waveIndex = 0;
-        private int _totalEnemyKilled = 0;
         private int _enemyKilledOnWave = 0;
-        private int _totalEnemyOnWave = 0;
-
-        private CancellationTokenSource _waveCancelToken;
+        private int _totalEnemiesOnWave = 0;
         
+        private CancellationTokenSource _waveCancelToken;
+
+        public int CurrentWave => _waveIndex + 1;
+        public int TotalEnemyKilled { get; private set; }
+
         [Inject]
         private void Construct(
             EnemyFactory enemyFactory,
-            GameRepository gameRepository
+            GameRepository gameRepository,
+            AnalyticsService analyticsService
         )
         {
             _gameRepository = gameRepository;
+            _analyticsService = analyticsService;
             _enemyFactory = enemyFactory;
         }
 
@@ -38,10 +44,7 @@ namespace _Project.Scripts.Logic.Level
 
         public void StartNextWave()
         {
-            _waveCancelToken?.Cancel();
-            _waveCancelToken?.Dispose();
-            _waveCancelToken = new CancellationTokenSource();
-            
+            UpdateWaveToken();
             Wave wave = GetNextWave();
             
             if (wave == null)
@@ -51,15 +54,12 @@ namespace _Project.Scripts.Logic.Level
         }
         
         public int GetRewardForWaves() =>
-            (_waveIndex + 1) * _gameRepository.GameConfig.CoinsPerWave
-            + _totalEnemyKilled * _gameRepository.GameConfig.CoinsPerKill;
+            (CurrentWave) * _gameRepository.GameConfig.CoinsPerWave
+            + TotalEnemyKilled * _gameRepository.GameConfig.CoinsPerKill;
         
         public void StopWave()
         {
-            _waveCancelToken?.Cancel();
-            _waveCancelToken?.Dispose();
-            _waveCancelToken = null;
-
+            ResetWaveToken();
             _enemyFactory.StopActiveEnemies();
         }
         
@@ -70,8 +70,10 @@ namespace _Project.Scripts.Logic.Level
 
         private async UniTaskVoid StartWave(Wave wave, CancellationToken token)
         {
+            _totalEnemiesOnWave = wave.enemyGroups.Sum(e => e.enemyCount);
             _enemyKilledOnWave = 0;
-            _totalEnemyOnWave = wave.enemyGroups.Sum(e => e.enemyCount);
+            
+            _analyticsService.WaveStarted(CurrentWave, _totalEnemiesOnWave);
             
             foreach (var waveEnemyData in wave.enemyGroups)
             {
@@ -91,16 +93,18 @@ namespace _Project.Scripts.Logic.Level
         private void OnEnemyDeath()
         {
             _enemyKilledOnWave++;
-            _totalEnemyKilled++;
+            TotalEnemyKilled++;
             
-            if (_enemyKilledOnWave != _totalEnemyOnWave)
+            if (_enemyKilledOnWave != _totalEnemiesOnWave)
                 return;
             
-            _waveIndex++;
+            OnCompleteWave?.Invoke(CurrentWave);
             
+            _waveIndex++;
+
             TryStartNewWave();
         }
-
+        
         private void TryStartNewWave()
         {
             if (GetNextWave() == null)
@@ -109,7 +113,21 @@ namespace _Project.Scripts.Logic.Level
                 return;
             }
 
-            StartTimer(_waveIndex + 1);
+            StartTimer(CurrentWave);
+        }
+        
+        private void ResetWaveToken()
+        {
+            _waveCancelToken?.Cancel();
+            _waveCancelToken?.Dispose();
+            _waveCancelToken = null;
+        }
+
+        private void UpdateWaveToken()
+        {
+            _waveCancelToken?.Cancel();
+            _waveCancelToken?.Dispose();
+            _waveCancelToken = new CancellationTokenSource();
         }
     }
 }

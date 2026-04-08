@@ -1,12 +1,14 @@
 ﻿using Zenject;
 using UnityEngine;
 using _Project.Scripts.Services.SaveLoad;
+using _Project.Scripts.Services.Analytics;
 using _Project.Scripts.ConfigRepositories;
 using _Project.Scripts.Services.AssetProvider;
 using _Project.Scripts.PrefabDatabase.EnemyDatabase;
 using _Project.Scripts.PrefabDatabase.TowersDatabase;
 using _Project.Scripts.PrefabDatabase.WeaponDatabase;
 using _Project.Scripts.Infrastructure.SceneLoader;
+using _Project.Scripts.Services.Analytics.Firebase;
 
 namespace _Project.Scripts.DI.ProjectContext
 {
@@ -18,11 +20,15 @@ namespace _Project.Scripts.DI.ProjectContext
         
         public override void InstallBindings()
         {
+            Container.BindInterfacesAndSelfTo<FirebaseInitializer>().AsSingle().NonLazy();
+            
             BindPrefabDatabases(); 
             
             Container.BindInterfacesAndSelfTo<AssetProvider>().AsSingle();
             Container.Bind<SceneLoader>().AsSingle().NonLazy();
             Container.Bind<ISaveLoad>().To<SaveLoad>().AsSingle();
+            Container.Bind<IAnalyticsClient>().To<FirebaseAnalyticsClient>().AsSingle();
+            Container.Bind<AnalyticsService>().AsSingle();
 
             BindConfigRepositories();
         }

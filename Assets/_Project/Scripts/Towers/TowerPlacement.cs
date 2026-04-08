@@ -1,9 +1,11 @@
 ﻿using System;
-using System.Collections.Generic;
-using _Project.Scripts.Infrastructure.GameConstants;
+using Zenject;
 using UnityEngine;
 using UnityEngine.EventSystems;
-using Zenject;
+using System.Collections.Generic;
+using _Project.Scripts.Logic.Level;
+using _Project.Scripts.Services.Analytics;
+using _Project.Scripts.Infrastructure.GameConstants;
 
 namespace _Project.Scripts.Towers
 {
@@ -12,12 +14,21 @@ namespace _Project.Scripts.Towers
         public event Action<Vector3> OnPlaceClicked;
         
         private readonly Camera _camera;
+        private readonly WaveManager _waveManager;
         private readonly LayerMask _groundLayer;
         private readonly LayerMask _towerOccupiedLayer;
+        private readonly AnalyticsService _analyticsService;
 
-        public TowerPlacement(Camera camera, LayerMask towerOccupiedLayer, LayerMask groundLayer)
+        public TowerPlacement(
+            Camera camera,
+            AnalyticsService analyticsService,
+            WaveManager waveManager,
+            LayerMask towerOccupiedLayer, 
+            LayerMask groundLayer)
         {
             _camera = camera;
+            _waveManager = waveManager;
+            _analyticsService = analyticsService;
             _towerOccupiedLayer = towerOccupiedLayer;
             _groundLayer = groundLayer;
         }
@@ -64,12 +75,17 @@ namespace _Project.Scripts.Towers
         {
             Ray ray = _camera.ScreenPointToRay(position);
 
-            if (!Physics.Raycast(
+            if (Physics.Raycast(
                     ray,
                     out RaycastHit hit,
                     GameConstants.TOWER_PLACEMENT_RAYCAST_DISTANCE,
                     _towerOccupiedLayer))
-                PlaceTower(position);
+            {
+                _analyticsService.BuildRejected("too_close_to_tower", _waveManager.CurrentWave);
+                return;
+            }
+            
+            PlaceTower(position);
         }
         
         private void PlaceTower(Vector3 position)

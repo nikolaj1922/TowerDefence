@@ -35,7 +35,6 @@ namespace _Project.Scripts.UI.CreateTowerPanel
         private void UpdateButtonStatus(int currentCoin)
         {
             bool isCoinEnough = currentCoin >= _price;
-            _createTowerButton.interactable = isCoinEnough;
             _priceText.color = isCoinEnough ? Color.white : Color.red;
         }
     }

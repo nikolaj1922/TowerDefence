@@ -2,10 +2,11 @@
 using Zenject;
 using UnityEngine;
 using _Project.Scripts.UI;
-using _Project.Scripts.Logic.Coins;
-using _Project.Scripts.ConfigRepositories;
 using _Project.Scripts.Towers;
+using _Project.Scripts.Logic.Coins;
 using _Project.Scripts.Towers.Castle;
+using _Project.Scripts.ConfigRepositories;
+using _Project.Scripts.Services.Analytics;
 using _Project.Scripts.UI.CreateTowerPanel;
 
 namespace _Project.Scripts.Logic.Level
@@ -21,6 +22,10 @@ namespace _Project.Scripts.Logic.Level
         private EndGameService _endGameService;
         private CreateTowerPanel _createTowerPanel;
         private CastleInitializer _castleInitializer;
+        private AnalyticsService _analyticsService;
+        private CoinCounterModel _coinCounterModel;
+        
+        private int _totalTowersBuilt;
 
         [Inject]
         private void Construct(
@@ -75,7 +80,7 @@ namespace _Project.Scripts.Logic.Level
             _castle.OnCastleDestroy += _waveManager.StopWave;
         }
         
-        private void GameOver() => _endGameService.GameOver();
+        private void GameOver() => _endGameService.GameOver(_totalTowersBuilt);
         
         private void GameVictory() => _endGameService.GameVictory();
         
