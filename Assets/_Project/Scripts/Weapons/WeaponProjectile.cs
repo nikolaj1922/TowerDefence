@@ -7,12 +7,11 @@ namespace _Project.Scripts.Weapons
 {
     public class WeaponProjectile: MonoBehaviour
     {
-        private event Action OnHit;
-        
         [SerializeField] private float _speed;
 
         private Enemy _target;
         private float _damage;
+        private Action _onHit;
         
         private void Update()
         {
@@ -27,7 +26,7 @@ namespace _Project.Scripts.Weapons
         {
             _target = target;
             _damage = damage;
-            OnHit += onHit;
+            _onHit = onHit;
         }
 
         private void OnTriggerEnter(Collider other)
@@ -39,7 +38,7 @@ namespace _Project.Scripts.Weapons
             }
             
             damagable.TakeDamage(_damage);
-            OnHit?.Invoke();
+            _onHit?.Invoke();
         }
         
         private void LookAtTarget() =>  transform.LookAt(_target.AttackPoint.transform);

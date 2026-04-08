@@ -1,8 +1,10 @@
-﻿using Zenject;
+﻿using System;
+using Zenject;
 using UnityEngine;
 using UnityEngine.AI;
 using _Project.Scripts.Logic.Health;
 using _Project.Scripts.Infrastructure.StateMachine;
+using _Project.Scripts.Logic.Coins;
 
 namespace _Project.Scripts.Enemies
 {
@@ -11,7 +13,6 @@ namespace _Project.Scripts.Enemies
     public class Enemy : MonoBehaviour, IDamagable
     {
         private Collider _col;
-
         [field: SerializeField] public Transform AttackPoint { get; private set; }
         public HealthModel HealthModel { get; private set; }
         public NavMeshAgent Agent { get; private set; }
@@ -21,10 +22,17 @@ namespace _Project.Scripts.Enemies
         public EnemyDeath Death { get; private set; }
         public StateMachine StateMachine { private set; get; }
         public bool IsInitialized { get; private set; }
-        
-        
+
+        private int _coinReward;
+        private Action _onDeath;
+        private CoinCounterModel _coinCounter;
+
         [Inject]
-        private void Construct(HealthModel healthModel) => HealthModel = healthModel;
+        private void Construct(HealthModel healthModel, CoinCounterModel coinCounterModel)
+        {
+            _coinCounter = coinCounterModel;
+            HealthModel = healthModel;
+        }
 
         private void Awake()
         {
@@ -38,6 +46,12 @@ namespace _Project.Scripts.Enemies
         }
 
         private void Update() => StateMachine?.Update();
+
+        public void Initialize(Action onDeath, int coinReward)
+        {
+            _coinReward = coinReward;
+            _onDeath = onDeath;
+        }
         
         public void SetInitialized() => IsInitialized = true;
 
@@ -51,7 +65,17 @@ namespace _Project.Scripts.Enemies
             Attack.enabled = false;
         }
 
-        public void TakeDamage(float damage) => HealthModel.ChangeHealth(-damage);
+        public void TakeDamage(float damage)
+        {
+            HealthModel.ChangeHealth(-damage);
+
+            if (HealthModel.CurrentHealth > 0)
+                return;
+            
+            _onDeath?.Invoke();
+            _coinCounter.AddCoins(_coinReward);
+            Death.Die();
+        }
         
         public void SetStateMachine(StateMachine stateMachine) => StateMachine = stateMachine;
     }

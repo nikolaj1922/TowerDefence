@@ -3,10 +3,9 @@ using UnityEngine;
 
 namespace _Project.Scripts.Logic.Health
 {
-    public class HealthModel: IDisposable
+    public class HealthModel
     {
         public event Action<float> OnHealthChanged;
-        public event Action OnDeath;
 
         private float _currentHealth;
         public float MaxHealth { get; }
@@ -18,9 +17,6 @@ namespace _Project.Scripts.Logic.Health
             {
                 _currentHealth = value;
                 OnHealthChanged?.Invoke(_currentHealth);
-
-                if (value <= 0)
-                    OnDeath?.Invoke();
             }
         }
 
@@ -33,11 +29,5 @@ namespace _Project.Scripts.Logic.Health
         public void ChangeHealth(float value) => CurrentHealth = Mathf.Clamp(_currentHealth + value, 0f, MaxHealth);
 
         public void Reset() =>  CurrentHealth = MaxHealth;
-
-        public void Dispose()
-        {
-            OnDeath = null;
-            OnHealthChanged = null;
-        }
     }
 }

@@ -8,11 +8,9 @@ namespace _Project.Scripts.Enemies
     {
         private const float DEATH_TIME = 2f;
         
-        private event Action OnDeath;
-        
-        private void OnDisable() => OnDeath = null;
+        private Action _onDeath;
 
-        public void Initialize(Action onDeath = null) => OnDeath = onDeath;
+        public void Initialize(Action onDeath = null) => _onDeath = onDeath;
 
         public void Die()
         {
@@ -33,7 +31,7 @@ namespace _Project.Scripts.Enemies
                 await UniTask.Yield(PlayerLoopTiming.Update, this.GetCancellationTokenOnDestroy());
             }
 
-            OnDeath?.Invoke();
+            _onDeath?.Invoke();
         }
     }
 }

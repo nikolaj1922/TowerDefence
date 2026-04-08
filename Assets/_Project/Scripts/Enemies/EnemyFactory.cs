@@ -1,13 +1,13 @@
 ﻿using System;
-using _Project.Scripts.ConfigRepositories;
+using Zenject;
+using UnityEngine;
 using _Project.Scripts.Configs;
-using _Project.Scripts.Enemies.States;
-using _Project.Scripts.Infrastructure.GameConstants;
-using _Project.Scripts.Infrastructure.StateMachine;
 using _Project.Scripts.Logic.Coins;
 using _Project.Scripts.Logic.Health;
-using UnityEngine;
-using Zenject;
+using _Project.Scripts.Enemies.States;
+using _Project.Scripts.ConfigRepositories;
+using _Project.Scripts.Infrastructure.GameConstants;
+using _Project.Scripts.Infrastructure.StateMachine;
 
 namespace _Project.Scripts.Enemies
 {
@@ -18,6 +18,9 @@ namespace _Project.Scripts.Enemies
         private readonly EnemySpawner _enemySpawner;
         private readonly CoinCounterModel _coinCounterModel;
         private readonly EnemyConfigsRepository _configsRepository;
+        
+        private Action _onDeathCached;
+        private Action _addCoinsCached;
 
         public EnemyFactory(
             EnemyPool orksPool,
@@ -54,15 +57,6 @@ namespace _Project.Scripts.Enemies
             enemy.gameObject.SetActive(true);
         }
 
-        private void InitializeEnemy(Enemy enemy, EnemyType type, Action onDeath)
-        {
-            enemy.SetInitialized();
-            enemy.Death.Initialize(onDeath: () => GetEnemyPool(type).Despawn(enemy));
-            enemy.HealthModel.OnDeath += onDeath;
-            enemy.HealthModel.OnDeath += enemy.Death.Die;
-            enemy.HealthModel.OnDeath += () => _coinCounterModel.AddCoins(GetEnemyConfig(type).coinsReward);
-        }
-        
         private StateMachine CreateStateMachine(Enemy enemy)
         {
             StateMachine enemyStateMachine = new(
@@ -84,6 +78,13 @@ namespace _Project.Scripts.Enemies
             );
 
             return enemyStateMachine;
+        }
+
+        private void InitializeEnemy(Enemy enemy, EnemyType type, Action onDeath)
+        {
+            enemy.Initialize(onDeath, GetEnemyConfig(type).coinsReward);
+            enemy.Death.Initialize(onDeath: () => GetEnemyPool(type).Despawn(enemy));
+            enemy.SetInitialized();
         }
 
         private Enemy GetEnemy(EnemyType type)
