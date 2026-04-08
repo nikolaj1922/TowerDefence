@@ -69,7 +69,7 @@ namespace _Project.Scripts.Logic.Level
 
         private void CreateCastle()
         {
-            _castle = _castleInitializer.CreateCastle(_gameRepository.GameConfig.castlePosition);
+            _castle = _castleInitializer.CreateCastle(_gameRepository.GameConfig.CastlePosition);
             _castle.OnCastleDestroy += GameOver;
         }
         

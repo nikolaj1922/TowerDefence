@@ -6,19 +6,23 @@ namespace _Project.Scripts.Weapons
 {
     public class WeaponFactory
     {
-        private readonly DiContainer _container;
+        private readonly IInstantiator _instantiator;
         private readonly  WeaponPrefabsDatabase _weaponPrefabsDatabase;
         
-        public WeaponFactory(WeaponPrefabsDatabase weaponPrefabsDatabase, DiContainer container)
+        public WeaponFactory(WeaponPrefabsDatabase weaponPrefabsDatabase, IInstantiator instantiator)
         {
-            _container = container;
+            _instantiator = instantiator;
             _weaponPrefabsDatabase = weaponPrefabsDatabase;
         }
         
         public Weapon CreateWeapon(WeaponType type, Vector3 position, Transform parent)
         {
-            GameObject weaponObject = _container.InstantiatePrefab(_weaponPrefabsDatabase.Get(type), position,
-                Quaternion.identity, parent);
+            GameObject weaponObject = 
+                _instantiator.InstantiatePrefab(
+                    _weaponPrefabsDatabase.Get(type),
+                    position,
+                    Quaternion.identity, parent
+                    );
             weaponObject.transform.localScale = parent.localScale;
             Weapon weapon = weaponObject.GetComponent<Weapon>();
 

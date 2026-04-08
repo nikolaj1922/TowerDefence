@@ -32,8 +32,8 @@ namespace _Project.Scripts.Weapons
             WeaponAttackFX weaponAttackFX
             )
         {
-            _damage = config.damage; 
-            _attackSpeed = config.attackSpeed;
+            _damage = config.Damage; 
+            _attackSpeed = config.AttackSpeed;
             _targetFinder = targetFinder;
             _weaponHead = weaponHead;
             _weaponBase = weaponBase;

@@ -25,9 +25,9 @@ namespace _Project.Scripts.Enemies
         [Inject]
         public void Construct(EnemyConfig config)
         {
-            _damage = config.damage;
-            _attackCooldown = config.attackCooldown;
-            _attackRange = config.attackRange;
+            _damage = config.Damage;
+            _attackCooldown = config.AttackCooldown;
+            _attackRange = config.AttackRange;
         }
 
         private void Awake()

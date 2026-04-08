@@ -42,7 +42,6 @@ namespace _Project.Scripts.DI.SceneContext.LevelScene
 
         public override void InstallBindings()
         {
-            Container.Bind<Camera>().FromInstance(_camera).AsSingle();
             BindCastleHealthModel();
             BindEnemySpawner();
             BindEnemyPools();
@@ -60,7 +59,7 @@ namespace _Project.Scripts.DI.SceneContext.LevelScene
         private void BindLevel()
         {
             Container.Bind<RectTransform>().WithId(GameConstants.HUD_INJECT_ID).FromInstance(_hud);
-            Container.BindInterfacesAndSelfTo<TowerPlacement>().AsSingle().WithArguments(_towerOccupiedLayerMask, _groundLayerMask);
+            Container.BindInterfacesAndSelfTo<TowerPlacement>().AsSingle().WithArguments(_camera, _towerOccupiedLayerMask, _groundLayerMask);
 
             Container.Bind<CoinCounterModel>().AsSingle();
             Container.Bind<EndGameModal>().FromInstance(_endGameModal).AsSingle();
@@ -73,11 +72,10 @@ namespace _Project.Scripts.DI.SceneContext.LevelScene
 
         private void BindCastleHealthModel()
         {
-            HealthModel healthModel = new HealthModel(_gameRepository.GameConfig.castleHealth);
             Container
                 .Bind<HealthModel>()
                 .WithId(GameConstants.CASTLE_HEALTH_MODEL_INJECT_ID)
-                .FromInstance(healthModel)
+                .FromMethod(_ => new HealthModel(_gameRepository.GameConfig.CastleHealth))
                 .AsSingle();
         }
 

@@ -11,7 +11,7 @@ using _Project.Scripts.Infrastructure.GameConstants;
 
 namespace _Project.Scripts.Logic.Level
 {
-    public class WaveManager : ITickable
+    public class WaveManager : IInitializable, IDisposable
     {
         public event Action<int> OnWaveTimerStart;
         public event Action OnCompleteLevel;
@@ -38,15 +38,9 @@ namespace _Project.Scripts.Logic.Level
             _enemyFactory = enemyFactory;
         }
 
-        public void Tick()
-        {
-            if (_castleHealthModel.CurrentHealth > 0)
-                return;
-            
-            _waveCancelToken?.Cancel();
-            _waveCancelToken?.Dispose();
-            _waveCancelToken = null;
-        }
+        public void Initialize() => _castleHealthModel.OnDeath += StopWave;
+        
+        public void Dispose() => _castleHealthModel.OnDeath -= StopWave;
 
         public void StartTimer(int waveCount) => OnWaveTimerStart?.Invoke(waveCount);
 
@@ -65,12 +59,19 @@ namespace _Project.Scripts.Logic.Level
         }
         
         public int GetRewardForWaves() =>
-            (_waveIndex + 1) * _gameRepository.GameConfig.coinsPerWave
-            + _totalEnemyKilled * _gameRepository.GameConfig.coinsPerKill;
+            (_waveIndex + 1) * _gameRepository.GameConfig.CoinsPerWave
+            + _totalEnemyKilled * _gameRepository.GameConfig.CoinsPerKill;
+        
+        private void StopWave()
+        {
+            _waveCancelToken?.Cancel();
+            _waveCancelToken?.Dispose();
+            _waveCancelToken = null;
+        }
         
         private Wave GetNextWave() => 
-            _waveIndex < _gameRepository.GameConfig.waves.Length 
-                ? _gameRepository.GameConfig.waves[_waveIndex]
+            _waveIndex < _gameRepository.GameConfig.Waves.Length 
+                ? _gameRepository.GameConfig.Waves[_waveIndex]
                 : null;
 
         private async UniTaskVoid StartWave(Wave wave, CancellationToken token)

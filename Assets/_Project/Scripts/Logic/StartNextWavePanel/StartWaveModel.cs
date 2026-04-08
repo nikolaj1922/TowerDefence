@@ -22,7 +22,7 @@ namespace _Project.Scripts.Logic.StartNextWavePanel
             }
         }
 
-        public StartWaveModel(GameRepository gameRepository) => _timeBetweenWaves = gameRepository.GameConfig.timeBetweenWaves;
+        public StartWaveModel(GameRepository gameRepository) => _timeBetweenWaves = gameRepository.GameConfig.TimeBetweenWaves;
 
         public void TickTimer() => CurrentTimeBetweenWaves--;
 

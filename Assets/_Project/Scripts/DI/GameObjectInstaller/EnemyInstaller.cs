@@ -22,11 +22,9 @@ namespace _Project.Scripts.DI.GameObjectInstaller
         {
             EnemyConfig config = _enemyRepository.Get(_enemyType);
             Container.Bind<EnemyConfig>().FromInstance(config).AsSingle();
-            
-            HealthModel healthModel = new HealthModel(config.health);
+            Container.Bind<HealthModel>().FromMethod(_ => new HealthModel(config.Health)).AsSingle();
             Container.Bind<HealthBarView>().FromInstance(_healthBarView).AsSingle();
-            Container.BindInterfacesAndSelfTo<HealthController>().AsSingle().WithArguments(healthModel);
-            Container.BindInterfacesAndSelfTo<HealthModel>().FromInstance(healthModel).AsSingle();
+            Container.BindInterfacesAndSelfTo<HealthController>().AsSingle();
         }
     }
 }

@@ -21,9 +21,9 @@ namespace _Project.Scripts.Enemies
         [Inject]
         public void Construct(EnemyConfig config, GameRepository repository)
         {
-            _speed = config.speed;
-            _attackRange = config.attackRange;
-            _destination = repository.GameConfig.castlePosition;
+            _speed = config.Speed;
+            _attackRange = config.AttackRange;
+            _destination = repository.GameConfig.CastlePosition;
         }
 
         private void Awake() => _navMeshAgent = GetComponent<NavMeshAgent>();

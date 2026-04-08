@@ -6,15 +6,18 @@ namespace _Project.Scripts.Configs
     [CreateAssetMenu(fileName = "Enemy", menuName = "Configs/Enemy")]
     public class EnemyConfig : ScriptableObject
     {
-        public EnemyType type;
-        
-        public float speed;
-        public float health;
-
-        public float damage;
-        public float attackRange;
-        public float attackCooldown;
-
-        public int coinsReward;
+        [field: SerializeField] public EnemyType Type { get; private set; }
+        [field: SerializeField] public float Speed { get; private set; }
+        [field: SerializeField] public float Health { get; private set; }
+        [field: SerializeField] public float Damage { get; private set; }
+        [field: SerializeField] public float AttackRange { get; private set; }
+        [field: SerializeField] public float AttackCooldown { get; private set; }
+        [field: SerializeField] public int CoinsReward { get; private set; }
     }
 }
+//3
+//10
+//5
+//0.3
+//2
+//3

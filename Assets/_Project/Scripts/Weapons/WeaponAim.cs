@@ -23,7 +23,7 @@ namespace _Project.Scripts.Weapons
             _baseTransform = baseTransform;
             _weaponHead = weaponHead;
             _targetFinder = targetFinder;
-            _rotationSpeed = config.rotationSpeed;
+            _rotationSpeed = config.RotationSpeed;
         }
 
         public void Tick(float deltaTime)

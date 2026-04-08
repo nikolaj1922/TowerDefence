@@ -7,12 +7,11 @@ namespace _Project.Scripts.Configs
     [CreateAssetMenu(menuName = "Configs/Tower Config", fileName = "Tower")]
     public class TowerConfig : ScriptableObject
     {
-        public TowerType towerType;
-        public WeaponType weaponType;
-
-        public bool canBuild;
-        public Sprite icon;
-        public int coinPrice;
-        public float occupiedRadius;
+        [field: SerializeField] public TowerType TowerType { get;  private set; }
+        [field: SerializeField] public WeaponType WeaponType { get; private set; }
+        [field: SerializeField] public bool CanBuild { get; private set; }
+        [field: SerializeField] public Sprite Icon { get; private set; }
+        [field: SerializeField] public int CoinPrice { get; private set; }
+        [field: SerializeField] public float OccupiedRadius { get; private set; }
     }
 }

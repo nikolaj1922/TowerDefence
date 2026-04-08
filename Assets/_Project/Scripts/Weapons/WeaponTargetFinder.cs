@@ -27,7 +27,7 @@ namespace _Project.Scripts.Weapons
         {
             _castleHealthModel = healthModel;
             _enemiesLayerMask = enemiesLayerMask;
-            _attackRange = config.attackRange;
+            _attackRange = config.AttackRange;
             _position = position;
         }
 

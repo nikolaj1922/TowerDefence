@@ -29,7 +29,7 @@ namespace _Project.Scripts.Weapons
             ParticleSystem onAttackEffect
         )
         {
-            _attackSpeed = config.attackSpeed;
+            _attackSpeed = config.AttackSpeed;
             _weaponHead = weaponHead;
             _weaponBase = weaponBase;
             _projectileSpawnPoint = projectileSpawnPoint;

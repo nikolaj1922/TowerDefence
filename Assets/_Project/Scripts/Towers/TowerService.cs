@@ -34,7 +34,7 @@ namespace _Project.Scripts.Towers
             Tower tower = _towerFactory.CreateTower(towerType, position);
             Weapon weapon = 
                 _weaponFactory.CreateWeapon(
-                    _towerConfigsRepository.Get(towerType).weaponType, 
+                    _towerConfigsRepository.Get(towerType).WeaponType, 
                     tower.WeaponPoint.transform.position, 
                     tower.WeaponPoint.transform);
             

@@ -8,22 +8,22 @@ namespace _Project.Scripts.Towers
     {
         private const float CASTLE_INIT_HEIGHT = 0.2f;
         
-        private readonly DiContainer _container;
+        private readonly IInstantiator _instantiator;
         private readonly TowerPrefabsDatabase _towerPrefabsDatabase;
 
         public TowerFactory(
-            DiContainer container,
+            IInstantiator instantiator,
             TowerPrefabsDatabase towerPrefabsDatabase
         )
         {
-            _container = container;
+            _instantiator = instantiator;
             _towerPrefabsDatabase = towerPrefabsDatabase;
         }
 
         public Tower CreateTower(TowerType type, Vector3 position)
         {
             GameObject castleObject = 
-                _container.InstantiatePrefab(
+                _instantiator.InstantiatePrefab(
                     _towerPrefabsDatabase.Get(type), 
                     new Vector3(position.x, CASTLE_INIT_HEIGHT, position.z), 
                     Quaternion.identity, 

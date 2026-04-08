@@ -20,7 +20,7 @@ namespace _Project.Scripts.Towers
         private void Awake()
         {
             _occupiedArea.transform.localScale = 
-                new Vector3(_config.occupiedRadius, _occupiedArea.transform.localScale.y, _config.occupiedRadius);
+                new Vector3(_config.OccupiedRadius, _occupiedArea.transform.localScale.y, _config.OccupiedRadius);
         }
 
         public void SetWeapon(Weapon weapon) => _weapon = weapon;

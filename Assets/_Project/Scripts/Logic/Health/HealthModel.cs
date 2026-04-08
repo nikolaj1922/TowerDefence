@@ -6,6 +6,7 @@ namespace _Project.Scripts.Logic.Health
     public class HealthModel
     {
         public event Action<float> OnHealthChanged;
+        public event Action OnDeath;
 
         private float _currentHealth;
         public float MaxHealth { get; }
@@ -17,6 +18,9 @@ namespace _Project.Scripts.Logic.Health
             {
                 _currentHealth = value;
                 OnHealthChanged?.Invoke(_currentHealth);
+                
+                if(value <= 0) 
+                    OnDeath?.Invoke();
             }
         }
 

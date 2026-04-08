@@ -12,8 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 770cf5e636904e7aae0926e69720932d, type: 3}
   m_Name: Turret
   m_EditorClassIdentifier: Assembly-CSharp::_Project.Scripts.Configs.WeaponConfig
-  weaponType: 1
-  damage: 1
-  attackRange: 3
-  attackSpeed: 0.2
-  rotationSpeed: 10
+  <WeaponType>k__BackingField: 1
+  <Damage>k__BackingField: 1
+  <AttackRange>k__BackingField: 3
+  <AttackSpeed>k__BackingField: 1
+  <RotationSpeed>k__BackingField: 2

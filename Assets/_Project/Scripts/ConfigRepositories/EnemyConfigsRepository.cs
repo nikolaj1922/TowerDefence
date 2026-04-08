@@ -14,7 +14,7 @@ namespace _Project.Scripts.ConfigRepositories
 
         public EnemyConfigsRepository(IAssetProvider assets) => _assets = assets;
 
-        public void Load() => _enemies = _assets.LoadAll<EnemyConfig>(AssetPath.ENEMIES).ToDictionary(l => l.type, l => l);
+        public void Load() => _enemies = _assets.LoadAll<EnemyConfig>(AssetPath.ENEMIES).ToDictionary(l => l.Type, l => l);
 
         public EnemyConfig Get(EnemyType enemyType) => _enemies.GetValueOrDefault(enemyType);
     }

@@ -19,7 +19,7 @@ namespace _Project.Scripts.UI.MainMenu
         
         private void Awake() =>  _goToLevelsMenuButton.onClick.AddListener(OnStartClick);
 
-        private void OnDisable() => _goToLevelsMenuButton.onClick.RemoveListener(OnStartClick);
+        private void OnDestroy() => _goToLevelsMenuButton.onClick.RemoveListener(OnStartClick);
         
         private void OnStartClick() => _sceneLoader.LoadScene(GameConstants.LEVEL_SCENE).Forget();
     }
