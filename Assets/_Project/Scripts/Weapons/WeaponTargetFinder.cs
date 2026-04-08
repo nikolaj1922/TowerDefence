@@ -1,9 +1,7 @@
-﻿using _Project.Scripts.Configs;
-using _Project.Scripts.Enemies;
-using _Project.Scripts.Infrastructure.GameConstants;
-using _Project.Scripts.Logic.Health;
+﻿using Zenject;
 using UnityEngine;
-using Zenject;
+using _Project.Scripts.Configs;
+using _Project.Scripts.Enemies;
 
 namespace _Project.Scripts.Weapons
 {
@@ -15,17 +13,14 @@ namespace _Project.Scripts.Weapons
         private readonly float _attackRange;
         private readonly LayerMask _enemiesLayerMask;
         private readonly Collider[] _aimedEnemyColliders = new Collider[MAX_TARGETS];
-        private readonly HealthModel _castleHealthModel;
 
         public Enemy Target { get; private set; }
 
         public WeaponTargetFinder(
-            [Inject(Id = GameConstants.CASTLE_HEALTH_MODEL_INJECT_ID)] HealthModel healthModel,
             LayerMask enemiesLayerMask, 
             WeaponConfig config, 
             Vector3 position)
         {
-            _castleHealthModel = healthModel;
             _enemiesLayerMask = enemiesLayerMask;
             _attackRange = config.AttackRange;
             _position = position;
@@ -35,11 +30,11 @@ namespace _Project.Scripts.Weapons
         
         public void Tick()
         {
-            if (_castleHealthModel.CurrentHealth <= 0)
-            {
-                Target = null;
-                return;
-            }
+            // if (_castleHealthModel.CurrentHealth <= 0)
+            // {
+            //     Target = null;
+            //     return;
+            // }
 
             if (!IsTargetValid())
                 Target = null;

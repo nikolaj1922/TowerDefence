@@ -8,33 +8,28 @@ using _Project.Scripts.Enemies.States;
 using _Project.Scripts.ConfigRepositories;
 using _Project.Scripts.Infrastructure.GameConstants;
 using _Project.Scripts.Infrastructure.StateMachine;
+using _Project.Scripts.Towers.Castle;
 
 namespace _Project.Scripts.Enemies
 {
     public class EnemyFactory
     {
         private readonly EnemyPool _orksPool;
-        private readonly HealthModel _castleHealthModel;
         private readonly EnemySpawner _enemySpawner;
-        private readonly CoinCounterModel _coinCounterModel;
         private readonly EnemyConfigsRepository _configsRepository;
-        
+
         private Action _onDeathCached;
         private Action _addCoinsCached;
 
         public EnemyFactory(
             EnemyPool orksPool,
             EnemySpawner enemySpawner,
-            CoinCounterModel coinCounterModel,
-            EnemyConfigsRepository configsRepository,
-            [Inject(Id = GameConstants.CASTLE_HEALTH_MODEL_INJECT_ID)] HealthModel healthModel
+            EnemyConfigsRepository configsRepository
         )
         {
             _orksPool = orksPool;
             _enemySpawner = enemySpawner;
-            _coinCounterModel = coinCounterModel;
             _configsRepository = configsRepository;
-            _castleHealthModel = healthModel;
         }
 
         public void CreateEnemy(EnemyType type, Action onDeath)
@@ -57,6 +52,12 @@ namespace _Project.Scripts.Enemies
             enemy.gameObject.SetActive(true);
         }
 
+        public void StopActiveEnemies()
+        {
+            foreach (var enemy in _orksPool.ActiveEnemies)
+                enemy.ToIdle();   
+        }
+        
         private StateMachine CreateStateMachine(Enemy enemy)
         {
             StateMachine enemyStateMachine = new(
@@ -71,9 +72,7 @@ namespace _Project.Scripts.Enemies
                     new Transition<EnemyMoveState, EnemyAttackState>(() => enemy.Mover.IsTargetReached),
                     new Transition<EnemyIdleState, EnemyDeathState>(() => enemy.HealthModel.CurrentHealth <= 0),
                     new Transition<EnemyMoveState, EnemyDeathState>(() => enemy.HealthModel.CurrentHealth <= 0),
-                    new Transition<EnemyAttackState, EnemyDeathState>(() => enemy.HealthModel.CurrentHealth <= 0),
-                    new Transition<EnemyAttackState, EnemyIdleState>(() => _castleHealthModel.CurrentHealth <= 0),
-                    new Transition<EnemyMoveState, EnemyIdleState>(() => _castleHealthModel.CurrentHealth <= 0),
+                    new Transition<EnemyAttackState, EnemyDeathState>(() => enemy.HealthModel.CurrentHealth <= 0)
                 }
             );
 

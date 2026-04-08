@@ -12,7 +12,7 @@ namespace _Project.Scripts.Logic.Level
 {
     public class LevelBootstrapper : IInitializable, IDisposable
     {
-        private Castle _castle;
+        private CastleTower _castle;
         private UIFactory _uiFactory;
         private WaveManager _waveManager;
         private TowerService _towerService;
@@ -57,6 +57,7 @@ namespace _Project.Scripts.Logic.Level
         {
             _towerPlacement.OnPlaceClicked -= _createTowerPanel.ShowPanel;
             _castle.OnCastleDestroy -= GameOver;
+            _castle.OnCastleDestroy -= _waveManager.StopWave;
             _waveManager.OnCompleteLevel -= GameVictory;
         }
 
@@ -71,6 +72,7 @@ namespace _Project.Scripts.Logic.Level
         {
             _castle = _castleInitializer.CreateCastle(_gameRepository.GameConfig.CastlePosition);
             _castle.OnCastleDestroy += GameOver;
+            _castle.OnCastleDestroy += _waveManager.StopWave;
         }
         
         private void GameOver() => _endGameService.GameOver();

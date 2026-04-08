@@ -1,22 +1,20 @@
 ﻿using System;
+using System.Collections.Generic;
 using Zenject;
 using System.Linq;
 using System.Threading;
 using Cysharp.Threading.Tasks;
 using _Project.Scripts.Configs;
-using _Project.Scripts.Logic.Health;
-using _Project.Scripts.ConfigRepositories;
 using _Project.Scripts.Enemies;
-using _Project.Scripts.Infrastructure.GameConstants;
+using _Project.Scripts.ConfigRepositories;
 
 namespace _Project.Scripts.Logic.Level
 {
-    public class WaveManager : IInitializable, IDisposable
+    public class WaveManager
     {
         public event Action<int> OnWaveTimerStart;
         public event Action OnCompleteLevel;
         
-        private HealthModel _castleHealthModel;
         private EnemyFactory _enemyFactory;
         private GameRepository _gameRepository;
         private int _waveIndex = 0;
@@ -29,18 +27,12 @@ namespace _Project.Scripts.Logic.Level
         [Inject]
         private void Construct(
             EnemyFactory enemyFactory,
-            GameRepository gameRepository,
-            [Inject(Id = GameConstants.CASTLE_HEALTH_MODEL_INJECT_ID)] HealthModel healthModel
+            GameRepository gameRepository
         )
         {
-            _castleHealthModel = healthModel;
             _gameRepository = gameRepository;
             _enemyFactory = enemyFactory;
         }
-
-        public void Initialize() => _castleHealthModel.OnDeath += StopWave;
-        
-        public void Dispose() => _castleHealthModel.OnDeath -= StopWave;
 
         public void StartTimer(int waveCount) => OnWaveTimerStart?.Invoke(waveCount);
 
@@ -62,11 +54,13 @@ namespace _Project.Scripts.Logic.Level
             (_waveIndex + 1) * _gameRepository.GameConfig.CoinsPerWave
             + _totalEnemyKilled * _gameRepository.GameConfig.CoinsPerKill;
         
-        private void StopWave()
+        public void StopWave()
         {
             _waveCancelToken?.Cancel();
             _waveCancelToken?.Dispose();
             _waveCancelToken = null;
+
+            _enemyFactory.StopActiveEnemies();
         }
         
         private Wave GetNextWave() => 
@@ -104,12 +98,17 @@ namespace _Project.Scripts.Logic.Level
             
             _waveIndex++;
             
+            TryStartNewWave();
+        }
+
+        private void TryStartNewWave()
+        {
             if (GetNextWave() == null)
-            { 
+            {
                 OnCompleteLevel?.Invoke();
                 return;
             }
-            
+
             StartTimer(_waveIndex + 1);
         }
     }

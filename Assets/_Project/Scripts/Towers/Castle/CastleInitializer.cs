@@ -1,28 +1,51 @@
-﻿using _Project.Scripts.Infrastructure.GameConstants;
-using _Project.Scripts.Infrastructure.StateMachine;
-using _Project.Scripts.Towers.Castle.States;
+﻿using Zenject;
 using UnityEngine;
+using _Project.Scripts.Weapons;
+using _Project.Scripts.Logic.Towers;
+using _Project.Scripts.ConfigRepositories;
+using _Project.Scripts.Towers.Castle.States;
+using _Project.Scripts.Infrastructure.GameConstants;
+using _Project.Scripts.Infrastructure.StateMachine;
 
 namespace _Project.Scripts.Towers.Castle
 {
     public class CastleInitializer
     {
-        private readonly TowerService _towerService;
+        private readonly TowerFactory _towerFactory;
+        private readonly WeaponFactory _weaponFactory;
+        private readonly TowerConfigsRepository _towerConfigsRepository;
 
-        public CastleInitializer(TowerService towerService)
+        [Inject]
+        public CastleInitializer(
+            TowerFactory towerFactory,
+            WeaponFactory weaponFactory,
+            TowerConfigsRepository  towerConfigsRepository
+            )
         {
-            _towerService = towerService;
+            _towerConfigsRepository = towerConfigsRepository;
+            _weaponFactory = weaponFactory;
+            _towerFactory = towerFactory;
         }
 
-        public Castle CreateCastle(Vector3 position)
+        public CastleTower CreateCastle(Vector3 position)
         {
-            Castle castle = (Castle)_towerService.Create(TowerType.Castle, position);
-            castle.SetStateMachine(CreateCastleStateMachine(castle));
+            Tower tower = _towerFactory.CreateTower(TowerType.Castle, position);
+            Weapon weapon = 
+                _weaponFactory.CreateWeapon(
+                    _towerConfigsRepository.Get(TowerType.Castle).WeaponType, 
+                    tower.WeaponPoint.transform.position, 
+                    tower.WeaponPoint.transform);
 
+            if (tower.TryGetComponent(out IWeaponMountOwner weaponMountOwner))
+                weaponMountOwner.SetWeapon(weapon);
+
+            if (tower.TryGetComponent(out CastleTower castle))
+                castle.SetStateMachine(CreateCastleStateMachine(castle));
+            
             return castle;
         }
 
-        private StateMachine CreateCastleStateMachine(Castle castle)
+        private StateMachine CreateCastleStateMachine(CastleTower castle)
         {
             return new StateMachine(
                 new IState[]

@@ -39,7 +39,8 @@ namespace _Project.Scripts.Infrastructure.StateMachine
                 enterable.Enter();
         }
 
-
+        public void SetState(Type to) => SwitchState(to);
+        
         private void SwitchState(Type to)
         {
             if(_currentState is IExitableState exitableState)

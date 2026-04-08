@@ -1,4 +1,5 @@
 ﻿using System;
+using _Project.Scripts.Enemies.States;
 using Zenject;
 using UnityEngine;
 using UnityEngine.AI;
@@ -78,5 +79,7 @@ namespace _Project.Scripts.Enemies
         }
         
         public void SetStateMachine(StateMachine stateMachine) => StateMachine = stateMachine;
+
+        public void ToIdle() => StateMachine.SetState(typeof(EnemyIdleState));
     }
 }

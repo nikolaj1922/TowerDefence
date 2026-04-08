@@ -1,5 +1,7 @@
 ﻿using _Project.Scripts.ConfigRepositories;
 using _Project.Scripts.Logic.Coins;
+using _Project.Scripts.Logic.Towers;
+using _Project.Scripts.Towers.Castle;
 using _Project.Scripts.UI.CreateTowerPanel;
 using _Project.Scripts.Weapons;
 using UnityEngine;
@@ -29,7 +31,15 @@ namespace _Project.Scripts.Towers
             _weaponFactory = weaponFactory;
         }
         
-        public Tower Create(TowerType towerType, Vector3 position)
+        public Tower CreateAndPurchase(TowerType towerType, Vector3 position, int coinPrice)
+        {
+            Tower tower = Create(towerType, position);
+            Purchase(coinPrice);
+
+            return tower;
+        }
+        
+        private Tower Create(TowerType towerType, Vector3 position)
         {
             Tower tower = _towerFactory.CreateTower(towerType, position);
             Weapon weapon = 
@@ -37,17 +47,10 @@ namespace _Project.Scripts.Towers
                     _towerConfigsRepository.Get(towerType).WeaponType, 
                     tower.WeaponPoint.transform.position, 
                     tower.WeaponPoint.transform);
-            
-            tower.SetWeapon(weapon);
-            
-            return tower;
-        }
 
-        public Tower CreateAndPurchase(TowerType towerType, Vector3 position, int coinPrice)
-        {
-            Tower tower = Create(towerType, position);
-            Purchase(coinPrice);
-
+            if (tower.TryGetComponent(out IWeaponMountOwner weaponMountOwner))
+                weaponMountOwner.SetWeapon(weapon);
+            
             return tower;
         }
         

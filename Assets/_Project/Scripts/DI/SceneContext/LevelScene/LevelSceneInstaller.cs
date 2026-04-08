@@ -1,20 +1,19 @@
 ﻿using Zenject;
 using UnityEngine;
 using _Project.Scripts.UI;
+using _Project.Scripts.Towers;
+using _Project.Scripts.Weapons;
+using _Project.Scripts.Enemies;
 using _Project.Scripts.Logic.Level;
 using _Project.Scripts.Logic.Coins;
-using _Project.Scripts.Logic.Health;
-using _Project.Scripts.UI.EndGameModal;
+using _Project.Scripts.Towers.Castle;
 using _Project.Scripts.UI.WaveCounter;
 using _Project.Scripts.UI.CoinCounter;
+using _Project.Scripts.UI.EndGameModal;
 using _Project.Scripts.ConfigRepositories;
-using _Project.Scripts.Enemies;
 using _Project.Scripts.UI.CreateTowerPanel;
 using _Project.Scripts.PrefabDatabase.EnemyDatabase;
 using _Project.Scripts.Infrastructure.GameConstants;
-using _Project.Scripts.Towers;
-using _Project.Scripts.Towers.Castle;
-using _Project.Scripts.Weapons;
 
 namespace _Project.Scripts.DI.SceneContext.LevelScene
 {
@@ -30,19 +29,14 @@ namespace _Project.Scripts.DI.SceneContext.LevelScene
         [SerializeField] private CreateTowerPanel _createTowerPanel;
         [SerializeField] private CreateTowerItemButton _createTowerItemButton;
         
-        private GameRepository _gameRepository;
         private EnemyPrefabsDatabase _enemyPrefabsDatabase;
 
         [Inject]
         public void Construct(EnemyPrefabsDatabase enemyPrefabsDatabase, GameRepository gameRepository)
-        {
-            _enemyPrefabsDatabase = enemyPrefabsDatabase;
-            _gameRepository = gameRepository;
-        }
+            => _enemyPrefabsDatabase = enemyPrefabsDatabase;
 
         public override void InstallBindings()
         {
-            BindCastleHealthModel();
             BindEnemySpawner();
             BindEnemyPools();
             BindFactories();
@@ -68,15 +62,6 @@ namespace _Project.Scripts.DI.SceneContext.LevelScene
             Container.Bind<CastleInitializer>().AsSingle();
             Container.Bind<EndGameService>().AsSingle();
             Container.BindInterfacesAndSelfTo<LevelBootstrapper>().AsSingle();
-        }
-
-        private void BindCastleHealthModel()
-        {
-            Container
-                .Bind<HealthModel>()
-                .WithId(GameConstants.CASTLE_HEALTH_MODEL_INJECT_ID)
-                .FromMethod(_ => new HealthModel(_gameRepository.GameConfig.CastleHealth))
-                .AsSingle();
         }
 
         private void BindFactories()

@@ -4,9 +4,9 @@ namespace _Project.Scripts.Towers.Castle.States
 {
     public class CollapseState: IEnterableState
     {
-        private readonly Castle _castle;
+        private readonly CastleTower _castle;
         
-        public CollapseState(Castle castle) => _castle = castle;
+        public CollapseState(CastleTower castle) => _castle = castle;
 
         public void Enter() => _castle.Collapse();
 

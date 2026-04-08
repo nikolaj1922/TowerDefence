@@ -13,6 +13,8 @@ GameObject:
   - component: {fileID: 1625379637378449326}
   - component: {fileID: 1393665117474331415}
   - component: {fileID: 4343081017574913119}
+  - component: {fileID: 2292532665050426739}
+  - component: {fileID: 5789526706551468768}
   m_Layer: 7
   m_Name: CastleTower
   m_TagString: Untagged
@@ -73,8 +75,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8a4cc7ce4cf119340a779d70db6e1ace, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::_Project.Scripts.Tower.CastleController
-  _occupiedArea: {fileID: 6040703799056684798}
-  <WeaponPoint>k__BackingField: {fileID: 5636898541216984847}
   _castleModel: {fileID: 2177793888199174644}
   _castleDamagedModel: {fileID: 8260604979489275177}
   _onCollapseEffect: {fileID: 4593184484909914550, guid: 2e1e9506f5904a64b81744324fb7cd50, type: 3}
@@ -92,6 +92,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Zenject::Zenject.GameObjectContext
   _scriptableObjectInstallers: []
   _monoInstallers:
+  - {fileID: 5789526706551468768}
   - {fileID: 4343081017574913119}
   _installerPrefabs: []
   _autoRun: 1
@@ -108,8 +109,34 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1deb8dc4f5854180960d4cf3cb43f246, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::_Project.Scripts.DI.GameObjectInstaller.CastleInstaller
-  _towerType: 0
   _healthBarView: {fileID: 55345165796221890}
+--- !u!114 &2292532665050426739
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1462002706356958582}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cf49792527c045958eb106220854a077, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::_Project.Scripts.Towers.Tower
+  _occupiedArea: {fileID: 6040703799056684798}
+  <WeaponPoint>k__BackingField: {fileID: 5636898541216984847}
+--- !u!114 &5789526706551468768
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1462002706356958582}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 34d129ec11b64844b78d5406c23f04e4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::_Project.Scripts.DI.GameObjectInstaller.TowerInstaller
+  _towerType: 0
 --- !u!1 &2177793888199174644
 GameObject:
   m_ObjectHideFlags: 0

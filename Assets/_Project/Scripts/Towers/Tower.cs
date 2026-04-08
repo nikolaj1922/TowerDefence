@@ -1,28 +1,27 @@
-﻿using _Project.Scripts.Configs;
-using _Project.Scripts.Weapons;
+﻿using Zenject;
 using UnityEngine;
-using Zenject;
+using _Project.Scripts.Weapons;
+using _Project.Scripts.Configs;
+using _Project.Scripts.Logic.Towers;
 
 namespace _Project.Scripts.Towers
 {
-    public class Tower : MonoBehaviour
+    public class Tower : MonoBehaviour, IWeaponMountOwner
     {
         [SerializeField] private GameObject _occupiedArea;
+        [field: SerializeField] public Transform WeaponPoint { get; private set; }
         
         private TowerConfig _config;
-        protected Weapon _weapon;
-
-        [field: SerializeField] public Transform WeaponPoint { get; private set; }
-
+        public Weapon Weapon { get; private set; }
+        
         [Inject]
-        public void ConstructBase(TowerConfig config) => _config = config;
+        public void Construct(TowerConfig config) => _config = config;
 
-        private void Awake()
-        {
-            _occupiedArea.transform.localScale = 
-                new Vector3(_config.OccupiedRadius, _occupiedArea.transform.localScale.y, _config.OccupiedRadius);
-        }
+        private void Awake() => _occupiedArea.transform.localScale = GetOccupiedScale;
 
-        public void SetWeapon(Weapon weapon) => _weapon = weapon;
+        public void SetWeapon(Weapon weapon) => Weapon = weapon;
+        
+        private Vector3 GetOccupiedScale 
+            => new(_config.OccupiedRadius, _occupiedArea.transform.localScale.y, _config.OccupiedRadius);
     }
 }

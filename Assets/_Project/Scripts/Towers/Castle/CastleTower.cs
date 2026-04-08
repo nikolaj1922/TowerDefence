@@ -1,25 +1,28 @@
 ﻿using System;
-using _Project.Scripts.Infrastructure.GameConstants;
-using _Project.Scripts.Infrastructure.StateMachine;
-using _Project.Scripts.Logic.Health;
-using UnityEngine;
 using Zenject;
+using UnityEngine;
+using _Project.Scripts.Logic.Health;
+using _Project.Scripts.Infrastructure.StateMachine;
 
 namespace _Project.Scripts.Towers.Castle
 {
-    public class Castle : Tower, IDamagable
+    [RequireComponent(typeof(Tower))]
+    public class CastleTower : MonoBehaviour, IDamagable
     {
         public event Action OnCastleDestroy;
         
         [SerializeField] private GameObject _castleModel;
         [SerializeField] private GameObject _castleDamagedModel;
         [SerializeField] private ParticleSystem _onCollapseEffect;
+        private Tower _tower;
         private StateMachine _stateMachine;
 
         public HealthModel HealthModel { get; private set; }
         
         [Inject]
-        public void Construct([Inject(Id = GameConstants.CASTLE_HEALTH_MODEL_INJECT_ID)] HealthModel healthModel) => HealthModel = healthModel;
+        public void Construct(HealthModel healthModel) => HealthModel = healthModel;
+        
+        private void Awake() => _tower = GetComponent<Tower>();
         
         private void Update() => _stateMachine?.Update();
         
@@ -41,7 +44,7 @@ namespace _Project.Scripts.Towers.Castle
             
             _castleDamagedModel.SetActive(true);
             _castleModel.SetActive(false);
-            _weapon.gameObject.SetActive(false);
+            _tower.Weapon.gameObject.SetActive(false);
         }
     }
 }

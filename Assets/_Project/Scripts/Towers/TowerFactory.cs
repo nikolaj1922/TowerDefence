@@ -1,6 +1,6 @@
-﻿using _Project.Scripts.PrefabDatabase.TowersDatabase;
+﻿using Zenject;
 using UnityEngine;
-using Zenject;
+using _Project.Scripts.PrefabDatabase.TowersDatabase;
 
 namespace _Project.Scripts.Towers
 {
@@ -22,6 +22,7 @@ namespace _Project.Scripts.Towers
 
         public Tower CreateTower(TowerType type, Vector3 position)
         {
+            
             GameObject castleObject = 
                 _instantiator.InstantiatePrefab(
                     _towerPrefabsDatabase.Get(type), 
