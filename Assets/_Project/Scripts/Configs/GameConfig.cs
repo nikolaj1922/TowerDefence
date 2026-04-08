@@ -1,22 +1,22 @@
 ﻿using System;
 using UnityEngine;
 using System.Collections.Generic;
-using _Project.Scripts.Enemy;
+using _Project.Scripts.Enemies;
 
 namespace _Project.Scripts.Configs
 {
     [CreateAssetMenu(fileName = "LevelConfig",  menuName = "Configs/Level")]
     public class GameConfig : ScriptableObject
     {
-        public float castleHealth;
-        public Vector3 castlePosition;
-
-        public int coinsPerWave;
-        public int coinsPerKill;
-        
-        public Wave[] waves;
-        public int timeBetweenWaves;
+        [field: SerializeField] public float CastleHealth { get; private set; }
+        [field: SerializeField] public Vector3 CastlePosition { get; private set; }
+        [field: SerializeField] public int CoinsPerWave { get; private set; }
+        [field: SerializeField] public int CoinsPerKill { get; private set; }
+        [field: SerializeField] public Wave[] Waves { get; private set; }
+        [field: SerializeField] public int TimeBetweenWaves { get; private set; }
     }
+    
+    // 100, _, 5,1, _, 15
 
     [Serializable]
     public class Wave

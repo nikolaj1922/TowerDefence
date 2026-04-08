@@ -4,8 +4,8 @@ using UnityEngine.UI;
 using Cysharp.Threading.Tasks;
 using _Project.Scripts.Services.SaveLoad;
 using _Project.Scripts.Services.Analytics;
-using _Project.Scripts.Infrastructure.SceneLoader;
 using _Project.Scripts.Infrastructure.GameConstants;
+using _Project.Scripts.Infrastructure.SceneLoader;
 
 namespace _Project.Scripts.UI.MainMenu
 {
@@ -26,10 +26,10 @@ namespace _Project.Scripts.UI.MainMenu
             _saveLoad = saveLoad;
         }
         
-        private void Awake() => _goToLevelsMenuButton.onClick.AddListener(OnStartClick);
+        private void Awake() =>  _goToLevelsMenuButton.onClick.AddListener(OnStartClick);
 
-        private void OnDisable() => _goToLevelsMenuButton.onClick.RemoveListener(OnStartClick);
-
+        private void OnDestroy() => _goToLevelsMenuButton.onClick.RemoveListener(OnStartClick);
+        
         private void OnStartClick()
         {
             _analyticsService.GameStarted(_saveLoad.PlayerProgress.metaCoinsCount);

@@ -14,8 +14,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::_Project.Scripts.Database.TowersDatabase.TowersDatabase
   _towers:
   - type: 0
-    prefab: {fileID: 1625379637378449326, guid: c0c694697f0fa5043bf280d711cc4440, type: 3}
+    prefab: {fileID: 2292532665050426739, guid: c0c694697f0fa5043bf280d711cc4440, type: 3}
   - type: 3
-    prefab: {fileID: -7688524047846371012, guid: 6e3585de0aebb4642933e84be16cb9f5, type: 3}
+    prefab: {fileID: 5949738700478435343, guid: 6e3585de0aebb4642933e84be16cb9f5, type: 3}
   - type: 2
-    prefab: {fileID: -7688524047846371012, guid: b47a6b2bad6e6e94dac3949d87d6738e, type: 3}
+    prefab: {fileID: 2501293871297066291, guid: b47a6b2bad6e6e94dac3949d87d6738e, type: 3}

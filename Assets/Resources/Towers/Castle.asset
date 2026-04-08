@@ -12,9 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3b6d552424ae4b55a19bcab7ebacfb09, type: 3}
   m_Name: Castle
   m_EditorClassIdentifier: Assembly-CSharp::_Project.Scripts.Configs.TowerConfig
-  towerType: 0
-  weaponType: 0
-  canBuild: 0
-  icon: {fileID: 21300000, guid: 54710a5155e68114eb61e0a76f7a9402, type: 3}
-  coinPrice: 0
-  occupiedRadius: 2
+  <TowerType>k__BackingField: 0
+  <WeaponType>k__BackingField: 0
+  <CanBuild>k__BackingField: 0
+  <Icon>k__BackingField: {fileID: 21300000, guid: 54710a5155e68114eb61e0a76f7a9402, type: 3}
+  <CoinPrice>k__BackingField: 0
+  <OccupiedRadius>k__BackingField: 1.5

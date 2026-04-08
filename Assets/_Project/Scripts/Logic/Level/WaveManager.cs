@@ -3,25 +3,22 @@ using Zenject;
 using System.Linq;
 using System.Threading;
 using Cysharp.Threading.Tasks; 
-using _Project.Scripts.Enemy;
 using _Project.Scripts.Configs;
-using _Project.Scripts.Logic.Health;
 using _Project.Scripts.Services.Analytics;
+using _Project.Scripts.Enemies;
 using _Project.Scripts.ConfigRepositories;
-using _Project.Scripts.Infrastructure.GameConstants;
 
 namespace _Project.Scripts.Logic.Level
 {
-    public class WaveManager : ITickable
+    public class WaveManager
     {
         public event Action<int> OnWaveTimerStart;
         public event Action OnCompleteLevel;
         public event Action<int> OnCompleteWave;
 
-        private AnalyticsService _analyticsService;
-        private HealthModel _castleHealthModel;
         private EnemyFactory _enemyFactory;
         private GameRepository _gameRepository;
+        private AnalyticsService _analyticsService;
         private int _waveIndex = 0;
         private int _enemyKilledOnWave = 0;
         private int _totalEnemiesOnWave = 0;
@@ -35,22 +32,12 @@ namespace _Project.Scripts.Logic.Level
         private void Construct(
             EnemyFactory enemyFactory,
             GameRepository gameRepository,
-            [Inject(Id = GameConstants.CASTLE_HEALTH_MODEL_INJECT_ID)] HealthModel healthModel,
             AnalyticsService analyticsService
         )
         {
-            _analyticsService = analyticsService;
-            _castleHealthModel = healthModel;
             _gameRepository = gameRepository;
+            _analyticsService = analyticsService;
             _enemyFactory = enemyFactory;
-        }
-
-        public void Tick()
-        {
-            if (_castleHealthModel.CurrentHealth > 0)
-                return;
-
-            ResetWaveToken();
         }
 
         public void StartTimer(int waveCount) => OnWaveTimerStart?.Invoke(waveCount);
@@ -67,19 +54,25 @@ namespace _Project.Scripts.Logic.Level
         }
         
         public int GetRewardForWaves() =>
-            (CurrentWave) * _gameRepository.GameConfig.coinsPerWave
-            + TotalEnemyKilled * _gameRepository.GameConfig.coinsPerKill;
+            (CurrentWave) * _gameRepository.GameConfig.CoinsPerWave
+            + TotalEnemyKilled * _gameRepository.GameConfig.CoinsPerKill;
+        
+        public void StopWave()
+        {
+            ResetWaveToken();
+            _enemyFactory.StopActiveEnemies();
+        }
         
         private Wave GetNextWave() => 
-            _waveIndex < _gameRepository.GameConfig.waves.Length 
-                ? _gameRepository.GameConfig.waves[_waveIndex]
+            _waveIndex < _gameRepository.GameConfig.Waves.Length 
+                ? _gameRepository.GameConfig.Waves[_waveIndex]
                 : null;
 
         private async UniTaskVoid StartWave(Wave wave, CancellationToken token)
         {
             _totalEnemiesOnWave = wave.enemyGroups.Sum(e => e.enemyCount);
             _enemyKilledOnWave = 0;
-
+            
             _analyticsService.WaveStarted(CurrentWave, _totalEnemiesOnWave);
             
             foreach (var waveEnemyData in wave.enemyGroups)
@@ -108,13 +101,18 @@ namespace _Project.Scripts.Logic.Level
             OnCompleteWave?.Invoke(CurrentWave);
             
             _waveIndex++;
-            
+
+            TryStartNewWave();
+        }
+        
+        private void TryStartNewWave()
+        {
             if (GetNextWave() == null)
-            { 
+            {
                 OnCompleteLevel?.Invoke();
                 return;
             }
-            
+
             StartTimer(CurrentWave);
         }
         

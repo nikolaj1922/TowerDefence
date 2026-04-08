@@ -130,9 +130,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 618821859475029963}
-  - component: {fileID: -7688524047846371012}
   - component: {fileID: 4111512037341037874}
   - component: {fileID: -1030571451964959385}
+  - component: {fileID: 2501293871297066291}
   m_Layer: 7
   m_Name: CannonTower
   m_TagString: Untagged
@@ -158,20 +158,6 @@ Transform:
   - {fileID: 4918782265706447901}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &-7688524047846371012
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8951336817122866525}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b3f33db868f942d1b0fd56cc55c860ae, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::_Project.Scripts.Tower.Tower
-  _occupiedArea: {fileID: 7424039047526155659}
-  <WeaponPoint>k__BackingField: {fileID: 1352233942427165056}
 --- !u!114 &4111512037341037874
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -203,6 +189,20 @@ MonoBehaviour:
   _installerPrefabs: []
   _autoRun: 1
   _kernel: {fileID: 0}
+--- !u!114 &2501293871297066291
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8951336817122866525}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cf49792527c045958eb106220854a077, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::_Project.Scripts.Towers.Tower
+  _occupiedArea: {fileID: 7424039047526155659}
+  <WeaponPoint>k__BackingField: {fileID: 1352233942427165056}
 --- !u!1001 &8279137697933136879
 PrefabInstance:
   m_ObjectHideFlags: 0

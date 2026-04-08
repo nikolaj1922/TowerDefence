@@ -12,10 +12,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ecf794d66f814927b9e65317aa39a10a, type: 3}
   m_Name: Ork
   m_EditorClassIdentifier: Assembly-CSharp::_Project.Scripts.Configs.EnemyConfig
-  type: 0
-  speed: 0.3
-  health: 10
-  damage: 5
-  attackRange: 0.3
-  attackCooldown: 2
-  coinsReward: 3
+  <Type>k__BackingField: 0
+  <Speed>k__BackingField: 0.2
+  <Health>k__BackingField: 10
+  <Damage>k__BackingField: 5
+  <AttackRange>k__BackingField: 0.3
+  <AttackCooldown>k__BackingField: 2
+  <CoinsReward>k__BackingField: 3
