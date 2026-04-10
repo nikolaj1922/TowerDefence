@@ -13,8 +13,8 @@ MonoBehaviour:
   m_Name: UpgradesDatabase
   m_EditorClassIdentifier: Assembly-CSharp::_Project.Scripts.Configs.Upgrades.UpgradesConfig
   upgrades:
-  - {fileID: 11400000, guid: 6dd4d37645863b543a9a9df9f9141667, type: 2}
-  - {fileID: 11400000, guid: 3521207cbf3a8d84499cb82ed7e6d6da, type: 2}
-  - {fileID: 11400000, guid: 4d36c4ac4746d0241ab00a1c99a453cd, type: 2}
-  - {fileID: 11400000, guid: f65eded3838efff45a5dabac66946146, type: 2}
-  - {fileID: 11400000, guid: e722abbe74b285549a5df867b22f890d, type: 2}
+  - {fileID: 11400000, guid: 3ec0379bb201ebb438715fa72a077e85, type: 2}
+  - {fileID: 11400000, guid: 936bf3a273d9f5d4d8657bbe81866ed3, type: 2}
+  - {fileID: 11400000, guid: 4e7bafcfc5f619b4092d0bd08acfbf6a, type: 2}
+  - {fileID: 11400000, guid: ef186a7eeacc2574e89adb63741f2484, type: 2}
+  - {fileID: 11400000, guid: dc53d4f2b0b4e6245b63229a0f744354, type: 2}

@@ -7,7 +7,7 @@ namespace _Project.Scripts.Weapons
     public class WeaponFactory
     {
         private readonly IInstantiator _instantiator;
-        private readonly  WeaponPrefabsDatabase _weaponPrefabsDatabase;
+        private readonly WeaponPrefabsDatabase _weaponPrefabsDatabase;
         
         public WeaponFactory(WeaponPrefabsDatabase weaponPrefabsDatabase, IInstantiator instantiator)
         {
@@ -23,8 +23,12 @@ namespace _Project.Scripts.Weapons
             float attackSpeedMultiplier)
 
         {
-            GameObject weaponObject = _instantiator.InstantiatePrefab(_weaponPrefabsDatabase.Get(type), position,
-                Quaternion.identity, parent);
+            GameObject weaponObject = _instantiator.InstantiatePrefab(
+                _weaponPrefabsDatabase.Get(type),
+                position,
+                Quaternion.identity,
+                parent);
+            
             Weapon weapon = weaponObject.GetComponent<Weapon>();
             weapon.SetMultipliers(damageMultiplier, attackSpeedMultiplier);
 

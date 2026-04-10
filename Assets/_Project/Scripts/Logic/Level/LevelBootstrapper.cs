@@ -52,6 +52,7 @@ namespace _Project.Scripts.Logic.Level
             _endGameService = endGameService;
             _upgradeService = upgradeService;
             _analyticsService = analyticsService;
+            _coinCounterModel = coinCounterModel;
         }
 
         public void Initialize()
@@ -84,7 +85,11 @@ namespace _Project.Scripts.Logic.Level
 
         private void CreateCastle()
         {
-            _castle = _castleInitializer.CreateCastle(_gameRepository.GameConfig.CastlePosition);
+            _castle = _castleInitializer.CreateCastle(
+                _gameRepository.GameConfig.CastlePosition,
+                _upgradeService.GetUpgradeMultiplier(UpgradeIdMatcher.CASTLE_DAMAGE_ID),
+                _upgradeService.GetUpgradeMultiplier(UpgradeIdMatcher.CASTLE_ATTACK_SPEED_ID)
+                );
             _castle.OnCastleDestroy += GameOver;
             _castle.OnCastleDestroy += _waveManager.StopWave;
             _castle.OnCastleDamaged += OnCastleDamaged;

@@ -2,6 +2,7 @@
 using UnityEngine;
 using _Project.Scripts.Configs.Upgrades;
 using _Project.Scripts.Services.SaveLoad;
+using _Project.Scripts.Services.Upgrade;
 
 namespace _Project.Scripts.UI.Modals.UpgradeModal
 {
@@ -11,16 +12,23 @@ namespace _Project.Scripts.UI.Modals.UpgradeModal
         private readonly UpgradeItemView _view;
         private readonly PlayerProgress _progress;
         private readonly UpgradeConfig _upgradeConfig;
+        private readonly UpgradeService _upgradeService;
 
         private int _price;
         private int _upgradeLevel;
         
-        public UpgradeItemPresenter(ISaveLoad saveLoad, UpgradeItemView view, UpgradeConfig upgradeConfig)
+        public UpgradeItemPresenter(
+            ISaveLoad saveLoad, 
+            UpgradeItemView view, 
+            UpgradeConfig upgradeConfig,
+            UpgradeService upgradeService
+            )
         {
             _view = view;
             _saveLoad = saveLoad;
             _progress = saveLoad.PlayerProgress;
             _upgradeConfig = upgradeConfig;
+            _upgradeService = upgradeService;
 
             Init();
         }
@@ -38,7 +46,7 @@ namespace _Project.Scripts.UI.Modals.UpgradeModal
         
         private void OnBuyClicked()
         {
-            _progress.SetUpgradeLevel(_upgradeConfig.id, _upgradeLevel + 1);
+            _upgradeService.SetUpgradeLevel(_upgradeConfig.id, _upgradeLevel + 1);
             _progress.metaCoinsCount -= _price;
             _saveLoad.SaveProgress();
             Refresh();
@@ -46,7 +54,7 @@ namespace _Project.Scripts.UI.Modals.UpgradeModal
 
         private void Refresh()
         {
-            _upgradeLevel = _progress.GetUpgradeLevel(_upgradeConfig.id);
+            _upgradeLevel = _upgradeService.GetUpgradeLevel(_upgradeConfig.id);
             _price = (int)GetPrice(_upgradeConfig.basePrice, _upgradeConfig.priceMultiplierByLevel, _upgradeLevel);
             
             bool canBuy = _progress.metaCoinsCount >= _price;

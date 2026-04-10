@@ -5,8 +5,9 @@ using System.Collections.Generic;
 using _Project.Scripts.Database;
 using _Project.Scripts.UI.MetaCounter;
 using _Project.Scripts.Services.SaveLoad;
-using _Project.Scripts.Database.ModalsPrefabDatabase;
+using _Project.Scripts.Services.Upgrade;
 using _Project.Scripts.Infrastructure.ModalCreator;
+using _Project.Scripts.Database.ModalsPrefabDatabase;
 
 namespace _Project.Scripts.UI.Modals.UpgradeModal
 {
@@ -17,14 +18,21 @@ namespace _Project.Scripts.UI.Modals.UpgradeModal
         [SerializeField] private MetaCounterPanel _metaCounterPanel;
         [SerializeField] private UpgradeItemView _upgradeItemPrefab;
 
-        private ModalCreator _modalCreator;
         private ISaveLoad _saveLoad;
+        private ModalCreator _modalCreator;
+        private UpgradeService _upgradeService;
         private UpgradesDatabase _upgradeDatabase;
+
         private List<UpgradeItemPresenter> _upgradeItemPresenters;
 
         [Inject]
-        public void Construct(UpgradesDatabase upgradesDatabase, ISaveLoad saveLoad, ModalCreator modalCreator)
+        public void Construct(
+            UpgradesDatabase upgradesDatabase, 
+            ISaveLoad saveLoad, 
+            ModalCreator modalCreator, 
+            UpgradeService upgradeService)
         {
+            _upgradeService = upgradeService;
             _modalCreator = modalCreator;
             _upgradeDatabase = upgradesDatabase;
             _saveLoad = saveLoad;
@@ -55,7 +63,8 @@ namespace _Project.Scripts.UI.Modals.UpgradeModal
                 _upgradeItemPresenters.Add(new UpgradeItemPresenter(
                     _saveLoad,
                     view,
-                    upgrade
+                    upgrade,
+                    _upgradeService
                 ));
                 
                 view.OnBuyClicked += _metaCounterPanel.UpdateView;

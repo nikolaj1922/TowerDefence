@@ -12,10 +12,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 544843cab73c40cf981e8a96edc1d1a1, type: 3}
   m_Name: CastleDamageUpgrade
   m_EditorClassIdentifier: Assembly-CSharp::_Project.Scripts.Configs.Upgrades.UpgradeConfig
-  id: 
-  title: 
-  description: 
-  previewIcon: {fileID: 0}
-  basePrice: 0
-  priceMultiplierByLevel: 0
-  statMultiplierByLevel: 0
+  id: 53e2044c-1570-423c-927a-60c9c4bfef3b
+  title: Castle Damage
+  description: Increase castle damage
+  previewIcon: {fileID: 1932996455, guid: 98b301ce9e9db854cbcd7cb697c83edc, type: 3}
+  basePrice: 20
+  priceMultiplierByLevel: 2
+  statMultiplierByLevel: 0.15

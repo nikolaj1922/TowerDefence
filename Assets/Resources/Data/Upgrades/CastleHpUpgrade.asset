@@ -12,9 +12,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 544843cab73c40cf981e8a96edc1d1a1, type: 3}
   m_Name: CastleHpUpgrade
   m_EditorClassIdentifier: Assembly-CSharp::_Project.Scripts.Configs.Upgrades.UpgradeConfig
-  id: 
-  title: 
-  previewIcon: {fileID: 0}
-  price: 0
-  multiplierByLevel: 0
-  description: 
+  id: ad1d420c-721a-45f6-8a49-77378bb31882
+  title: Castle HP
+  description: Increase castle hp
+  previewIcon: {fileID: -1986729151, guid: 98b301ce9e9db854cbcd7cb697c83edc, type: 3}
+  basePrice: 10
+  priceMultiplierByLevel: 2
+  statMultiplierByLevel: 0.2

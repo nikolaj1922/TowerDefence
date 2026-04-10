@@ -27,14 +27,19 @@ namespace _Project.Scripts.Towers.Castle
             _towerFactory = towerFactory;
         }
 
-        public CastleTower CreateCastle(Vector3 position)
+        public CastleTower CreateCastle(
+            Vector3 position, 
+            float damageMultiplier, 
+            float attackSpeedMultiplier)
         {
             Tower tower = _towerFactory.CreateTower(TowerType.Castle, position);
             Weapon weapon = 
                 _weaponFactory.CreateWeapon(
                     _towerConfigsRepository.Get(TowerType.Castle).WeaponType, 
                     tower.WeaponPoint.transform.position, 
-                    tower.WeaponPoint.transform);
+                    tower.WeaponPoint.transform,
+                    damageMultiplier,
+                    attackSpeedMultiplier);
 
             if (tower.TryGetComponent(out IWeaponMountOwner weaponMountOwner))
                 weaponMountOwner.SetWeapon(weapon);

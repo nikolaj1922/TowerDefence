@@ -1,7 +1,7 @@
-﻿using _Project.Scripts.Configs;
-using _Project.Scripts.Infrastructure.GameConstants;
+﻿using Zenject;
 using UnityEngine;
-using Zenject;
+using _Project.Scripts.Configs;
+using _Project.Scripts.Infrastructure.GameConstants;
 
 namespace _Project.Scripts.Weapons
 {

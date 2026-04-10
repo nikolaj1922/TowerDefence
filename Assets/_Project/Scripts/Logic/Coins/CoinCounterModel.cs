@@ -6,7 +6,7 @@ namespace _Project.Scripts.Logic.Coins
     {
         public event Action<int> OnCoinChanged;
 
-        private int _coins = 100;
+        private int _coins;
         public int Coins
         {
             get => _coins;
