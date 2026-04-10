@@ -6,10 +6,10 @@ using Cysharp.Threading.Tasks;
 using _Project.Scripts.Logic.Level;
 using _Project.Scripts.Services.SaveLoad;
 using _Project.Scripts.Services.Analytics;
-using _Project.Scripts.Infrastructure.SceneLoader;
 using _Project.Scripts.Infrastructure.GameConstants;
+using _Project.Scripts.Infrastructure.SceneLoader;
 
-namespace _Project.Scripts.UI.EndGameModal
+namespace _Project.Scripts.UI.GameOver
 {
     public class EndGameModal : MonoBehaviour
     {
@@ -19,11 +19,11 @@ namespace _Project.Scripts.UI.EndGameModal
         [SerializeField] private TextMeshProUGUI _headerText;
         [SerializeField] private HorizontalLayoutGroup _metaCoinHorizontalLayoutGroup;
 
-        private SceneLoader _sceneLoader;
-        private WaveManager _waveManager; 
-        private AnalyticsService _analyticsService;
         private ISaveLoad _saveLoad;
-        
+        private SceneLoader _sceneLoader;
+        private WaveManager _waveManager;
+        private AnalyticsService _analyticsService;
+
         [Inject]
         public void Construct(
             SceneLoader sceneLoader, 

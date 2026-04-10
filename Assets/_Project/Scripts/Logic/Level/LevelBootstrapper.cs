@@ -36,7 +36,8 @@ namespace _Project.Scripts.Logic.Level
             CoinCounterModel coinCounterModel,
             TowerService towerService,
             CastleInitializer castleInitializer,
-            EndGameService endGameService
+            EndGameService endGameService,
+            AnalyticsService analyticsService
             )
         {
             _castleInitializer = castleInitializer;
@@ -46,6 +47,7 @@ namespace _Project.Scripts.Logic.Level
             _waveManager = waveManager;
             _towerService = towerService;
             _endGameService = endGameService;
+            _analyticsService = analyticsService;
         }
 
         public void Initialize()
@@ -55,6 +57,7 @@ namespace _Project.Scripts.Logic.Level
             
             _towerPlacement.OnPlaceClicked += _createTowerPanel.ShowPanel;
             _waveManager.OnCompleteLevel += GameVictory;
+            _waveManager.OnCompleteWave += OnCompleteWave;
             _waveManager.StartTimer(waveCount: 1);
         }
         
@@ -63,7 +66,9 @@ namespace _Project.Scripts.Logic.Level
             _towerPlacement.OnPlaceClicked -= _createTowerPanel.ShowPanel;
             _castle.OnCastleDestroy -= GameOver;
             _castle.OnCastleDestroy -= _waveManager.StopWave;
+            _castle.OnCastleDamaged -= OnCastleDamaged;
             _waveManager.OnCompleteLevel -= GameVictory;
+            _waveManager.OnCompleteWave -= OnCompleteWave;
         }
 
         private void CreateUI()
@@ -78,20 +83,36 @@ namespace _Project.Scripts.Logic.Level
             _castle = _castleInitializer.CreateCastle(_gameRepository.GameConfig.CastlePosition);
             _castle.OnCastleDestroy += GameOver;
             _castle.OnCastleDestroy += _waveManager.StopWave;
+            _castle.OnCastleDamaged += OnCastleDamaged;
         }
         
         private void GameOver() => _endGameService.GameOver(_totalTowersBuilt);
         
         private void GameVictory() => _endGameService.GameVictory();
         
-        private Tower CreateTower(
+        private void CreateTower(
             TowerType towerType, 
             Vector3 position, 
             int coinPrice)
         {
-            Tower tower = _towerService.CreateAndPurchase(towerType, position, coinPrice);
+            if (_coinCounterModel.Coins < coinPrice)
+            {
+                _analyticsService.BuildRejected("not_enough_coins", _waveManager.CurrentWave);
+                return;
+            }   
+            
+            _totalTowersBuilt++;
+            _towerService.CreateAndPurchase(towerType, position, coinPrice);
             _createTowerPanel.HidePanel();
-            return tower;
+            
+            _analyticsService.TowerBuilt(
+                _waveManager.CurrentWave,
+                coinPrice,
+                _coinCounterModel.Coins,
+                _totalTowersBuilt);
         }
+        
+        private void OnCompleteWave(int wave) => _analyticsService.WaveCompleted(wave, _totalTowersBuilt, _coinCounterModel.Coins);
+        private void OnCastleDamaged(float currentHealth) => _analyticsService.CastleDamaged(_waveManager.CurrentWave, currentHealth);
     }
 }
