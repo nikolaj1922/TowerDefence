@@ -9,6 +9,7 @@ using _Project.Scripts.UI.CoinCounter;
 using _Project.Scripts.ConfigRepositories;
 using _Project.Scripts.UI.CreateTowerPanel;
 using _Project.Scripts.Infrastructure.GameConstants;
+using _Project.Scripts.UI.GameOver;
 
 namespace _Project.Scripts.UI
 {
@@ -16,7 +17,7 @@ namespace _Project.Scripts.UI
     {
         [Inject] private IInstantiator _instantiator;
         private RectTransform _hud;
-        private EndGameModal.EndGameModal _endGameModal;
+        private EndGameModal _endGameModal;
         private CoinCounterModel _coinCounterModel;
         private CoinCounterPanel _coinCounterPanel;
         private WaveCounterPanel _waveCounterPanel;
@@ -29,7 +30,7 @@ namespace _Project.Scripts.UI
         public void Construct(
             [Inject(Id = GameConstants.HUD_INJECT_ID)] RectTransform hud,
             CoinCounterModel coinCounterModel,
-            EndGameModal.EndGameModal endGameModal, 
+            EndGameModal endGameModal, 
             CreateTowerPanel.CreateTowerPanel createTowerPanel,
             CreateTowerItemButton createTowerItemButton,
             TowerConfigsRepository towerConfigsRepository,
@@ -49,7 +50,7 @@ namespace _Project.Scripts.UI
 
         public void CreateEndGameModal(int metaCoinsAdded, string headerText)
         {
-            EndGameModal.EndGameModal endGameModal = _instantiator.InstantiatePrefabForComponent<EndGameModal.EndGameModal>(_endGameModal);
+            EndGameModal endGameModal = _instantiator.InstantiatePrefabForComponent<EndGameModal>(_endGameModal);
             endGameModal.SetMetaCoinText(metaCoinsAdded);
             endGameModal.SetHeaderText(headerText);
         }
@@ -85,7 +86,7 @@ namespace _Project.Scripts.UI
         }
     }
     
-    public delegate Tower CreateTowerDelegate(
+    public delegate void CreateTowerDelegate(
         TowerType towerType,
         Vector3 position,
         int coinPrice

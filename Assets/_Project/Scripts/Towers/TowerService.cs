@@ -31,12 +31,10 @@ namespace _Project.Scripts.Towers
             _weaponFactory = weaponFactory;
         }
         
-        public Tower CreateAndPurchase(TowerType towerType, Vector3 position, int coinPrice)
+        public void CreateAndPurchase(TowerType towerType, Vector3 position, int coinPrice)
         {
-            Tower tower = Create(towerType, position);
+            Create(towerType, position);
             Purchase(coinPrice);
-
-            return tower;
         }
         
         private Tower Create(TowerType towerType, Vector3 position)
