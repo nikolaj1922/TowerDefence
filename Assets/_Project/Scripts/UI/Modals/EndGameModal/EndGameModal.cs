@@ -9,6 +9,7 @@ using _Project.Scripts.Services.Analytics;
 using _Project.Scripts.Infrastructure.GameConstants;
 using _Project.Scripts.Infrastructure.SceneLoader;
 
+namespace _Project.Scripts.UI.Modals.EndGameModal
 {
     public class EndGameModal : MonoBehaviour
     {

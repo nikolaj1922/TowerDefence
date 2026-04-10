@@ -12,12 +12,12 @@ namespace _Project.Scripts.DI.GameObjectInstaller
         [SerializeField] private Transform _weaponBase;
         [SerializeField] private Transform _weaponHead;
         [SerializeField] private Transform _projectileSpawnPoint;
-        [SerializeField] private WeaponProjectile _projectile;
+        [SerializeField] private Weapon _weapon;
         [SerializeField] private LayerMask _enemyLayerMask;
         [SerializeField] private WeaponType _weaponType;
         [SerializeField] private ParticleSystem _onAttackEffect;
-        [SerializeField] private Weapon.Weapon _weapon;
-        
+        [SerializeField] private WeaponProjectile _projectile;
+
         private WeaponConfigsRepository _configRepository;
         
         [Inject]
@@ -34,7 +34,7 @@ namespace _Project.Scripts.DI.GameObjectInstaller
             
             Container.BindInterfacesAndSelfTo<WeaponTargetFinder>().AsSingle().WithArguments(_enemyLayerMask, transform.position);
             Container.Bind<WeaponLookToTarget>().AsSingle();
-            Container.Bind<Weapon.Weapon>().FromInstance(_weapon);
+            Container.Bind<Weapon>().FromInstance(_weapon);
             Container.BindInterfacesAndSelfTo<WeaponAttackFX>().AsSingle().WithArguments(_onAttackEffect);
             Container.BindInterfacesAndSelfTo<WeaponAttack>().AsSingle()
                 .WithArguments(_projectile);
