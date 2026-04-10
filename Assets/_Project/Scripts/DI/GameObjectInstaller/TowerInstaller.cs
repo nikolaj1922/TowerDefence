@@ -1,8 +1,8 @@
 ﻿using Zenject;
 using UnityEngine;
-using _Project.Scripts.Tower;
 using _Project.Scripts.Configs;
 using _Project.Scripts.ConfigRepositories;
+using _Project.Scripts.Towers;
 
 namespace _Project.Scripts.DI.GameObjectInstaller
 {

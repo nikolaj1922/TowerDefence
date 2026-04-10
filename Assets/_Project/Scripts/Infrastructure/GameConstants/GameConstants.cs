@@ -14,7 +14,6 @@
         public const string WEAPON_BASE_INJECT_ID = "WeaponBase";
         public const string WEAPON_HEAD_INJECT_ID = "WeaponHead";
         public const string PROJECTILE_POINT_INJECT_ID = "ProjectileSpawnPoint";
-        public const string CASTLE_HEALTH_MODEL_INJECT_ID = "CastleHealthModel";
         public const string HUD_INJECT_ID = "HUD";
     }
 }

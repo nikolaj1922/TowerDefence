@@ -1,6 +1,5 @@
-﻿using System.Collections.Generic;
-using _Project.Scripts.Tower;
-using UnityEngine;
+using System.Collections.Generic;
+using _Project.Scripts.Towers;
 
 namespace _Project.Scripts.Database.TowersPrefabDatabase
 {
@@ -9,17 +8,17 @@ namespace _Project.Scripts.Database.TowersPrefabDatabase
     {
         [SerializeField] private List<TowerEntry> _towers;
 
-        private Dictionary<TowerType, Tower.Tower> _map;
+        private Dictionary<TowerType, Tower> _map;
 
         public void Init()
         {
-            _map = new Dictionary<TowerType, Tower.Tower>();
+            _map = new Dictionary<TowerType, Tower>();
 
             foreach (var entry in _towers)
                 _map[entry.type] = entry.prefab;
         }
 
-        public Tower.Tower Get(TowerType type)
+        public Tower Get(TowerType type)
         {
             if (!_map.TryGetValue(type, out var prefab))
             {

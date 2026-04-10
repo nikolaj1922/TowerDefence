@@ -3,23 +3,39 @@ using Zenject;
 using UnityEngine;
 using UnityEngine.UI;
 using Cysharp.Threading.Tasks;
+using _Project.Scripts.Logic.Level;
+using _Project.Scripts.Services.SaveLoad;
+using _Project.Scripts.Services.Analytics;
 using _Project.Scripts.Infrastructure.GameConstants;
 using _Project.Scripts.Infrastructure.SceneLoader;
 
-namespace _Project.Scripts.UI.Modals.EndGameModal
 {
     public class EndGameModal : MonoBehaviour
     {
-        private SceneLoader _sceneLoader;
-
         [SerializeField] private Button _tryAgainButton;
         [SerializeField] private Button _goToMenuButton;
         [SerializeField] private TextMeshProUGUI _metaCoinText;
         [SerializeField] private TextMeshProUGUI _headerText;
         [SerializeField] private HorizontalLayoutGroup _metaCoinHorizontalLayoutGroup;
 
+        private ISaveLoad _saveLoad;
+        private SceneLoader _sceneLoader;
+        private WaveManager _waveManager;
+        private AnalyticsService _analyticsService;
+
         [Inject]
-        public void Construct(SceneLoader sceneLoader) => _sceneLoader = sceneLoader;
+        public void Construct(
+            SceneLoader sceneLoader, 
+            WaveManager waveManager, 
+            AnalyticsService analyticsService,
+            ISaveLoad saveLoad
+            )
+        {
+            _waveManager = waveManager;
+            _sceneLoader = sceneLoader;
+            _saveLoad = saveLoad;
+            _analyticsService = analyticsService;
+        }
 
         private void Awake()
         {
@@ -44,9 +60,19 @@ namespace _Project.Scripts.UI.Modals.EndGameModal
             );
         }
 
-        private void OnTryAgainButtonClick() => _sceneLoader.LoadScene(GameConstants.LEVEL_SCENE).Forget();
-    
-        private void OnGoToMenuButtonClick() => _sceneLoader.LoadScene(GameConstants.MENU_SCENE).Forget();
+        private void OnTryAgainButtonClick()
+        {
+            _analyticsService.SessionRestarted(_waveManager.CurrentWave);
+            _sceneLoader.LoadScene(GameConstants.LEVEL_SCENE).Forget();
+        }
+
+        private void OnGoToMenuButtonClick()
+        {
+            _analyticsService.ReturnedToMenu(
+                _waveManager.CurrentWave,
+                _saveLoad.PlayerProgress.metaCoinsCount);
+            _sceneLoader.LoadScene(GameConstants.MENU_SCENE).Forget();
+        }
     }
 }
 

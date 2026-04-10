@@ -2,9 +2,11 @@
 using UnityEngine;
 using _Project.Scripts.Database;
 using _Project.Scripts.Services.SaveLoad;
+using _Project.Scripts.Services.Analytics;
 using _Project.Scripts.ConfigRepositories;
 using _Project.Scripts.Services.AssetProvider;
 using _Project.Scripts.Infrastructure.SceneLoader;
+using _Project.Scripts.Services.Analytics.Firebase;
 using _Project.Scripts.Database.EnemyPrefabDatabase;
 using _Project.Scripts.Database.ModalsPrefabDatabase;
 using _Project.Scripts.Database.TowersPrefabDatabase;
@@ -25,8 +27,8 @@ namespace _Project.Scripts.DI.ProjectContext
         
         public override void InstallBindings()
         {
+            Container.BindInterfacesAndSelfTo<FirebaseInitializer>().AsSingle().NonLazy();
             BindDatabases(); 
-
             
             Container.Bind<ModalCreator>().AsSingle();
             Container.BindInterfacesAndSelfTo<AssetProvider>().AsSingle();
@@ -34,6 +36,9 @@ namespace _Project.Scripts.DI.ProjectContext
             Container.Bind<ISaveLoad>().To<SaveLoad>().AsSingle();
             Container.Bind<UpgradeService>().AsSingle();
             
+            Container.Bind<IAnalyticsClient>().To<FirebaseAnalyticsClient>().AsSingle();
+            Container.Bind<AnalyticsService>().AsSingle();
+
             BindConfigRepositories();
         }
 

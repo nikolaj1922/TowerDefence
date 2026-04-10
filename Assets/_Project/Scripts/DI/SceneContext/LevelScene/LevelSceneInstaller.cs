@@ -1,13 +1,12 @@
 ﻿using Zenject;
 using UnityEngine;
 using _Project.Scripts.UI;
-using _Project.Scripts.Enemy;
-using _Project.Scripts.Tower;
-using _Project.Scripts.Weapon;
+using _Project.Scripts.Towers;
+using _Project.Scripts.Weapons;
+using _Project.Scripts.Enemies;
 using _Project.Scripts.Logic.Level;
 using _Project.Scripts.Logic.Coins;
-using _Project.Scripts.Logic.Health;
-using _Project.Scripts.Tower.Castle;
+using _Project.Scripts.Towers.Castle;
 using _Project.Scripts.UI.WaveCounter;
 using _Project.Scripts.UI.CoinCounter;
 using _Project.Scripts.Services.Upgrade;
@@ -49,8 +48,6 @@ namespace _Project.Scripts.DI.SceneContext.LevelScene
 
         public override void InstallBindings()
         {
-            Container.Bind<Camera>().FromInstance(_camera).AsSingle();
-            BindCastleHealthModel();
             BindEnemySpawner();
             BindEnemyPools();
             BindFactories();
@@ -67,7 +64,7 @@ namespace _Project.Scripts.DI.SceneContext.LevelScene
         private void BindLevel()
         {
             Container.Bind<RectTransform>().WithId(GameConstants.HUD_INJECT_ID).FromInstance(_hud);
-            Container.BindInterfacesAndSelfTo<TowerPlacement>().AsSingle().WithArguments(_towerOccupiedLayerMask, _groundLayerMask);
+            Container.BindInterfacesAndSelfTo<TowerPlacement>().AsSingle().WithArguments(_camera, _towerOccupiedLayerMask, _groundLayerMask);
 
             Container.Bind<CoinCounterModel>().AsSingle();
             Container.Bind<EndGameModal>().FromInstance(_endGameModal).AsSingle();
@@ -76,19 +73,6 @@ namespace _Project.Scripts.DI.SceneContext.LevelScene
             Container.Bind<CastleInitializer>().AsSingle();
             Container.Bind<EndGameService>().AsSingle();
             Container.BindInterfacesAndSelfTo<LevelBootstrapper>().AsSingle();
-        }
-
-        private void BindCastleHealthModel()
-        {
-            float finalCastleHp 
-                = _upgradeService.GetUpgradeMultiplier(UpgradeIdMatcher.CASTLE_HP_ID) * _gameRepository.GameConfig.castleHealth;
-            
-            HealthModel healthModel = new HealthModel(finalCastleHp);
-            Container
-                .Bind<HealthModel>()
-                .WithId(GameConstants.CASTLE_HEALTH_MODEL_INJECT_ID)
-                .FromInstance(healthModel)
-                .AsSingle();
         }
 
         private void BindFactories()
@@ -105,7 +89,7 @@ namespace _Project.Scripts.DI.SceneContext.LevelScene
 
         private void BindEnemyPools()
         {
-            Container.BindMemoryPool<Enemy.Enemy, EnemyPool>()
+            Container.BindMemoryPool<Enemy, EnemyPool>()
                 .FromComponentInNewPrefab(_enemyPrefabsDatabase.Get(EnemyType.Ork))
                 .UnderTransformGroup("Enemies");
         }

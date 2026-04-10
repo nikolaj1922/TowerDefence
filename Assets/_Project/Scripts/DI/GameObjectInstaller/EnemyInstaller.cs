@@ -1,9 +1,9 @@
 ﻿using Zenject;
 using UnityEngine;
-using _Project.Scripts.Enemy;
 using _Project.Scripts.Configs;
 using _Project.Scripts.Logic.Health;
 using _Project.Scripts.ConfigRepositories;
+using _Project.Scripts.Enemies;
 using _Project.Scripts.UI.HealthBar;
 
 namespace _Project.Scripts.DI.GameObjectInstaller
@@ -22,11 +22,9 @@ namespace _Project.Scripts.DI.GameObjectInstaller
         {
             EnemyConfig config = _enemyRepository.Get(_enemyType);
             Container.Bind<EnemyConfig>().FromInstance(config).AsSingle();
-            
-            HealthModel healthModel = new HealthModel(config.health);
+            Container.Bind<HealthModel>().FromMethod(_ => new HealthModel(config.Health)).AsSingle();
             Container.Bind<HealthBarView>().FromInstance(_healthBarView).AsSingle();
-            Container.BindInterfacesAndSelfTo<HealthController>().AsSingle().WithArguments(healthModel);
-            Container.BindInterfacesAndSelfTo<HealthModel>().FromInstance(healthModel).AsSingle();
+            Container.BindInterfacesAndSelfTo<HealthController>().AsSingle();
         }
     }
 }

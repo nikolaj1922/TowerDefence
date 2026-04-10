@@ -1,5 +1,5 @@
 ﻿using System;
-using _Project.Scripts.Weapon;
+using _Project.Scripts.Weapons;
 
 namespace _Project.Scripts.Database.WeaponPrefabDatabase
 {
@@ -7,6 +7,6 @@ namespace _Project.Scripts.Database.WeaponPrefabDatabase
     public class WeaponEntry
     {
         public WeaponType type;
-        public Weapon.Weapon prefab;
+        public Weapon prefab;
     }
 }

@@ -1,9 +1,9 @@
 ﻿using Zenject;
 using UnityEngine;
-using _Project.Scripts.Weapon;
 using _Project.Scripts.Configs;
 using _Project.Scripts.ConfigRepositories;
 using _Project.Scripts.Infrastructure.GameConstants;
+using _Project.Scripts.Weapons;
 
 namespace _Project.Scripts.DI.GameObjectInstaller
 {

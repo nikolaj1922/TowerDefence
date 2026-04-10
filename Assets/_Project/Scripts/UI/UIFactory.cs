@@ -2,7 +2,7 @@
 using UnityEngine;
 using _Project.Scripts.Configs;
 using Object = UnityEngine.Object;
-using _Project.Scripts.Tower;
+using _Project.Scripts.Towers;
 using _Project.Scripts.Logic.Coins;
 using _Project.Scripts.UI.WaveCounter;
 using _Project.Scripts.UI.CoinCounter;
@@ -15,7 +15,7 @@ namespace _Project.Scripts.UI
 {
     public class UIFactory
     {
-        [Inject] private DiContainer _container;
+        [Inject] private IInstantiator _instantiator;
         private RectTransform _hud;
         private EndGameModal _endGameModal;
         private CoinCounterModel _coinCounterModel;
@@ -50,13 +50,13 @@ namespace _Project.Scripts.UI
 
         public void CreateEndGameModal(int metaCoinsAdded, string headerText)
         {
-            EndGameModal endGameModal = _container.InstantiatePrefabForComponent<EndGameModal>(_endGameModal);
+            EndGameModal endGameModal = _instantiator.InstantiatePrefabForComponent<EndGameModal>(_endGameModal);
             endGameModal.SetMetaCoinText(metaCoinsAdded);
             endGameModal.SetHeaderText(headerText);
         }
 
-        public void CreateCoinCounterPanel() => _container.InstantiatePrefab(_coinCounterPanel.gameObject, _hud);
-        public void CreateWaveCounterPanel() => _container.InstantiatePrefab(_waveCounterPanel.gameObject, _hud);
+        public void CreateCoinCounterPanel() => _instantiator.InstantiatePrefab(_coinCounterPanel.gameObject, _hud);
+        public void CreateWaveCounterPanel() => _instantiator.InstantiatePrefab(_waveCounterPanel.gameObject, _hud);
 
         public CreateTowerPanel.CreateTowerPanel CreateTowerPanel(CreateTowerDelegate onCreateTowerClick)
         {
@@ -78,15 +78,15 @@ namespace _Project.Scripts.UI
         {
             CreateTowerItemButton towerButton = Object.Instantiate(_createTowerItemButton, parent);
             towerButton.Initialize(
-                config.coinPrice, 
-                config.icon,
-                onClick: () => onClick(config.towerType, panel.CreateTowerPosition, config.coinPrice),
+                config.CoinPrice, 
+                config.Icon,
+                onClick: () => onClick(config.TowerType, panel.CreateTowerPosition, config.CoinPrice),
                 _coinCounterModel
                 );
         }
     }
     
-    public delegate Tower.Tower CreateTowerDelegate(
+    public delegate void CreateTowerDelegate(
         TowerType towerType,
         Vector3 position,
         int coinPrice
