@@ -9,9 +9,7 @@ namespace _Project.Scripts.Weapons
 
         public float DamageMultiplier { get; private set; } = 1f;
         public float AttackSpeedMultiplier { get; private set; } = 1f;
-
-        public bool CanAttack { get; private set; } = true;
-
+        
         [Inject]
         public void Construct(WeaponLookToTarget lookToTarget) => _lookToTarget = lookToTarget;
 
@@ -22,7 +20,5 @@ namespace _Project.Scripts.Weapons
             DamageMultiplier = damageMultiplier;
             AttackSpeedMultiplier =  attaskSpeedMultiplier;
         }
-
-        public void StopAttack() => CanAttack = false;
     }
 }
