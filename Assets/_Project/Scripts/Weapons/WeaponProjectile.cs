@@ -16,7 +16,11 @@ namespace _Project.Scripts.Weapons
         private void Update()
         {
             if (_target == null)
+            {
+                _onHit?.Invoke();
                 return;
+            }
+              
 
             LookAtTarget();
             MoveToTarget();
@@ -31,13 +35,9 @@ namespace _Project.Scripts.Weapons
 
         private void OnTriggerEnter(Collider other)
         {
-            if (!other.TryGetComponent(out IDamagable damagable))
-            {
-                Destroy(gameObject);
-                return;
-            }
+            if (other.TryGetComponent(out IDamagable damagable))
+                damagable.TakeDamage(_damage);
             
-            damagable.TakeDamage(_damage);
             _onHit?.Invoke();
         }
         

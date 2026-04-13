@@ -6,11 +6,11 @@ namespace _Project.Scripts.DI.GameObjectInstaller
 {
     public class WaveCounterPanelInstaller : MonoInstaller
     {
-        [SerializeField] private WaveCounterPanel _waveCounterPanel;
+        [SerializeField] private WaveCounterView _waveCounterView;
 
         public override void InstallBindings()
         {
-            Container.Bind<WaveCounterPanel>().FromInstance(_waveCounterPanel).AsSingle();
+            Container.Bind<WaveCounterView>().FromInstance(_waveCounterView).AsSingle();
             Container.Bind<WaveCounterModel>().AsSingle();
             Container.BindInterfacesAndSelfTo<WaveCounterPresenter>().AsSingle();
         }

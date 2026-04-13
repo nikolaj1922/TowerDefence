@@ -30,13 +30,7 @@ namespace _Project.Scripts.Services.AssetProvider
         public T[] LoadAll<T>(string path) where T : Object
         {
             T[] asset = Resources.LoadAll<T>(path);
-
-            if (asset == null)
-            {
-                Debug.LogError($"Asset not found at path: {path}");
-                return null;
-            }
-
+            
             return asset;
         }
     }

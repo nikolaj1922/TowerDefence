@@ -1,5 +1,7 @@
 ﻿using Zenject;
 using _Project.Scripts.ConfigRepositories;
+using _Project.Scripts.Database.ModalsPrefabDatabase;
+using _Project.Scripts.Services.ModalCreator;
 using _Project.Scripts.Services.SaveLoad;
 using Cysharp.Threading.Tasks;
 
@@ -13,6 +15,7 @@ namespace _Project.Scripts.Infrastructure.Game
         private readonly WeaponConfigsRepository _weaponConfigsRepository;
         private readonly EnemyConfigsRepository _enemyConfigsRepository;
         private readonly TowerConfigsRepository _towerConfigsRepository;
+        private readonly ModalCreatorService _modalCreatorService;
 
         public GameBoostrapper(
             TowerConfigsRepository towerConfigsRepository,
@@ -20,8 +23,10 @@ namespace _Project.Scripts.Infrastructure.Game
             WeaponConfigsRepository weaponConfigsRepository,
             GameRepository gameRepository,
             ISaveLoad saveLoad,
-            SceneLoader.SceneLoader sceneLoader)
+            SceneLoader.SceneLoader sceneLoader,
+            ModalCreatorService modalCreatorService)
         {
+            _modalCreatorService = modalCreatorService;
             _saveLoad = saveLoad;
             _weaponConfigsRepository = weaponConfigsRepository;
             _towerConfigsRepository = towerConfigsRepository;
@@ -37,7 +42,10 @@ namespace _Project.Scripts.Infrastructure.Game
             _towerConfigsRepository.Load();
             _enemyConfigsRepository.Load();
             _weaponConfigsRepository.Load();
-            _sceneLoader.LoadScene(GameConstants.GameConstants.MENU_SCENE).Forget();
+            _sceneLoader.LoadScene(
+                GameConstants.GameConstants.MENU_SCENE,
+                () => _modalCreatorService.OpenModal(ModalType.Menu))
+                .Forget();
         }
     }
 }

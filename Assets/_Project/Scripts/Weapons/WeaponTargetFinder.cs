@@ -77,7 +77,7 @@ namespace _Project.Scripts.Weapons
 
         private bool IsTargetValid() =>
             Target != null
-            && Target.HealthModel.CurrentHealth > 0
+            && Target.CurrentHealth > 0
             && IsTargetInRange();
         
         private bool IsTargetInRange() => (Target.transform.position - _position).sqrMagnitude <= _attackRange * _attackRange;

@@ -1,5 +1,4 @@
 ﻿using System;
-using _Project.Scripts.Logic.Health;
 using Zenject;
 
 namespace _Project.Scripts.UI.HealthBar

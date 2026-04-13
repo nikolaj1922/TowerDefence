@@ -4,6 +4,7 @@ using _Project.Scripts.Configs;
 using _Project.Scripts.ConfigRepositories;
 using _Project.Scripts.Infrastructure.GameConstants;
 using _Project.Scripts.Weapons;
+using CartoonFX;
 
 namespace _Project.Scripts.DI.GameObjectInstaller
 {
@@ -15,7 +16,7 @@ namespace _Project.Scripts.DI.GameObjectInstaller
         [SerializeField] private Weapon _weapon;
         [SerializeField] private LayerMask _enemyLayerMask;
         [SerializeField] private WeaponType _weaponType;
-        [SerializeField] private ParticleSystem _onAttackEffect;
+        [SerializeField] private CFXR_Effect _onAttackEffect;
         [SerializeField] private WeaponProjectile _projectile;
 
         private WeaponConfigsRepository _configRepository;

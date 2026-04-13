@@ -1,6 +1,5 @@
 ﻿using System;
 using Zenject;
-using UnityEngine;
 using _Project.Scripts.UI;
 using _Project.Scripts.Towers;
 using _Project.Scripts.Towers.Castle;
@@ -19,11 +18,10 @@ namespace _Project.Scripts.Logic.Level
         private CastleTower _castle;
         private UIFactory _uiFactory;
         private WaveManager _waveManager;
-        private TowerService _towerService;
         private GameRepository _gameRepository;
         private TowerPlacement _towerPlacement;
         private EndGameService _endGameService;
-        private CreateTowerPanel _createTowerPanel;
+        private CreateTowerView _createTowerView;
         private CastleInitializer _castleInitializer;
         private AnalyticsService _analyticsService;
         private CoinCounterModel _coinCounterModel;
@@ -38,7 +36,6 @@ namespace _Project.Scripts.Logic.Level
             TowerPlacement towerPlacement,
             WaveManager waveManager,
             CoinCounterModel coinCounterModel,
-            TowerService towerService,
             CastleInitializer castleInitializer,
             AnalyticsService analyticsService,
             EndGameService endGameService,
@@ -50,7 +47,6 @@ namespace _Project.Scripts.Logic.Level
             _gameRepository = gameRepository;
             _uiFactory = uiFactory;
             _waveManager = waveManager;
-            _towerService = towerService;
             _endGameService = endGameService;
             _upgradeService = upgradeService;
             _analyticsService = analyticsService;
@@ -62,7 +58,7 @@ namespace _Project.Scripts.Logic.Level
             CreateUI();
             CreateCastle();
             
-            _towerPlacement.OnPlaceClicked += _createTowerPanel.ShowPanel;
+            _towerPlacement.OnPlaceClicked += _createTowerView.ShowPanel;
             _waveManager.OnCompleteLevel += GameVictory;
             _waveManager.OnCompleteWave += OnCompleteWave;
             _waveManager.StartTimer(waveCount: 1);
@@ -70,7 +66,7 @@ namespace _Project.Scripts.Logic.Level
         
         public void Dispose()
         {
-            _towerPlacement.OnPlaceClicked -= _createTowerPanel.ShowPanel;
+            _towerPlacement.OnPlaceClicked -= _createTowerView.ShowPanel;
             _castle.OnCastleDestroy -= GameOver;
             _castle.OnCastleDestroy -= _waveManager.StopWave;
             _castle.OnCastleDamaged -= OnCastleDamaged;
@@ -82,7 +78,7 @@ namespace _Project.Scripts.Logic.Level
         {
             _uiFactory.CreateCoinCounterPanel();
             _uiFactory.CreateWaveCounterPanel();
-            _createTowerPanel = _uiFactory.CreateTowerPanel(onCreateTowerClick: CreateTower);
+            _createTowerView = _uiFactory.CreateTowerPanel(onCreateTower: OnCreateTower);
         }
 
         private void CreateCastle()
@@ -101,26 +97,9 @@ namespace _Project.Scripts.Logic.Level
         
         private void GameVictory() => _endGameService.GameVictory();
         
-        private void CreateTower(
-            TowerType towerType, 
-            Vector3 position, 
-            int coinPrice)
+        private void OnCreateTower(int coinPrice)
         {
-            if (_coinCounterModel.Coins < coinPrice)
-            {
-                _analyticsService.BuildRejected("not_enough_coins", _waveManager.CurrentWave);
-                return;
-            }   
-            
             _totalTowersBuilt++;
-            _towerService.CreateAndPurchase(
-                towerType, 
-                position, 
-                coinPrice,
-                _upgradeService.GetUpgradeMultiplier(UpgradeIdMatcher.TOWER_DAMAGE_ID),
-                _upgradeService.GetUpgradeMultiplier(UpgradeIdMatcher.TOWER_ATTACK_SPEED_ID)
-            );
-            _createTowerPanel.HidePanel();
             
             _analyticsService.TowerBuilt(
                 _waveManager.CurrentWave,

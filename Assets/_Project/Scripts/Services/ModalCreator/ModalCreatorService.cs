@@ -9,7 +9,6 @@ namespace _Project.Scripts.Services.ModalCreator
         private readonly IInstantiator _instantiator;
         private readonly ModalsPrefabDatabase _modalPrefabDatabase;
 
-        private RectTransform _uiRoot;
         private GameObject _currentOpenedModal;
 
         public ModalCreatorService(ModalsPrefabDatabase modalPrefabDatabase, IInstantiator instantiator)
@@ -18,14 +17,13 @@ namespace _Project.Scripts.Services.ModalCreator
             _modalPrefabDatabase =  modalPrefabDatabase;
         }
 
-        public void SetUIRoot(RectTransform uiRoot) => _uiRoot = uiRoot;
 
         public GameObject OpenModal(ModalType modalType)
         {
             if (_currentOpenedModal != null)
                 CloseModal();
 
-            _currentOpenedModal = _instantiator.InstantiatePrefab(_modalPrefabDatabase.Get(modalType), _uiRoot);
+            _currentOpenedModal = _instantiator.InstantiatePrefab(_modalPrefabDatabase.Get(modalType));
             return _currentOpenedModal;
         }
 

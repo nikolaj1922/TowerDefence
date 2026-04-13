@@ -2,10 +2,11 @@
 using System.Threading;
 using _Project.Scripts.Configs;
 using _Project.Scripts.Infrastructure.GameConstants;
+using _Project.Scripts.Infrastructure.ObjectsPool;
+using CartoonFX;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
 using Zenject;
-using Object = UnityEngine.Object;
 
 namespace _Project.Scripts.Weapons
 {
@@ -17,7 +18,7 @@ namespace _Project.Scripts.Weapons
         private readonly Transform _weaponHead;
         private readonly Transform _weaponBase;
         private readonly Transform _projectileSpawnPoint;
-        private readonly ParticleSystem _onAttackEffect;
+        private readonly ObjectsPool<CFXR_Effect> _projectilePool;
         private Vector3 _weaponHeadInitialPosition;
         private CancellationTokenSource _visualCts;
 
@@ -26,14 +27,14 @@ namespace _Project.Scripts.Weapons
             [Inject(Id = GameConstants.WEAPON_HEAD_INJECT_ID)] Transform weaponHead,
             [Inject(Id = GameConstants.WEAPON_BASE_INJECT_ID)] Transform weaponBase,
             [Inject(Id = GameConstants.PROJECTILE_POINT_INJECT_ID)] Transform projectileSpawnPoint,
-            ParticleSystem onAttackEffect
+            CFXR_Effect onAttackEffect
         )
         {
             _attackSpeed = config.AttackSpeed;
             _weaponHead = weaponHead;
             _weaponBase = weaponBase;
             _projectileSpawnPoint = projectileSpawnPoint;
-            _onAttackEffect = onAttackEffect;
+            _projectilePool = new ObjectsPool<CFXR_Effect>(onAttackEffect);
         }
         
         public void Initialize()
@@ -51,7 +52,7 @@ namespace _Project.Scripts.Weapons
 
             CancelVisualTask();
             _visualCts = new CancellationTokenSource();
-            BackVisualToInitialHeadPosition(_visualCts.Token).Forget();
+            BackWeaponHeadToInitialPosition(_visualCts.Token).Forget();
         }
         
         public void CreateAttackFX()
@@ -59,13 +60,20 @@ namespace _Project.Scripts.Weapons
             if (!_projectileSpawnPoint || !_weaponBase)
                 return;
 
-            var effect = Object.Instantiate(_onAttackEffect, _projectileSpawnPoint.position, Quaternion.identity);
+            var effect = _projectilePool.Get();
+            effect.transform.SetPositionAndRotation(
+                _projectileSpawnPoint.position,
+                _projectileSpawnPoint.rotation);
+            
             effect.transform.localScale = _weaponBase.localScale * VFX_SCALE_MULTIPLIER;
+
+            var vfx = effect.GetComponent<PooledVFX>();
+            vfx.Init(_projectilePool, effect);
         }
         
         public void Dispose() => CancelVisualTask();
         
-        private async UniTaskVoid BackVisualToInitialHeadPosition(CancellationToken token)
+        private async UniTaskVoid BackWeaponHeadToInitialPosition(CancellationToken token)
         {
             if (!_weaponHead)
                 return;

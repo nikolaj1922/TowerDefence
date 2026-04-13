@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Threading;
-using _Project.Scripts.Logic.Level;
 using _Project.Scripts.Logic.Wave;
 using Cysharp.Threading.Tasks;
 using Zenject;
@@ -12,14 +11,14 @@ namespace _Project.Scripts.UI.WaveCounter
         private const int WAVE_TIMER_TICK_SECONDS = 1;
         
         private readonly WaveCounterModel _counterModel;
-        private readonly WaveCounterPanel _view;
+        private readonly WaveCounterView _view;
         private readonly WaveManager _waveManager;
         
         private CancellationTokenSource _cancellationToken;
         
         public WaveCounterPresenter(
             WaveCounterModel counterModel, 
-            WaveCounterPanel view, 
+            WaveCounterView view, 
             WaveManager waveManager)
         {
             _view = view;

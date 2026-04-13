@@ -1,10 +1,9 @@
-﻿using _Project.Scripts.Database.ModalsPrefabDatabase;
-using _Project.Scripts.Logic.Level;
-using _Project.Scripts.Logic.Wave;
+﻿using _Project.Scripts.Logic.Wave;
+using _Project.Scripts.Services.SaveLoad;
 using _Project.Scripts.Services.Analytics;
 using _Project.Scripts.Services.ModalCreator;
-using _Project.Scripts.Services.SaveLoad;
 using _Project.Scripts.UI.Modals.EndGameModal;
+using _Project.Scripts.Database.ModalsPrefabDatabase;
 
 namespace _Project.Scripts.Services.EndGame
 {
@@ -46,10 +45,9 @@ namespace _Project.Scripts.Services.EndGame
             int metaAdded = _waveManager.GetRewardForWaves();
             _saveLoad.AddMetaCoins(metaAdded);
             
-            EndGameModal endGameModal =
-                _modalCreatorService.OpenModal(ModalType.EndGame).GetComponent<EndGameModal>();
-            endGameModal.SetMetaCoinText(metaAdded);
-            endGameModal.SetHeaderText(headerText);
+            EndGameModalView endGameModalView =
+                _modalCreatorService.OpenModal(ModalType.EndGame).GetComponent<EndGameModalView>();
+            endGameModalView.Initialize(headerText, metaAdded, _waveManager.CurrentWave);
         }
     }
 }

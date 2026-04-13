@@ -230,13 +230,13 @@ MonoBehaviour:
   _weaponBase: {fileID: 5892794615815076695}
   _weaponHead: {fileID: 5782930849589259836}
   _projectileSpawnPoint: {fileID: 2301266065993413535}
-  _projectile: {fileID: -1521682930354109669, guid: 4ea3d4da4fe9f6842a5ed0164e3be0e5, type: 3}
+  _weapon: {fileID: 8562319909079802671}
   _enemyLayerMask:
     serializedVersion: 2
     m_Bits: 256
   _weaponType: 0
-  _onAttackEffect: {fileID: 2433282508523890284, guid: 3ef3ae421f71c5c4e97fe12dc2fc6312, type: 3}
-  _weapon: {fileID: 8562319909079802671}
+  _onAttackEffect: {fileID: 2883620193154939874, guid: 3ef3ae421f71c5c4e97fe12dc2fc6312, type: 3}
+  _projectile: {fileID: -1521682930354109669, guid: 4ea3d4da4fe9f6842a5ed0164e3be0e5, type: 3}
 --- !u!1 &7763969958069225268
 GameObject:
   m_ObjectHideFlags: 0
