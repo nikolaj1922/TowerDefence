@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
-using _Project.Scripts.Infrastructure.GameConstants;
+using _Project.Scripts.Infrastructure.Constants;
+using Cysharp.Threading.Tasks;
 
 namespace _Project.Scripts.Services.SaveLoad
 {
@@ -20,17 +21,20 @@ namespace _Project.Scripts.Services.SaveLoad
             PlayerPrefs.Save();
         }
 
-        public void LoadProgress()
+        public UniTask LoadProgress()
         {
             if (PlayerPrefs.HasKey(GameConstants.PLAYER_PROGRESS))
             {
                 string json = PlayerPrefs.GetString(GameConstants.PLAYER_PROGRESS);
                 PlayerProgress = JsonUtility.FromJson<PlayerProgress>(json);
+            
             }
             else
             {
                 InitProgress();
             }
+            
+            return UniTask.CompletedTask;
         }
 
         private void InitProgress()

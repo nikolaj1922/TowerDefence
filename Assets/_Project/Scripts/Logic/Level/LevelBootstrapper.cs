@@ -6,8 +6,8 @@ using _Project.Scripts.Towers;
 using _Project.Scripts.Logic.Coins;
 using _Project.Scripts.Towers.Castle;
 using _Project.Scripts.ConfigRepositories;
-using _Project.Scripts.Services.Upgrade;
 using _Project.Scripts.Services.Analytics;
+using _Project.Scripts.Services.TowerUpgrade;
 using _Project.Scripts.UI.CreateTowerPanel;
 
 namespace _Project.Scripts.Logic.Level
@@ -25,7 +25,7 @@ namespace _Project.Scripts.Logic.Level
         private CastleInitializer _castleInitializer;
         private AnalyticsService _analyticsService;
         private CoinCounterModel _coinCounterModel;
-        private UpgradeService _upgradeService;
+        private TowerUpgradeService _towerUpgradeService;
 
         private int _totalTowersBuilt;
 
@@ -40,7 +40,7 @@ namespace _Project.Scripts.Logic.Level
             CastleInitializer castleInitializer,
             AnalyticsService analyticsService,
             EndGameService endGameService,
-            UpgradeService upgradeService
+            TowerUpgradeService towerUpgradeService
             )
         {
             _castleInitializer = castleInitializer;
@@ -50,7 +50,7 @@ namespace _Project.Scripts.Logic.Level
             _waveManager = waveManager;
             _towerService = towerService;
             _endGameService = endGameService;
-            _upgradeService = upgradeService;
+            _towerUpgradeService = towerUpgradeService;
             _analyticsService = analyticsService;
             _coinCounterModel = coinCounterModel;
         }
@@ -87,8 +87,8 @@ namespace _Project.Scripts.Logic.Level
         {
             _castle = _castleInitializer.CreateCastle(
                 _gameRepository.GameConfig.CastlePosition,
-                _upgradeService.GetUpgradeMultiplier(UpgradeIdMatcher.CASTLE_DAMAGE_ID),
-                _upgradeService.GetUpgradeMultiplier(UpgradeIdMatcher.CASTLE_ATTACK_SPEED_ID)
+                _towerUpgradeService.GetUpgradeMultiplier(TowerUpgradeIdMatcher.CASTLE_DAMAGE_ID),
+                _towerUpgradeService.GetUpgradeMultiplier(TowerUpgradeIdMatcher.CASTLE_ATTACK_SPEED_ID)
                 );
             _castle.OnCastleDestroy += GameOver;
             _castle.OnCastleDestroy += _waveManager.StopWave;
@@ -115,8 +115,8 @@ namespace _Project.Scripts.Logic.Level
                 towerType, 
                 position, 
                 coinPrice,
-                _upgradeService.GetUpgradeMultiplier(UpgradeIdMatcher.TOWER_DAMAGE_ID),
-                _upgradeService.GetUpgradeMultiplier(UpgradeIdMatcher.TOWER_ATTACK_SPEED_ID)
+                _towerUpgradeService.GetUpgradeMultiplier(TowerUpgradeIdMatcher.TOWER_DAMAGE_ID),
+                _towerUpgradeService.GetUpgradeMultiplier(TowerUpgradeIdMatcher.TOWER_ATTACK_SPEED_ID)
             );
             _createTowerPanel.HidePanel();
             

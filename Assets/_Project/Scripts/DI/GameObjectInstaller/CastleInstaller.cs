@@ -3,7 +3,7 @@ using UnityEngine;
 using _Project.Scripts.Logic.Health;
 using _Project.Scripts.UI.HealthBar;
 using _Project.Scripts.ConfigRepositories;
-using _Project.Scripts.Services.Upgrade;
+using _Project.Scripts.Services.TowerUpgrade;
 
 namespace _Project.Scripts.DI.GameObjectInstaller
 {
@@ -12,15 +12,15 @@ namespace _Project.Scripts.DI.GameObjectInstaller
         [SerializeField] private HealthBarView _healthBarView;
         
         private GameRepository _gameRepository;
-        private UpgradeService _upgradeService;
+        private TowerUpgradeService _towerUpgradeService;
 
         [Inject]
         public void Construct(
             GameRepository gameRepository,
-            UpgradeService upgradeService
+            TowerUpgradeService towerUpgradeService
         )
         {
-            _upgradeService = upgradeService;
+            _towerUpgradeService = towerUpgradeService;
             _gameRepository = gameRepository;
         }
         
@@ -28,7 +28,7 @@ namespace _Project.Scripts.DI.GameObjectInstaller
         {
             float castleHp = 
                 _gameRepository.GameConfig.CastleHealth *
-                _upgradeService.GetUpgradeMultiplier(UpgradeIdMatcher.CASTLE_HP_ID);
+                _towerUpgradeService.GetUpgradeMultiplier(TowerUpgradeIdMatcher.CASTLE_HP_ID);
             
             Container
                 .Bind<HealthModel>()

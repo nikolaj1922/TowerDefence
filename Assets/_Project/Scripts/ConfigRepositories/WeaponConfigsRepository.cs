@@ -1,9 +1,12 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using System.Collections.Generic;
 using _Project.Scripts.Configs;
 using _Project.Scripts.Weapons;
 using _Project.Scripts.Services.AssetProvider;
 using _Project.Scripts.Infrastructure.AssetPath;
+using Cysharp.Threading.Tasks;
+using UnityEngine;
 
 namespace _Project.Scripts.ConfigRepositories
 {
@@ -14,11 +17,37 @@ namespace _Project.Scripts.ConfigRepositories
 
         public WeaponConfigsRepository(IAssetProvider assets) => _assets = assets;
 
-        public void Load() => 
-            _weapons = _assets
-                .LoadAll<WeaponConfig>(AssetPath.WEAPONS)
-                .ToDictionary(t => t.WeaponType, t => t);
+        public async UniTask Load()
+        {
+            try
+            {
+                WeaponConfig[] configs = await _assets.LoadAll<WeaponConfig>(AssetPath.WEAPONS);
 
-        public WeaponConfig Get(WeaponType towerType) => _weapons.GetValueOrDefault(towerType);
+                if (configs == null || configs.Length == 0)
+                {
+                    Debug.LogWarning($"Weapon configs could not be found.");
+                    _weapons = new Dictionary<WeaponType, WeaponConfig>();
+                    return;
+                }
+
+                _weapons = configs.ToDictionary(c => c.WeaponType, c => c);
+            }
+            catch(Exception ex)
+            {
+                Debug.LogError($"Weapon configs loading failed: {ex.Message}");
+                _weapons = new Dictionary<WeaponType, WeaponConfig>();
+            }
+        }
+        
+        public WeaponConfig Get(WeaponType towerType)
+        {
+            if (!_weapons.TryGetValue(towerType, out var config))
+            {
+                Debug.LogError($"Weapon config not found for type: {towerType}");
+                return null;
+            }
+
+            return config;
+        }
     }
 }

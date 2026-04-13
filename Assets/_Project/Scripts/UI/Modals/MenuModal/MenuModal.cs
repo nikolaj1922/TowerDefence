@@ -4,8 +4,8 @@ using UnityEngine.UI;
 using Cysharp.Threading.Tasks;
 using _Project.Scripts.Database.ModalsPrefabDatabase;
 using _Project.Scripts.Infrastructure.ModalCreator;
-using _Project.Scripts.Infrastructure.GameConstants;
-using _Project.Scripts.Infrastructure.SceneLoader;
+using _Project.Scripts.Infrastructure.Constants;
+using _Project.Scripts.Infrastructure.LoadingScene;
 
 namespace _Project.Scripts.UI.Modals.MenuModal
 {

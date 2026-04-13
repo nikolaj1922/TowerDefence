@@ -2,7 +2,7 @@
 using UnityEngine;
 using _Project.Scripts.Configs.Upgrades;
 using _Project.Scripts.Services.SaveLoad;
-using _Project.Scripts.Services.Upgrade;
+using _Project.Scripts.Services.TowerUpgrade;
 
 namespace _Project.Scripts.UI.Modals.UpgradeModal
 {
@@ -12,7 +12,7 @@ namespace _Project.Scripts.UI.Modals.UpgradeModal
         private readonly UpgradeItemView _view;
         private readonly PlayerProgress _progress;
         private readonly UpgradeConfig _upgradeConfig;
-        private readonly UpgradeService _upgradeService;
+        private readonly TowerUpgradeService _towerUpgradeService;
 
         private int _price;
         private int _upgradeLevel;
@@ -21,14 +21,14 @@ namespace _Project.Scripts.UI.Modals.UpgradeModal
             ISaveLoad saveLoad, 
             UpgradeItemView view, 
             UpgradeConfig upgradeConfig,
-            UpgradeService upgradeService
+            TowerUpgradeService towerUpgradeService
             )
         {
             _view = view;
             _saveLoad = saveLoad;
             _progress = saveLoad.PlayerProgress;
             _upgradeConfig = upgradeConfig;
-            _upgradeService = upgradeService;
+            _towerUpgradeService = towerUpgradeService;
 
             Init();
         }
@@ -46,7 +46,7 @@ namespace _Project.Scripts.UI.Modals.UpgradeModal
         
         private void OnBuyClicked()
         {
-            _upgradeService.SetUpgradeLevel(_upgradeConfig.id, _upgradeLevel + 1);
+            _towerUpgradeService.SetUpgradeLevel(_upgradeConfig.id, _upgradeLevel + 1);
             _progress.metaCoinsCount -= _price;
             _saveLoad.SaveProgress();
             Refresh();
@@ -54,7 +54,7 @@ namespace _Project.Scripts.UI.Modals.UpgradeModal
 
         private void Refresh()
         {
-            _upgradeLevel = _upgradeService.GetUpgradeLevel(_upgradeConfig.id);
+            _upgradeLevel = _towerUpgradeService.GetUpgradeLevel(_upgradeConfig.id);
             _price = (int)GetPrice(_upgradeConfig.basePrice, _upgradeConfig.priceMultiplierByLevel, _upgradeLevel);
             
             bool canBuy = _progress.metaCoinsCount >= _price;

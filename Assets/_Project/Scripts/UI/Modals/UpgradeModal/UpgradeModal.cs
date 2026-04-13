@@ -5,9 +5,9 @@ using System.Collections.Generic;
 using _Project.Scripts.Database;
 using _Project.Scripts.UI.MetaCounter;
 using _Project.Scripts.Services.SaveLoad;
-using _Project.Scripts.Services.Upgrade;
 using _Project.Scripts.Infrastructure.ModalCreator;
 using _Project.Scripts.Database.ModalsPrefabDatabase;
+using _Project.Scripts.Services.TowerUpgrade;
 
 namespace _Project.Scripts.UI.Modals.UpgradeModal
 {
@@ -20,7 +20,7 @@ namespace _Project.Scripts.UI.Modals.UpgradeModal
 
         private ISaveLoad _saveLoad;
         private ModalCreator _modalCreator;
-        private UpgradeService _upgradeService;
+        private TowerUpgradeService _towerUpgradeService;
         private UpgradesDatabase _upgradeDatabase;
 
         private List<UpgradeItemPresenter> _upgradeItemPresenters;
@@ -30,9 +30,9 @@ namespace _Project.Scripts.UI.Modals.UpgradeModal
             UpgradesDatabase upgradesDatabase, 
             ISaveLoad saveLoad, 
             ModalCreator modalCreator, 
-            UpgradeService upgradeService)
+            TowerUpgradeService towerUpgradeService)
         {
-            _upgradeService = upgradeService;
+            _towerUpgradeService = towerUpgradeService;
             _modalCreator = modalCreator;
             _upgradeDatabase = upgradesDatabase;
             _saveLoad = saveLoad;
@@ -64,7 +64,7 @@ namespace _Project.Scripts.UI.Modals.UpgradeModal
                     _saveLoad,
                     view,
                     upgrade,
-                    _upgradeService
+                    _towerUpgradeService
                 ));
                 
                 view.OnBuyClicked += _metaCounterPanel.UpdateView;

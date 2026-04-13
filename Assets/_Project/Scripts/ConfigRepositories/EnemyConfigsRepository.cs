@@ -1,4 +1,7 @@
-﻿using System.Linq;
+﻿using System;
+using UnityEngine;
+using System.Linq;
+using Cysharp.Threading.Tasks;
 using System.Collections.Generic;
 using _Project.Scripts.Configs;
 using _Project.Scripts.Enemies;
@@ -14,11 +17,39 @@ namespace _Project.Scripts.ConfigRepositories
 
         public EnemyConfigsRepository(IAssetProvider assets) => _assets = assets;
 
-        public void Load() => 
-            _enemies = _assets
-                .LoadAll<EnemyConfig>(AssetPath.ENEMIES)
-                .ToDictionary(l => l.Type, l => l);
+        public async UniTask Load()
+        {
+            try
+            {
+                EnemyConfig[] configs = await _assets
+                    .LoadAll<EnemyConfig>(AssetPath.ENEMIES);
 
-        public EnemyConfig Get(EnemyType enemyType) => _enemies.GetValueOrDefault(enemyType);
+                if (configs == null || configs.Length == 0)
+                {
+                    Debug.LogWarning($"Enemy configs could not be found.");
+                    _enemies = new Dictionary<EnemyType, EnemyConfig>();
+                    return;
+                }
+
+                _enemies = configs.ToDictionary(c => c.Type, c => c);
+            }
+            catch (Exception ex)
+            {
+                Debug.LogError($"Enemy configs loading failed: {ex.Message}");
+                _enemies = new Dictionary<EnemyType, EnemyConfig>();
+            }
+        }
+      
+
+        public EnemyConfig Get(EnemyType enemyType)
+        {
+            if (!_enemies.TryGetValue(enemyType, out var config))
+            {
+                Debug.LogError($"Enemy config not found for type: {enemyType}");
+                return null;
+            }
+
+            return config;
+        }
     }
 }

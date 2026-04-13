@@ -1,4 +1,6 @@
-﻿namespace _Project.Scripts.Services.SaveLoad
+﻿using Cysharp.Threading.Tasks;
+
+namespace _Project.Scripts.Services.SaveLoad
 {
     public interface ISaveLoad
     {
@@ -6,6 +8,6 @@
         
         void AddMetaCoins(int coins);
         void SaveProgress();
-        void LoadProgress();
+        UniTask LoadProgress();
     }
 }

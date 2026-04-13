@@ -2,7 +2,7 @@
 using UnityEngine;
 using _Project.Scripts.Configs;
 using _Project.Scripts.ConfigRepositories;
-using _Project.Scripts.Infrastructure.GameConstants;
+using _Project.Scripts.Infrastructure.Constants;
 using _Project.Scripts.Weapons;
 
 namespace _Project.Scripts.DI.GameObjectInstaller

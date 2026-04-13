@@ -4,7 +4,7 @@ using _Project.Scripts.Weapons;
 using _Project.Scripts.Logic.Towers;
 using _Project.Scripts.ConfigRepositories;
 using _Project.Scripts.Towers.Castle.States;
-using _Project.Scripts.Infrastructure.GameConstants;
+using _Project.Scripts.Infrastructure.Constants;
 using _Project.Scripts.Infrastructure.StateMachine;
 
 namespace _Project.Scripts.Towers.Castle

@@ -1,7 +1,7 @@
 using DG.Tweening;
 using UnityEngine;
 using UnityEngine.UI;
-using _Project.Scripts.Infrastructure.GameConstants;
+using _Project.Scripts.Infrastructure.Constants;
 
 namespace _Project.Scripts.UI.CreateTowerPanel
 {

@@ -6,7 +6,7 @@ using _Project.Scripts.Logic.Coins;
 using _Project.Scripts.Logic.Health;
 using _Project.Scripts.Enemies.States;
 using _Project.Scripts.ConfigRepositories;
-using _Project.Scripts.Infrastructure.GameConstants;
+using _Project.Scripts.Infrastructure.Constants;
 using _Project.Scripts.Infrastructure.StateMachine;
 using _Project.Scripts.Towers.Castle;
 

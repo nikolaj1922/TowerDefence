@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Threading;
 using _Project.Scripts.Configs;
-using _Project.Scripts.Infrastructure.GameConstants;
+using _Project.Scripts.Infrastructure.Constants;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
 using Zenject;

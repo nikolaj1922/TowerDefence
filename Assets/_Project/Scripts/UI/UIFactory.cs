@@ -8,7 +8,7 @@ using _Project.Scripts.UI.WaveCounter;
 using _Project.Scripts.UI.CoinCounter;
 using _Project.Scripts.ConfigRepositories;
 using _Project.Scripts.UI.CreateTowerPanel;
-using _Project.Scripts.Infrastructure.GameConstants;
+using _Project.Scripts.Infrastructure.Constants;
 using _Project.Scripts.UI.Modals.EndGameModal;
 
 namespace _Project.Scripts.UI

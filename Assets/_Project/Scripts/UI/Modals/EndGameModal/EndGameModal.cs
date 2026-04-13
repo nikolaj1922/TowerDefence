@@ -6,8 +6,8 @@ using Cysharp.Threading.Tasks;
 using _Project.Scripts.Logic.Level;
 using _Project.Scripts.Services.SaveLoad;
 using _Project.Scripts.Services.Analytics;
-using _Project.Scripts.Infrastructure.GameConstants;
-using _Project.Scripts.Infrastructure.SceneLoader;
+using _Project.Scripts.Infrastructure.Constants;
+using _Project.Scripts.Infrastructure.LoadingScene;
 
 namespace _Project.Scripts.UI.Modals.EndGameModal
 {

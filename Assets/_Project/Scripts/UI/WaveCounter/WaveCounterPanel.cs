@@ -2,7 +2,7 @@
 using System;
 using UnityEngine;
 using UnityEngine.UI;
-using _Project.Scripts.Infrastructure.GameConstants;
+using _Project.Scripts.Infrastructure.Constants;
 using DG.Tweening;
 
 namespace _Project.Scripts.UI.WaveCounter

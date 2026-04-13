@@ -1,9 +1,12 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
+using Cysharp.Threading.Tasks;
 using System.Collections.Generic;
 using _Project.Scripts.Towers;
 using _Project.Scripts.Configs;
 using _Project.Scripts.Infrastructure.AssetPath;
 using _Project.Scripts.Services.AssetProvider;
+using UnityEngine;
 
 namespace _Project.Scripts.ConfigRepositories
 {
@@ -14,12 +17,38 @@ namespace _Project.Scripts.ConfigRepositories
 
         public TowerConfigsRepository(IAssetProvider assets) => _assets = assets;
 
-        public void Load() => 
-            _towers = _assets
-                .LoadAll<TowerConfig>(AssetPath.TOWERS)
-                .ToDictionary(t => t.TowerType, t => t);
+        public async UniTask Load()
+        {
+            try
+            {
+                TowerConfig[] configs = await _assets.LoadAll<TowerConfig>(AssetPath.TOWERS);
 
-        public TowerConfig Get(TowerType towerType) => _towers.GetValueOrDefault(towerType);
+                if (configs == null || configs.Length == 0)
+                {
+                    Debug.LogWarning($"Tower configs could not be found.");
+                    _towers = new Dictionary<TowerType, TowerConfig>();
+                    return;
+                }
+
+                _towers = configs.ToDictionary(t => t.TowerType, t => t);
+            }
+            catch (Exception ex)
+            {
+                Debug.LogWarning($"Tower configs loading failed: {ex.Message}.");
+                _towers = new Dictionary<TowerType, TowerConfig>();
+            }
+        }
+
+        public TowerConfig Get(TowerType towerType)
+        {
+            if (!_towers.TryGetValue(towerType, out var config))
+            {
+                Debug.LogError($"Tower config not found for type: {towerType}");
+                return null;
+            }
+
+            return config;
+        }
 
         public TowerConfig[] GetBuildable() => _towers.Values.Where(t => t.CanBuild).ToArray();
     }

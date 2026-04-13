@@ -5,19 +5,22 @@ using _Project.Scripts.Services.SaveLoad;
 using _Project.Scripts.Services.Analytics;
 using _Project.Scripts.ConfigRepositories;
 using _Project.Scripts.Services.AssetProvider;
-using _Project.Scripts.Infrastructure.SceneLoader;
 using _Project.Scripts.Services.Analytics.Firebase;
 using _Project.Scripts.Database.EnemyPrefabDatabase;
 using _Project.Scripts.Database.ModalsPrefabDatabase;
 using _Project.Scripts.Database.TowersPrefabDatabase;
 using _Project.Scripts.Database.WeaponPrefabDatabase;
+using _Project.Scripts.Infrastructure.LoadingCurtain;
+using _Project.Scripts.Infrastructure.LoadingScene;
 using _Project.Scripts.Infrastructure.ModalCreator;
-using _Project.Scripts.Services.Upgrade;
+using _Project.Scripts.Services.TowerUpgrade;
 
 namespace _Project.Scripts.DI.ProjectContext
 {
     public class ProjectContextInstaller : MonoInstaller
     {
+        [SerializeField] private LoadingCurtainView _loadingCurtainView;
+        
         [SerializeField] private EnemyPrefabsDatabase _enemyPrefabsDatabase;
         [SerializeField] private TowerPrefabsDatabase _towerPrefabsDatabase;
         [SerializeField] private WeaponPrefabsDatabase _weaponPrefabsDatabase;
@@ -34,12 +37,17 @@ namespace _Project.Scripts.DI.ProjectContext
             Container.BindInterfacesAndSelfTo<AssetProvider>().AsSingle();
             Container.Bind<SceneLoader>().AsSingle().NonLazy();
             Container.Bind<ISaveLoad>().To<SaveLoad>().AsSingle();
-            Container.Bind<UpgradeService>().AsSingle();
-            
+            Container.Bind<TowerUpgradeService>().AsSingle();
+
+            BindAnalytics();
+            BindConfigRepositories();
+            BindLoadingCurtain();
+        }
+
+        private void BindAnalytics()
+        {
             Container.Bind<IAnalyticsClient>().To<FirebaseAnalyticsClient>().AsSingle();
             Container.Bind<AnalyticsService>().AsSingle();
-
-            BindConfigRepositories();
         }
 
         private void BindDatabases()
@@ -61,6 +69,16 @@ namespace _Project.Scripts.DI.ProjectContext
             Container.Bind<WeaponConfigsRepository>().AsSingle();
             Container.Bind<EnemyConfigsRepository>().AsSingle();
             Container.Bind<GameRepository>().AsSingle();
+        }
+
+        private void BindLoadingCurtain()
+        {
+            Container.Bind<LoadingCurtainView>()
+                .FromComponentInNewPrefab(_loadingCurtainView)
+                .AsSingle();
+            Container.Bind<LoadingCurtainModel>().AsSingle();
+            Container.BindInterfacesAndSelfTo<LoadingCurtainController>().AsSingle();
+            Container.Bind<LoadingPipelineFactory>().AsSingle();
         }
     }
 }

@@ -9,12 +9,12 @@ using _Project.Scripts.Logic.Coins;
 using _Project.Scripts.Towers.Castle;
 using _Project.Scripts.UI.WaveCounter;
 using _Project.Scripts.UI.CoinCounter;
-using _Project.Scripts.Services.Upgrade;
 using _Project.Scripts.ConfigRepositories;
 using _Project.Scripts.UI.CreateTowerPanel;
 using _Project.Scripts.UI.Modals.EndGameModal;
 using _Project.Scripts.Database.EnemyPrefabDatabase;
-using _Project.Scripts.Infrastructure.GameConstants;
+using _Project.Scripts.Infrastructure.Constants;
+using _Project.Scripts.Services.TowerUpgrade;
 
 namespace _Project.Scripts.DI.SceneContext.LevelScene
 {
@@ -32,16 +32,16 @@ namespace _Project.Scripts.DI.SceneContext.LevelScene
 
         private GameRepository _gameRepository;
         private EnemyPrefabsDatabase _enemyPrefabsDatabase;
-        private UpgradeService _upgradeService;
+        private TowerUpgradeService _towerUpgradeService;
         
         [Inject]
         public void Construct(
             EnemyPrefabsDatabase enemyPrefabsDatabase, 
             GameRepository gameRepository,
-            UpgradeService upgradeService
+            TowerUpgradeService towerUpgradeService
             )
         {
-            _upgradeService = upgradeService;
+            _towerUpgradeService = towerUpgradeService;
             _enemyPrefabsDatabase = enemyPrefabsDatabase;
             _gameRepository = gameRepository;
         }
