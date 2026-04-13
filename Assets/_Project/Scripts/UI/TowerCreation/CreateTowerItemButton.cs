@@ -1,10 +1,10 @@
-﻿using TMPro;
+﻿using System;
+using _Project.Scripts.UI.CoinCounter;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
-using UnityEngine.Events;
-using _Project.Scripts.Logic.Coins;
 
-namespace _Project.Scripts.UI.CreateTowerPanel
+namespace _Project.Scripts.UI.TowerCreation
 {
     public class CreateTowerItemButton : MonoBehaviour
     {
@@ -13,23 +13,35 @@ namespace _Project.Scripts.UI.CreateTowerPanel
         [SerializeField] private TextMeshProUGUI _priceText;
         [SerializeField] private HorizontalLayoutGroup _layoutGroup;
 
+        private CoinCounterModel _coinCounterModel;
         private int _price;
-        
-        private void OnDestroy() =>  _createTowerButton.onClick.RemoveAllListeners();
-        
-        public void Initialize(int price, Sprite preview, UnityAction onClick, CoinCounterModel coinCounterModel)
+
+        private void OnDestroy()
         {
+            _createTowerButton.onClick.RemoveAllListeners();
+            _coinCounterModel.OnCoinChanged -= UpdateButtonStatus;
+        }
+        
+        public void Initialize(int price, Sprite preview, Action onClick, CoinCounterModel coinCounterModel)
+        {
+            _coinCounterModel = coinCounterModel;
             _price = price;
             
             _preview.sprite = preview;
             _priceText.text = _price.ToString();
-            _createTowerButton.onClick.AddListener(onClick);
             
+            _createTowerButton.onClick.AddListener(() => onClick?.Invoke());
+            
+            _coinCounterModel.OnCoinChanged += UpdateButtonStatus;
+            _coinCounterModel.UpdateSubscribers();
+            
+            UpdateGroupLayout();
+        }
+
+        private void UpdateGroupLayout()
+        {
             _priceText.ForceMeshUpdate();
             LayoutRebuilder.ForceRebuildLayoutImmediate(_layoutGroup.GetComponent<RectTransform>());
-
-            coinCounterModel.OnCoinChanged += UpdateButtonStatus;
-            coinCounterModel.UpdateSubscribers();
         }
         
         private void UpdateButtonStatus(int currentCoin)

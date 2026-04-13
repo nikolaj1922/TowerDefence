@@ -3,7 +3,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using _Project.Scripts.Infrastructure.Constants;
 
-namespace _Project.Scripts.UI.CreateTowerPanel
+namespace _Project.Scripts.UI.TowerCreation
 {
     public class CreateTowerPanel : MonoBehaviour
     {

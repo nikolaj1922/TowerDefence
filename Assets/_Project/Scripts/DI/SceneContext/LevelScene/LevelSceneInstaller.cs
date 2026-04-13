@@ -5,16 +5,16 @@ using _Project.Scripts.Towers;
 using _Project.Scripts.Weapons;
 using _Project.Scripts.Enemies;
 using _Project.Scripts.Logic.Level;
-using _Project.Scripts.Logic.Coins;
 using _Project.Scripts.Towers.Castle;
 using _Project.Scripts.UI.WaveCounter;
 using _Project.Scripts.UI.CoinCounter;
-using _Project.Scripts.ConfigRepositories;
-using _Project.Scripts.UI.CreateTowerPanel;
+using _Project.Scripts.UI.TowerCreation;
 using _Project.Scripts.UI.Modals.EndGameModal;
 using _Project.Scripts.Database.EnemyPrefabDatabase;
 using _Project.Scripts.Infrastructure.Constants;
 using _Project.Scripts.Services.TowerUpgrade;
+using _Project.Scripts.Logic.Wave;
+using _Project.Scripts.Services.EndGame;
 
 namespace _Project.Scripts.DI.SceneContext.LevelScene
 {
@@ -30,21 +30,11 @@ namespace _Project.Scripts.DI.SceneContext.LevelScene
         [SerializeField] private CreateTowerPanel _createTowerPanel;
         [SerializeField] private CreateTowerItemButton _createTowerItemButton;
 
-        private GameRepository _gameRepository;
         private EnemyPrefabsDatabase _enemyPrefabsDatabase;
-        private TowerUpgradeService _towerUpgradeService;
         
         [Inject]
-        public void Construct(
-            EnemyPrefabsDatabase enemyPrefabsDatabase, 
-            GameRepository gameRepository,
-            TowerUpgradeService towerUpgradeService
-            )
-        {
-            _towerUpgradeService = towerUpgradeService;
+        public void Construct(EnemyPrefabsDatabase enemyPrefabsDatabase) =>
             _enemyPrefabsDatabase = enemyPrefabsDatabase;
-            _gameRepository = gameRepository;
-        }
 
         public override void InstallBindings()
         {

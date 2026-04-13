@@ -1,10 +1,8 @@
-﻿using _Project.Scripts.ConfigRepositories;
-using _Project.Scripts.Logic.Coins;
-using _Project.Scripts.Logic.Towers;
-using _Project.Scripts.Towers.Castle;
-using _Project.Scripts.UI.CreateTowerPanel;
+﻿using UnityEngine;
 using _Project.Scripts.Weapons;
-using UnityEngine;
+using _Project.Scripts.UI.TowerCreation;
+using _Project.Scripts.ConfigRepositories;
+using _Project.Scripts.UI.CoinCounter;
 
 namespace _Project.Scripts.Towers
 {
@@ -17,7 +15,6 @@ namespace _Project.Scripts.Towers
         
         private CreateTowerPanel _createTowerPanel;
         
-
         public TowerService(
             TowerFactory towerFactory, 
             WeaponFactory weaponFactory,
@@ -31,7 +28,7 @@ namespace _Project.Scripts.Towers
             _weaponFactory = weaponFactory;
         }
         
-        private Tower Create(TowerType towerType, Vector3 position, float damageMultiplier, float attackSpeedMultiplier)
+        public Tower Create(TowerType towerType, Vector3 position, float damageMultiplier, float attackSpeedMultiplier)
         {
             Tower tower = _towerFactory.CreateTower(towerType, position);
             Weapon weapon = 
@@ -48,12 +45,10 @@ namespace _Project.Scripts.Towers
             return tower;
         }
 
-        public Tower CreateAndPurchase(TowerType towerType, Vector3 position, int coinPrice, float damageMultiplier, float attackSpeedMultiplier)
+        public void CreateAndPurchase(TowerType towerType, Vector3 position, int coinPrice, float damageMultiplier, float attackSpeedMultiplier)
         {
-            Tower tower = Create(towerType, position, damageMultiplier, attackSpeedMultiplier);
+            Create(towerType, position, damageMultiplier, attackSpeedMultiplier);
             Purchase(coinPrice);
-
-            return tower;
         }
         
         private void Purchase(int coinPrice) => _coinCounterModel.RemoveCoins(coinPrice);

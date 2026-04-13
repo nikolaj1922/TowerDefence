@@ -1,5 +1,5 @@
-﻿using UnityEngine;
-using Zenject;
+﻿using Zenject;
+using UnityEngine;
 
 namespace _Project.Scripts.Weapons
 {
@@ -9,7 +9,7 @@ namespace _Project.Scripts.Weapons
 
         public float DamageMultiplier { get; private set; } = 1f;
         public float AttackSpeedMultiplier { get; private set; } = 1f;
-
+        
         [Inject]
         public void Construct(WeaponLookToTarget lookToTarget) => _lookToTarget = lookToTarget;
 

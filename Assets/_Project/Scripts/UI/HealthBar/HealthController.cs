@@ -1,8 +1,8 @@
 ﻿using System;
+using _Project.Scripts.Logic.Health;
 using Zenject;
-using _Project.Scripts.UI.HealthBar;
 
-namespace _Project.Scripts.Logic.Health
+namespace _Project.Scripts.UI.HealthBar
 {
     public class HealthController: IInitializable, IDisposable
     {

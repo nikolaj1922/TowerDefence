@@ -1,7 +1,7 @@
 ﻿using System;
 using UnityEngine;
 
-namespace _Project.Scripts.Configs.Upgrades
+namespace _Project.Scripts.Configs
 {
     [CreateAssetMenu(menuName = "Configs/Upgrades/Upgrade")]
     public class UpgradeConfig: ScriptableObject

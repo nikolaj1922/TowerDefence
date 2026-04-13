@@ -1,6 +1,6 @@
 ﻿using System.Linq;
+using _Project.Scripts.Configs;
 using UnityEngine;
-using _Project.Scripts.Configs.Upgrades;
 
 namespace _Project.Scripts.Database
 {

@@ -3,11 +3,11 @@ using Zenject;
 using UnityEngine;
 using UnityEngine.UI;
 using Cysharp.Threading.Tasks;
-using _Project.Scripts.Logic.Level;
 using _Project.Scripts.Services.SaveLoad;
 using _Project.Scripts.Services.Analytics;
 using _Project.Scripts.Infrastructure.Constants;
 using _Project.Scripts.Infrastructure.LoadingScene;
+using _Project.Scripts.Logic.Wave;
 
 namespace _Project.Scripts.UI.Modals.EndGameModal
 {

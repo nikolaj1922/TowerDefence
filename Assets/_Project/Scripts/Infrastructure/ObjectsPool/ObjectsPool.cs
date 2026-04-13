@@ -1,5 +1,4 @@
 ﻿using UnityEngine;
-using System.Linq;
 using System.Collections.Generic;
 
 namespace _Project.Scripts.Infrastructure.ObjectsPool
@@ -8,16 +7,13 @@ namespace _Project.Scripts.Infrastructure.ObjectsPool
     {
         private GameObject _parent;
         private readonly T _prefab;
-        private readonly List<T> _pool = new();
-
-        public ObjectsPool(T prefab)
-        {
-            _prefab = prefab;
-        }
+        private readonly Stack<T> _pool = new ();
+        
+        public ObjectsPool(T prefab) => _prefab = prefab;
 
         public T Get()
         {
-            var obj = _pool.FirstOrDefault(x => !x.isActiveAndEnabled) ?? Create();
+            var obj = _pool.Count > 0 ? _pool.Pop() : Create();
 
             obj.gameObject.SetActive(true);
             return obj;
@@ -31,7 +27,7 @@ namespace _Project.Scripts.Infrastructure.ObjectsPool
                 _parent = new GameObject($"{_prefab.name}_Pool");
             
             T obj = Object.Instantiate(_prefab, _parent.transform);
-            _pool.Add(obj);
+            _pool.Push(obj);
             return obj;
         }
     }

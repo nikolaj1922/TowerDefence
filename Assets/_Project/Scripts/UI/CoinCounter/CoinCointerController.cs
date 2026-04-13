@@ -1,8 +1,7 @@
 ﻿using System;
 using Zenject;
-using _Project.Scripts.UI.CoinCounter;
 
-namespace _Project.Scripts.Logic.Coins
+namespace _Project.Scripts.UI.CoinCounter
 {
     public class CoinCounterController : IInitializable, IDisposable
     {

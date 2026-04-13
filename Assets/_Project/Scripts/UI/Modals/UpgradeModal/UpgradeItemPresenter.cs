@@ -1,6 +1,6 @@
 ﻿using System;
+using _Project.Scripts.Configs;
 using UnityEngine;
-using _Project.Scripts.Configs.Upgrades;
 using _Project.Scripts.Services.SaveLoad;
 using _Project.Scripts.Services.TowerUpgrade;
 

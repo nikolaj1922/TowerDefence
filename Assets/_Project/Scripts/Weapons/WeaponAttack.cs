@@ -1,4 +1,5 @@
-﻿using Zenject;
+﻿using System;
+using Zenject;
 using UnityEngine;
 using _Project.Scripts.Configs;
 using _Project.Scripts.Infrastructure.Constants;
@@ -9,6 +10,7 @@ namespace _Project.Scripts.Weapons
     public class WeaponAttack : IInitializable, ITickable
     {
         private const float PROJECTILE_MULTIPLIER = 0.3f;
+        private const float MIN_ATTACK_COOLDOWN = 0.3f;
         
         private readonly Transform _projectileSpawnPoint;
         private readonly Transform _weaponHead;
@@ -63,7 +65,7 @@ namespace _Project.Scripts.Weapons
             _weaponAttackFX.PlayRecoil();
             _weaponAttackFX.CreateAttackFX();
             SpawnProjectile();
-            _attackCooldown = _attackSpeed * _weapon.AttackSpeedMultiplier;
+            _attackCooldown = Mathf.Max(MIN_ATTACK_COOLDOWN, _attackSpeed * _weapon.AttackSpeedMultiplier);
         }
         
         private void SpawnProjectile()
@@ -93,8 +95,9 @@ namespace _Project.Scripts.Weapons
         {
             if (!HasRequiredTransforms() || _targetFinder.Target == null || _targetFinder.Target.AttackPoint == null)
                 return false;
-            
-            return _attackCooldown <= 0 && GetAngleToTarget(_targetFinder.Target.AttackPoint.position) <= GameConstants.MAX_ANGLE_TO_ATTACK;
+
+            return _attackCooldown <= 0
+                   && GetAngleToTarget(_targetFinder.Target.AttackPoint.position) <= GameConstants.MAX_ANGLE_TO_ATTACK;
         }
 
         private float GetAngleToTarget(Vector3 targetPosition)

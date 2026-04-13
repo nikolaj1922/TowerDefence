@@ -16,8 +16,6 @@ namespace _Project.Scripts.Configs
         [field: SerializeField] public int TimeBetweenWaves { get; private set; }
     }
     
-    // 100, _, 5,1, _, 15
-
     [Serializable]
     public class Wave
     {

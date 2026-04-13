@@ -3,7 +3,7 @@ using Zenject;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using System.Collections.Generic;
-using _Project.Scripts.Logic.Level;
+using _Project.Scripts.Logic.Wave;
 using _Project.Scripts.Services.Analytics;
 using _Project.Scripts.Infrastructure.Constants;
 

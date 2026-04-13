@@ -2,7 +2,6 @@
 using UnityEngine;
 using _Project.Scripts.Weapons;
 using _Project.Scripts.Configs;
-using _Project.Scripts.Logic.Towers;
 
 namespace _Project.Scripts.Towers
 {

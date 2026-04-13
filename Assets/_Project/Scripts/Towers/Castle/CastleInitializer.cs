@@ -1,8 +1,5 @@
 ﻿using Zenject;
 using UnityEngine;
-using _Project.Scripts.Weapons;
-using _Project.Scripts.Logic.Towers;
-using _Project.Scripts.ConfigRepositories;
 using _Project.Scripts.Towers.Castle.States;
 using _Project.Scripts.Infrastructure.Constants;
 using _Project.Scripts.Infrastructure.StateMachine;
@@ -11,38 +8,21 @@ namespace _Project.Scripts.Towers.Castle
 {
     public class CastleInitializer
     {
-        private readonly TowerFactory _towerFactory;
-        private readonly WeaponFactory _weaponFactory;
-        private readonly TowerConfigsRepository _towerConfigsRepository;
-
+        private readonly TowerService _towerService;
+        
         [Inject]
-        public CastleInitializer(
-            TowerFactory towerFactory,
-            WeaponFactory weaponFactory,
-            TowerConfigsRepository  towerConfigsRepository
-            )
-        {
-            _towerConfigsRepository = towerConfigsRepository;
-            _weaponFactory = weaponFactory;
-            _towerFactory = towerFactory;
-        }
+        public CastleInitializer(TowerService towerService) => _towerService = towerService;
 
         public CastleTower CreateCastle(
             Vector3 position, 
             float damageMultiplier, 
             float attackSpeedMultiplier)
         {
-            Tower tower = _towerFactory.CreateTower(TowerType.Castle, position);
-            Weapon weapon = 
-                _weaponFactory.CreateWeapon(
-                    _towerConfigsRepository.Get(TowerType.Castle).WeaponType, 
-                    tower.WeaponPoint.transform.position, 
-                    tower.WeaponPoint.transform,
-                    damageMultiplier,
-                    attackSpeedMultiplier);
-
-            if (tower.TryGetComponent(out IWeaponMountOwner weaponMountOwner))
-                weaponMountOwner.SetWeapon(weapon);
+            Tower tower = _towerService.Create(
+                TowerType.Castle, 
+                position,
+                damageMultiplier,
+                attackSpeedMultiplier);
 
             if (tower.TryGetComponent(out CastleTower castle))
                 castle.SetStateMachine(CreateCastleStateMachine(castle));

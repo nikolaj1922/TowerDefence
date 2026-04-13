@@ -1,6 +1,5 @@
 ﻿using Zenject;
 using UnityEngine;
-using _Project.Scripts.Logic.Coins;
 using _Project.Scripts.UI.CoinCounter;
 
 namespace _Project.Scripts.DI.GameObjectInstaller

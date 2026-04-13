@@ -1,52 +1,52 @@
 ﻿using System;
-using Zenject;
 using System.Threading;
-using Cysharp.Threading.Tasks;
 using _Project.Scripts.Logic.Level;
-using _Project.Scripts.UI.WaveCounter;
+using _Project.Scripts.Logic.Wave;
+using Cysharp.Threading.Tasks;
+using Zenject;
 
-namespace _Project.Scripts.Logic.StartNextWavePanel
+namespace _Project.Scripts.UI.WaveCounter
 {
-    public class StartWavePresenter: IInitializable, IDisposable
+    public class WaveCounterPresenter: IInitializable, IDisposable
     {
         private const int WAVE_TIMER_TICK_SECONDS = 1;
         
-        private readonly StartWaveModel _model;
+        private readonly WaveCounterModel _counterModel;
         private readonly WaveCounterPanel _view;
         private readonly WaveManager _waveManager;
         
         private CancellationTokenSource _cancellationToken;
         
-        public StartWavePresenter(
-            StartWaveModel model, 
+        public WaveCounterPresenter(
+            WaveCounterModel counterModel, 
             WaveCounterPanel view, 
             WaveManager waveManager)
         {
             _view = view;
-            _model = model;
+            _counterModel = counterModel;
             _waveManager = waveManager;
         }
 
         public void Initialize()
         {
             _waveManager.OnWaveTimerStart += ShowWavePanel;
-            _model.OnEndTimer += StartWave;
-            _model.OnTickTimer += _view.UpdateTimerText;
+            _counterModel.OnEndTimer += StartWave;
+            _counterModel.OnTickTimer += _view.UpdateTimerText;
             _view.OnForceWaveClick += StartWave;
         }
         
         public void Dispose()
         {
             _waveManager.OnWaveTimerStart -= ShowWavePanel;
-            _model.OnEndTimer -= StartWave;
-            _model.OnTickTimer -= _view.UpdateTimerText;
+            _counterModel.OnEndTimer -= StartWave;
+            _counterModel.OnTickTimer -= _view.UpdateTimerText;
             _view.OnForceWaveClick -= StartWave;
         }
 
         private void ShowWavePanel(int wayCount)
         {
             _view.ShowPanel(wayCount);
-            _model.ResetTimer();
+            _counterModel.ResetTimer();
             
             _cancellationToken?.Cancel();
             _cancellationToken?.Dispose();
@@ -67,9 +67,9 @@ namespace _Project.Scripts.Logic.StartNextWavePanel
         
         private async UniTaskVoid StartWaveTimer(CancellationToken token)
         {
-            while (_model.CurrentTimeBetweenWaves > 0)
+            while (_counterModel.CurrentTimeBetweenWaves > 0)
             {
-                _model.TickTimer();
+                _counterModel.TickTimer();
                 await UniTask.WaitForSeconds(
                     WAVE_TIMER_TICK_SECONDS,
                     false,

@@ -1,18 +1,22 @@
-﻿using System.Collections.Generic;
-using Zenject;
+﻿using Zenject;
+using System.Collections.Generic;
 
 namespace _Project.Scripts.Enemies
 {
     public class EnemyPool : MonoMemoryPool<Enemy>
     {
-        public List<Enemy> ActiveEnemies { get; private set; } = new();
+        public List<Enemy> ActiveEnemies { get; } = new();
 
-        protected override void OnSpawned(Enemy item)
+        protected override void OnSpawned(Enemy enemy)
         {
-            base.OnSpawned(item);
-            ActiveEnemies.Add(item);
+            base.OnSpawned(enemy);
+            ActiveEnemies.Add(enemy);
         }
 
-        protected override void OnDespawned(Enemy enemy) => enemy.gameObject.SetActive(false);
+        protected override void OnDespawned(Enemy enemy)
+        {
+            enemy.gameObject.SetActive(false);
+            ActiveEnemies.Remove(enemy);
+        }
     }
 }
