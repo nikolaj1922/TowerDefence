@@ -8,7 +8,7 @@ using _Project.Scripts.Towers.Castle;
 using _Project.Scripts.ConfigRepositories;
 using _Project.Scripts.Services.Upgrade;
 using _Project.Scripts.Services.Analytics;
-using _Project.Scripts.UI.CreateTowerPanel;
+using _Project.Scripts.UI.TowerCreation;
 
 namespace _Project.Scripts.Logic.Level
 {
