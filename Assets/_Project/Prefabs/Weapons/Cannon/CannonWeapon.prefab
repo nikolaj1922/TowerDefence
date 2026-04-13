@@ -236,6 +236,7 @@ MonoBehaviour:
     m_Bits: 256
   _weaponType: 0
   _onAttackEffect: {fileID: 2433282508523890284, guid: 3ef3ae421f71c5c4e97fe12dc2fc6312, type: 3}
+  _weapon: {fileID: 8562319909079802671}
 --- !u!1 &7763969958069225268
 GameObject:
   m_ObjectHideFlags: 0

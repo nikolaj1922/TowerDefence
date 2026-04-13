@@ -13,9 +13,16 @@ namespace _Project.Scripts.Towers.Castle
         [Inject]
         public CastleInitializer(TowerService towerService) => _towerService = towerService;
 
-        public CastleTower CreateCastle(Vector3 position)
+        public CastleTower CreateCastle(
+            Vector3 position, 
+            float damageMultiplier, 
+            float attackSpeedMultiplier)
         {
-            Tower tower = _towerService.Create(TowerType.Castle, position);
+            Tower tower = _towerService.Create(
+                TowerType.Castle, 
+                position,
+                damageMultiplier,
+                attackSpeedMultiplier);
 
             if (tower.TryGetComponent(out CastleTower castle))
                 castle.SetStateMachine(CreateCastleStateMachine(castle));

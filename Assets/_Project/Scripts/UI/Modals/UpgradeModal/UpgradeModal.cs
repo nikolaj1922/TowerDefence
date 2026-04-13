@@ -1,0 +1,74 @@
+﻿using Zenject;
+using UnityEngine;
+using UnityEngine.UI;
+using System.Collections.Generic;
+using _Project.Scripts.Database;
+using _Project.Scripts.UI.MetaCounter;
+using _Project.Scripts.Services.SaveLoad;
+using _Project.Scripts.Services.Upgrade;
+using _Project.Scripts.Database.ModalsPrefabDatabase;
+using _Project.Scripts.Services.ModalCreator;
+
+namespace _Project.Scripts.UI.Modals.UpgradeModal
+{
+    public class UpgradeModal : MonoBehaviour
+    {
+        [SerializeField] private Button _backButton;
+        [SerializeField] private RectTransform _gridContainer;
+        [SerializeField] private MetaCounterPanel _metaCounterPanel;
+        [SerializeField] private UpgradeItemView _upgradeItemPrefab;
+
+        private ISaveLoad _saveLoad;
+        private ModalCreatorService _modalCreatorService;
+        private UpgradeService _upgradeService;
+        private UpgradesDatabase _upgradeDatabase;
+
+        private List<UpgradeItemPresenter> _upgradeItemPresenters;
+
+        [Inject]
+        public void Construct(
+            UpgradesDatabase upgradesDatabase, 
+            ISaveLoad saveLoad, 
+            ModalCreatorService modalCreatorService, 
+            UpgradeService upgradeService)
+        {
+            _upgradeService = upgradeService;
+            _modalCreatorService = modalCreatorService;
+            _upgradeDatabase = upgradesDatabase;
+            _saveLoad = saveLoad;
+        }
+
+        private void Awake() => _backButton.onClick.AddListener(BackToMainMenu);
+
+        private void Start() => CreateUpgradeList();
+        
+        private void OnDestroy()
+        {
+            foreach (var upgradeItemPresenter in _upgradeItemPresenters)
+                upgradeItemPresenter.Dispose();
+            
+            _backButton.onClick.RemoveListener(BackToMainMenu);
+        }
+
+        private void BackToMainMenu() => _modalCreatorService.OpenModal(ModalType.Menu);
+        
+        private void CreateUpgradeList()
+        {
+            _upgradeItemPresenters = new List<UpgradeItemPresenter>();
+            
+            foreach (var upgrade in _upgradeDatabase.upgrades)
+            {
+                var view = Instantiate(_upgradeItemPrefab, _gridContainer);
+
+                _upgradeItemPresenters.Add(new UpgradeItemPresenter(
+                    _saveLoad,
+                    view,
+                    upgrade,
+                    _upgradeService
+                ));
+                
+                view.OnBuyClicked += _metaCounterPanel.UpdateView;
+            }
+        }
+    }
+}

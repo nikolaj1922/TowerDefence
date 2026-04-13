@@ -1,5 +1,5 @@
 ﻿using System;
-using _Project.Scripts.Logic.Coins;
+using _Project.Scripts.UI.CoinCounter;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;

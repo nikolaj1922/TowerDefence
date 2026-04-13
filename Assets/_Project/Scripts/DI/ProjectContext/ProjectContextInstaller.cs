@@ -1,14 +1,18 @@
 ﻿using Zenject;
 using UnityEngine;
+using _Project.Scripts.Database;
 using _Project.Scripts.Services.SaveLoad;
 using _Project.Scripts.Services.Analytics;
 using _Project.Scripts.ConfigRepositories;
 using _Project.Scripts.Services.AssetProvider;
-using _Project.Scripts.PrefabDatabase.EnemyDatabase;
-using _Project.Scripts.PrefabDatabase.TowersDatabase;
-using _Project.Scripts.PrefabDatabase.WeaponDatabase;
 using _Project.Scripts.Infrastructure.SceneLoader;
 using _Project.Scripts.Services.Analytics.Firebase;
+using _Project.Scripts.Database.EnemyPrefabDatabase;
+using _Project.Scripts.Database.ModalsPrefabDatabase;
+using _Project.Scripts.Database.TowersPrefabDatabase;
+using _Project.Scripts.Database.WeaponPrefabDatabase;
+using _Project.Scripts.Services.ModalCreator;
+using _Project.Scripts.Services.Upgrade;
 
 namespace _Project.Scripts.DI.ProjectContext
 {
@@ -17,30 +21,38 @@ namespace _Project.Scripts.DI.ProjectContext
         [SerializeField] private EnemyPrefabsDatabase _enemyPrefabsDatabase;
         [SerializeField] private TowerPrefabsDatabase _towerPrefabsDatabase;
         [SerializeField] private WeaponPrefabsDatabase _weaponPrefabsDatabase;
+        [SerializeField] private ModalsPrefabDatabase _modalPrefabsDatabase;
+        [SerializeField] private UpgradesDatabase _upgradesDatabase;
+        
         
         public override void InstallBindings()
         {
             Container.BindInterfacesAndSelfTo<FirebaseInitializer>().AsSingle().NonLazy();
+            BindDatabases(); 
             
-            BindPrefabDatabases(); 
-            
+            Container.Bind<ModalCreatorService>().AsSingle();
             Container.BindInterfacesAndSelfTo<AssetProvider>().AsSingle();
             Container.Bind<SceneLoader>().AsSingle().NonLazy();
             Container.Bind<ISaveLoad>().To<SaveLoad>().AsSingle();
+            Container.Bind<UpgradeService>().AsSingle();
+            
             Container.Bind<IAnalyticsClient>().To<FirebaseAnalyticsClient>().AsSingle();
             Container.Bind<AnalyticsService>().AsSingle();
 
             BindConfigRepositories();
         }
 
-        private void BindPrefabDatabases()
+        private void BindDatabases()
         {
+            _modalPrefabsDatabase.Init();
             _enemyPrefabsDatabase.Init();
             _towerPrefabsDatabase.Init();
             _weaponPrefabsDatabase.Init();
             Container.Bind<TowerPrefabsDatabase>().FromInstance(_towerPrefabsDatabase).AsSingle();
+            Container.Bind<ModalsPrefabDatabase>().FromInstance(_modalPrefabsDatabase).AsSingle();
             Container.Bind<EnemyPrefabsDatabase>().FromInstance(_enemyPrefabsDatabase).AsSingle();
             Container.Bind<WeaponPrefabsDatabase>().FromInstance(_weaponPrefabsDatabase).AsSingle();
+            Container.Bind<UpgradesDatabase>().FromInstance(_upgradesDatabase).AsSingle();
         }
 
         private void BindConfigRepositories()

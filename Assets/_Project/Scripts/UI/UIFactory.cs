@@ -3,8 +3,6 @@ using UnityEngine;
 using _Project.Scripts.Configs;
 using Object = UnityEngine.Object;
 using _Project.Scripts.Towers;
-using _Project.Scripts.Logic.Coins;
-using _Project.Scripts.UI.GameOver;
 using _Project.Scripts.UI.WaveCounter;
 using _Project.Scripts.UI.CoinCounter;
 using _Project.Scripts.UI.TowerCreation;
@@ -17,7 +15,6 @@ namespace _Project.Scripts.UI
     {
         private IInstantiator _instantiator;
         private RectTransform _hud;
-        private EndGameModal _endGameModal;
         private CoinCounterModel _coinCounterModel;
         private CoinCounterPanel _coinCounterPanel;
         private WaveCounterPanel _waveCounterPanel;
@@ -30,7 +27,6 @@ namespace _Project.Scripts.UI
         public void Construct(
             [Inject(Id = GameConstants.HUD_INJECT_ID)] RectTransform hud,
             CoinCounterModel coinCounterModel,
-            EndGameModal endGameModal, 
             CreateTowerPanel createTowerPanel,
             CreateTowerItemButton createTowerItemButton,
             TowerConfigsRepository towerConfigsRepository,
@@ -41,20 +37,12 @@ namespace _Project.Scripts.UI
         {
             _hud = hud;
             _coinCounterModel = coinCounterModel;
-            _endGameModal = endGameModal;
             _createTowerPanel = createTowerPanel;
             _createTowerItemButton = createTowerItemButton;
             _towerConfigsRepository = towerConfigsRepository;
             _coinCounterPanel = coinCounterPanel;
             _waveCounterPanel = waveCounterPanel;
             _instantiator = instantiator;
-        }
-
-        public void CreateEndGameModal(int metaCoinsAdded, string headerText)
-        {
-            EndGameModal endGameModal = _instantiator.InstantiatePrefabForComponent<EndGameModal>(_endGameModal);
-            endGameModal.SetMetaCoinText(metaCoinsAdded);
-            endGameModal.SetHeaderText(headerText);
         }
 
         public void CreateCoinCounterPanel() => _instantiator.InstantiatePrefab(_coinCounterPanel.gameObject, _hud);

@@ -1,14 +1,16 @@
-﻿using _Project.Scripts.Configs;
+﻿using System;
+using Zenject;
+using UnityEngine;
+using _Project.Scripts.Configs;
 using _Project.Scripts.Infrastructure.GameConstants;
 using _Project.Scripts.Infrastructure.ObjectsPool;
-using UnityEngine;
-using Zenject;
 
 namespace _Project.Scripts.Weapons
 {
     public class WeaponAttack : IInitializable, ITickable
     {
         private const float PROJECTILE_MULTIPLIER = 0.3f;
+        private const float MIN_ATTACK_COOLDOWN = 0.3f;
         
         private readonly Transform _projectileSpawnPoint;
         private readonly Transform _weaponHead;
@@ -16,6 +18,7 @@ namespace _Project.Scripts.Weapons
         private readonly WeaponProjectile _projectile;
         private readonly WeaponTargetFinder _targetFinder;
         private readonly WeaponAttackFX _weaponAttackFX;
+        private readonly Weapon _weapon;
         
         private readonly float _damage;
         private readonly float _attackSpeed;
@@ -23,6 +26,7 @@ namespace _Project.Scripts.Weapons
         private ObjectsPool<WeaponProjectile> _projectilePool;
         
         public WeaponAttack(
+            Weapon weapon,
             WeaponConfig config, 
             WeaponTargetFinder targetFinder,
             [Inject(Id = GameConstants.WEAPON_HEAD_INJECT_ID)] Transform weaponHead,
@@ -32,7 +36,8 @@ namespace _Project.Scripts.Weapons
             WeaponAttackFX weaponAttackFX
             )
         {
-            _damage = config.Damage; 
+            _damage = config.Damage;
+            _weapon = weapon;
             _attackSpeed = config.AttackSpeed;
             _targetFinder = targetFinder;
             _weaponHead = weaponHead;
@@ -48,7 +53,7 @@ namespace _Project.Scripts.Weapons
         {
             if (!HasRequiredTransforms())
                 return;
-
+            
             if (CanAttack())
                 Attack();
             
@@ -60,7 +65,7 @@ namespace _Project.Scripts.Weapons
             _weaponAttackFX.PlayRecoil();
             _weaponAttackFX.CreateAttackFX();
             SpawnProjectile();
-            _attackCooldown = _attackSpeed;
+            _attackCooldown = Mathf.Max(MIN_ATTACK_COOLDOWN, _attackSpeed * _weapon.AttackSpeedMultiplier);
         }
         
         private void SpawnProjectile()
@@ -74,7 +79,7 @@ namespace _Project.Scripts.Weapons
             projectile.transform.position = _projectileSpawnPoint.position;
             projectile.Initialize(
                 target: _targetFinder.Target,
-                damage: _damage,
+                damage: _damage * _weapon.DamageMultiplier,
                 onHit: () => OnProjectileHit(projectile));
         }
         
@@ -90,8 +95,9 @@ namespace _Project.Scripts.Weapons
         {
             if (!HasRequiredTransforms() || _targetFinder.Target == null || _targetFinder.Target.AttackPoint == null)
                 return false;
-            
-            return _attackCooldown <= 0 && GetAngleToTarget(_targetFinder.Target.AttackPoint.position) <= GameConstants.MAX_ANGLE_TO_ATTACK;
+
+            return _attackCooldown <= 0
+                   && GetAngleToTarget(_targetFinder.Target.AttackPoint.position) <= GameConstants.MAX_ANGLE_TO_ATTACK;
         }
 
         private float GetAngleToTarget(Vector3 targetPosition)

@@ -29,11 +29,17 @@ namespace _Project.Scripts.Services.SaveLoad
             }
             else
             {
-                PlayerProgress = new PlayerProgress
-                {
-                    metaCoinsCount = 0
-                };
+                InitProgress();
             }
+        }
+
+        private void InitProgress()
+        {
+            PlayerProgress = new PlayerProgress
+            {
+                metaCoinsCount = 1000,
+                upgrades = new PlayerUpgrades()
+            };
         }
     }
 }
