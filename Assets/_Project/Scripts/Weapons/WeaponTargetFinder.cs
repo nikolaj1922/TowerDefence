@@ -30,12 +30,6 @@ namespace _Project.Scripts.Weapons
         
         public void Tick()
         {
-            // if (_castleHealthModel.CurrentHealth <= 0)
-            // {
-            //     Target = null;
-            //     return;
-            // }
-
             if (!IsTargetValid())
                 Target = null;
             

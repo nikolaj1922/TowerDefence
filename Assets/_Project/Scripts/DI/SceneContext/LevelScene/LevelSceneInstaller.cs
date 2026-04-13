@@ -10,10 +10,10 @@ using _Project.Scripts.Towers.Castle;
 using _Project.Scripts.UI.WaveCounter;
 using _Project.Scripts.UI.CoinCounter;
 using _Project.Scripts.ConfigRepositories;
-using _Project.Scripts.UI.CreateTowerPanel;
 using _Project.Scripts.PrefabDatabase.EnemyDatabase;
 using _Project.Scripts.Infrastructure.GameConstants;
 using _Project.Scripts.UI.GameOver;
+using _Project.Scripts.UI.TowerCreation;
 
 namespace _Project.Scripts.DI.SceneContext.LevelScene
 {

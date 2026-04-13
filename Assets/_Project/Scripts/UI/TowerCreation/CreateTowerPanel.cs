@@ -1,9 +1,9 @@
+using _Project.Scripts.Infrastructure.GameConstants;
 using DG.Tweening;
 using UnityEngine;
 using UnityEngine.UI;
-using _Project.Scripts.Infrastructure.GameConstants;
 
-namespace _Project.Scripts.UI.CreateTowerPanel
+namespace _Project.Scripts.UI.TowerCreation
 {
     public class CreateTowerPanel : MonoBehaviour
     {
