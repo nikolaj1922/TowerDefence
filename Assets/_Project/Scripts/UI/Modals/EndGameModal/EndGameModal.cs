@@ -8,6 +8,7 @@ using _Project.Scripts.Services.SaveLoad;
 using _Project.Scripts.Services.Analytics;
 using _Project.Scripts.Infrastructure.GameConstants;
 using _Project.Scripts.Infrastructure.SceneLoader;
+using _Project.Scripts.Logic.Wave;
 
 namespace _Project.Scripts.UI.Modals.EndGameModal
 {

@@ -3,11 +3,13 @@ using Zenject;
 using UnityEngine;
 using _Project.Scripts.UI;
 using _Project.Scripts.Towers;
-using _Project.Scripts.Logic.Coins;
 using _Project.Scripts.Towers.Castle;
 using _Project.Scripts.ConfigRepositories;
+using _Project.Scripts.Logic.Wave;
 using _Project.Scripts.Services.Upgrade;
 using _Project.Scripts.Services.Analytics;
+using _Project.Scripts.Services.EndGame;
+using _Project.Scripts.UI.CoinCounter;
 using _Project.Scripts.UI.TowerCreation;
 
 namespace _Project.Scripts.Logic.Level

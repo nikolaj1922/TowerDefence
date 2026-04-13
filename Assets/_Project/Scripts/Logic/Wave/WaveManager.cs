@@ -1,14 +1,13 @@
 ﻿using System;
-using Zenject;
 using System.Linq;
 using System.Threading;
-using Cysharp.Threading.Tasks; 
-using _Project.Scripts.Configs;
-using _Project.Scripts.Services.Analytics;
-using _Project.Scripts.Enemies;
 using _Project.Scripts.ConfigRepositories;
+using _Project.Scripts.Enemies;
+using _Project.Scripts.Services.Analytics;
+using Cysharp.Threading.Tasks;
+using Zenject;
 
-namespace _Project.Scripts.Logic.Level
+namespace _Project.Scripts.Logic.Wave
 {
     public class WaveManager
     {
@@ -45,7 +44,7 @@ namespace _Project.Scripts.Logic.Level
         public void StartNextWave()
         {
             UpdateWaveToken();
-            Wave wave = GetNextWave();
+            Configs.Wave wave = GetNextWave();
             
             if (wave == null)
                 return;
@@ -63,12 +62,12 @@ namespace _Project.Scripts.Logic.Level
             _enemyFactory.StopActiveEnemies();
         }
         
-        private Wave GetNextWave() => 
+        private Configs.Wave GetNextWave() => 
             _waveIndex < _gameRepository.GameConfig.Waves.Length 
                 ? _gameRepository.GameConfig.Waves[_waveIndex]
                 : null;
 
-        private async UniTaskVoid StartWave(Wave wave, CancellationToken token)
+        private async UniTaskVoid StartWave(Configs.Wave wave, CancellationToken token)
         {
             _totalEnemiesOnWave = wave.enemyGroups.Sum(e => e.enemyCount);
             _enemyKilledOnWave = 0;

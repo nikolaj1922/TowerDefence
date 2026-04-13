@@ -11,7 +11,7 @@ using _Project.Scripts.Database.EnemyPrefabDatabase;
 using _Project.Scripts.Database.ModalsPrefabDatabase;
 using _Project.Scripts.Database.TowersPrefabDatabase;
 using _Project.Scripts.Database.WeaponPrefabDatabase;
-using _Project.Scripts.Infrastructure.ModalCreator;
+using _Project.Scripts.Services.ModalCreator;
 using _Project.Scripts.Services.Upgrade;
 
 namespace _Project.Scripts.DI.ProjectContext
@@ -30,7 +30,7 @@ namespace _Project.Scripts.DI.ProjectContext
             Container.BindInterfacesAndSelfTo<FirebaseInitializer>().AsSingle().NonLazy();
             BindDatabases(); 
             
-            Container.Bind<ModalCreator>().AsSingle();
+            Container.Bind<ModalCreatorService>().AsSingle();
             Container.BindInterfacesAndSelfTo<AssetProvider>().AsSingle();
             Container.Bind<SceneLoader>().AsSingle().NonLazy();
             Container.Bind<ISaveLoad>().To<SaveLoad>().AsSingle();

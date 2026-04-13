@@ -1,7 +1,7 @@
 ﻿using _Project.Scripts.Weapons;
 using UnityEngine;
 
-namespace _Project.Scripts.Logic.Towers
+namespace _Project.Scripts.Towers
 {
     public interface IWeaponMountOwner
     {

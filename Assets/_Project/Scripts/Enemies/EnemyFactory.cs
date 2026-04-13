@@ -2,7 +2,6 @@
 using Zenject;
 using UnityEngine;
 using _Project.Scripts.Configs;
-using _Project.Scripts.Logic.Coins;
 using _Project.Scripts.Logic.Health;
 using _Project.Scripts.Enemies.States;
 using _Project.Scripts.ConfigRepositories;

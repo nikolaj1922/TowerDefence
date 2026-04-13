@@ -5,7 +5,8 @@ using UnityEngine;
 using UnityEngine.AI;
 using _Project.Scripts.Logic.Health;
 using _Project.Scripts.Infrastructure.StateMachine;
-using _Project.Scripts.Logic.Coins;
+using _Project.Scripts.UI.CoinCounter;
+using _Project.Scripts.UI.HealthBar;
 
 namespace _Project.Scripts.Enemies
 {

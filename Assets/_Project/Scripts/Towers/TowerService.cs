@@ -1,9 +1,8 @@
 ﻿using UnityEngine;
 using _Project.Scripts.Weapons;
-using _Project.Scripts.Logic.Coins;
-using _Project.Scripts.Logic.Towers;
 using _Project.Scripts.UI.TowerCreation;
 using _Project.Scripts.ConfigRepositories;
+using _Project.Scripts.UI.CoinCounter;
 
 namespace _Project.Scripts.Towers
 {

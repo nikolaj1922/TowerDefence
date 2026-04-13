@@ -1,9 +1,9 @@
 ﻿using System;
 using _Project.Scripts.ConfigRepositories;
 
-namespace _Project.Scripts.Logic.StartNextWavePanel
+namespace _Project.Scripts.UI.WaveCounter
 {
-    public class StartWaveModel
+    public class WaveCounterModel
     {
         public event Action<int> OnTickTimer;
         public event Action OnEndTimer;
@@ -22,7 +22,7 @@ namespace _Project.Scripts.Logic.StartNextWavePanel
             }
         }
 
-        public StartWaveModel(GameRepository gameRepository) => _timeBetweenWaves = gameRepository.GameConfig.TimeBetweenWaves;
+        public WaveCounterModel(GameRepository gameRepository) => _timeBetweenWaves = gameRepository.GameConfig.TimeBetweenWaves;
 
         public void TickTimer() => CurrentTimeBetweenWaves--;
 

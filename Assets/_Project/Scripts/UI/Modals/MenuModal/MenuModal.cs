@@ -3,9 +3,9 @@ using UnityEngine;
 using UnityEngine.UI;
 using Cysharp.Threading.Tasks;
 using _Project.Scripts.Database.ModalsPrefabDatabase;
-using _Project.Scripts.Infrastructure.ModalCreator;
 using _Project.Scripts.Infrastructure.GameConstants;
 using _Project.Scripts.Infrastructure.SceneLoader;
+using _Project.Scripts.Services.ModalCreator;
 
 namespace _Project.Scripts.UI.Modals.MenuModal
 {
@@ -16,16 +16,16 @@ namespace _Project.Scripts.UI.Modals.MenuModal
         [SerializeField] private Button _upgradeButton;
 
         private SceneLoader _sceneLoader;
-        private ModalCreator _modalCreator;
+        private ModalCreatorService _modalCreatorService;
 
         [Inject]
         public void Construct(
             SceneLoader sceneLoader,
-            ModalCreator modalCreator
+            ModalCreatorService modalCreatorService
             )
         {
             _sceneLoader = sceneLoader;
-            _modalCreator = modalCreator;
+            _modalCreatorService = modalCreatorService;
         }
         
         private void Awake()
@@ -43,7 +43,7 @@ namespace _Project.Scripts.UI.Modals.MenuModal
         private void OnStartClick() => _sceneLoader.LoadScene(GameConstants.LEVEL_SCENE).Forget();
 
         private void OnOpenUpgradesClick() =>
-            _modalCreator.OpenModal(ModalType.Upgrades);
+            _modalCreatorService.OpenModal(ModalType.Upgrades);
     }
 }
 

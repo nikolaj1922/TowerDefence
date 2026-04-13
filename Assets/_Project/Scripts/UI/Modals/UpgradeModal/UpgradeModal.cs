@@ -6,8 +6,8 @@ using _Project.Scripts.Database;
 using _Project.Scripts.UI.MetaCounter;
 using _Project.Scripts.Services.SaveLoad;
 using _Project.Scripts.Services.Upgrade;
-using _Project.Scripts.Infrastructure.ModalCreator;
 using _Project.Scripts.Database.ModalsPrefabDatabase;
+using _Project.Scripts.Services.ModalCreator;
 
 namespace _Project.Scripts.UI.Modals.UpgradeModal
 {
@@ -19,7 +19,7 @@ namespace _Project.Scripts.UI.Modals.UpgradeModal
         [SerializeField] private UpgradeItemView _upgradeItemPrefab;
 
         private ISaveLoad _saveLoad;
-        private ModalCreator _modalCreator;
+        private ModalCreatorService _modalCreatorService;
         private UpgradeService _upgradeService;
         private UpgradesDatabase _upgradeDatabase;
 
@@ -29,11 +29,11 @@ namespace _Project.Scripts.UI.Modals.UpgradeModal
         public void Construct(
             UpgradesDatabase upgradesDatabase, 
             ISaveLoad saveLoad, 
-            ModalCreator modalCreator, 
+            ModalCreatorService modalCreatorService, 
             UpgradeService upgradeService)
         {
             _upgradeService = upgradeService;
-            _modalCreator = modalCreator;
+            _modalCreatorService = modalCreatorService;
             _upgradeDatabase = upgradesDatabase;
             _saveLoad = saveLoad;
         }
@@ -50,7 +50,7 @@ namespace _Project.Scripts.UI.Modals.UpgradeModal
             _backButton.onClick.RemoveListener(BackToMainMenu);
         }
 
-        private void BackToMainMenu() => _modalCreator.OpenModal(ModalType.Menu);
+        private void BackToMainMenu() => _modalCreatorService.OpenModal(ModalType.Menu);
         
         private void CreateUpgradeList()
         {

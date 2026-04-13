@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace _Project.Scripts.Logic.Coins
+namespace _Project.Scripts.UI.CoinCounter
 {
     public class CoinCounterModel
     {

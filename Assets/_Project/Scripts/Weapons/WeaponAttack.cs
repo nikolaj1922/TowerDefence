@@ -93,8 +93,10 @@ namespace _Project.Scripts.Weapons
         {
             if (!HasRequiredTransforms() || _targetFinder.Target == null || _targetFinder.Target.AttackPoint == null)
                 return false;
-            
-            return _attackCooldown <= 0 && GetAngleToTarget(_targetFinder.Target.AttackPoint.position) <= GameConstants.MAX_ANGLE_TO_ATTACK;
+
+            return _attackCooldown <= 0
+                   && GetAngleToTarget(_targetFinder.Target.AttackPoint.position) <= GameConstants.MAX_ANGLE_TO_ATTACK
+                   && _weapon.CanAttack;
         }
 
         private float GetAngleToTarget(Vector3 targetPosition)

@@ -3,6 +3,7 @@ using Zenject;
 using UnityEngine;
 using _Project.Scripts.Logic.Health;
 using _Project.Scripts.Infrastructure.StateMachine;
+using _Project.Scripts.UI.HealthBar;
 
 namespace _Project.Scripts.Towers.Castle
 {

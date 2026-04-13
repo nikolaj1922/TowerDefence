@@ -1,6 +1,5 @@
 using Zenject;
 using UnityEngine;
-using _Project.Scripts.Logic.StartNextWavePanel;
 using _Project.Scripts.UI.WaveCounter;
 
 namespace _Project.Scripts.DI.GameObjectInstaller
@@ -12,8 +11,8 @@ namespace _Project.Scripts.DI.GameObjectInstaller
         public override void InstallBindings()
         {
             Container.Bind<WaveCounterPanel>().FromInstance(_waveCounterPanel).AsSingle();
-            Container.Bind<StartWaveModel>().AsSingle();
-            Container.BindInterfacesAndSelfTo<StartWavePresenter>().AsSingle();
+            Container.Bind<WaveCounterModel>().AsSingle();
+            Container.BindInterfacesAndSelfTo<WaveCounterPresenter>().AsSingle();
         }
     }
 }
