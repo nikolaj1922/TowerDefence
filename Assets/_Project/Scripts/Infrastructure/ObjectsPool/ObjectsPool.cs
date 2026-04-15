@@ -19,7 +19,11 @@ namespace _Project.Scripts.Infrastructure.ObjectsPool
             return obj;
         }
 
-        public void Release(T obj) => obj.gameObject.SetActive(false);
+        public void Release(T obj)
+        {
+            obj.gameObject.SetActive(false);
+            _pool.Push(obj);
+        }
 
         private T Create()
         {
@@ -27,7 +31,7 @@ namespace _Project.Scripts.Infrastructure.ObjectsPool
                 _parent = new GameObject($"{_prefab.name}_Pool");
             
             T obj = Object.Instantiate(_prefab, _parent.transform);
-            _pool.Push(obj);
+            obj.gameObject.SetActive(false);
             return obj;
         }
     }

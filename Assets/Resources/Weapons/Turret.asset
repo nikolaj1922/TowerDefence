@@ -15,5 +15,5 @@ MonoBehaviour:
   <WeaponType>k__BackingField: 1
   <Damage>k__BackingField: 1
   <AttackRange>k__BackingField: 3
-  <AttackSpeed>k__BackingField: 0.3
+  <AttackSpeed>k__BackingField: 0.8
   <RotationSpeed>k__BackingField: 2

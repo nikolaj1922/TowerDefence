@@ -1,7 +1,6 @@
 ﻿using Zenject;
 using UnityEngine;
 using _Project.Scripts.Configs;
-using _Project.Scripts.Logic.Health;
 using _Project.Scripts.ConfigRepositories;
 using _Project.Scripts.Enemies;
 using _Project.Scripts.UI.HealthBar;

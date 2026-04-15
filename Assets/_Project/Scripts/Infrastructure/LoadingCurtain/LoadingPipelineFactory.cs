@@ -2,6 +2,7 @@
 using _Project.Scripts.ConfigRepositories;
 using _Project.Scripts.Infrastructure.LoadingCurtain.Operations;
 using _Project.Scripts.Infrastructure.LoadingScene;
+using _Project.Scripts.Services.ModalCreator;
 using _Project.Scripts.Services.SaveLoad;
 
 namespace _Project.Scripts.Infrastructure.LoadingCurtain
@@ -14,8 +15,10 @@ namespace _Project.Scripts.Infrastructure.LoadingCurtain
         private readonly EnemyConfigsRepository _enemyConfigsRepository;
         private readonly TowerConfigsRepository _towerConfigsRepository;
         private readonly WeaponConfigsRepository _weaponConfigsRepository;
+        private readonly ModalCreatorService _modalCreatorService;
         
         public LoadingPipelineFactory(
+            ModalCreatorService modalCreatorService,
             ISaveLoad saveLoad, 
             SceneLoader sceneSceneLoader,
             GameRepository gameRepository,
@@ -24,6 +27,7 @@ namespace _Project.Scripts.Infrastructure.LoadingCurtain
             WeaponConfigsRepository weaponConfigsRepository
             )
         {
+            _modalCreatorService = modalCreatorService;
             _saveLoad = saveLoad;
             _sceneSceneLoader = sceneSceneLoader;
             _towerConfigsRepository = towerConfigsRepository;
@@ -42,7 +46,7 @@ namespace _Project.Scripts.Infrastructure.LoadingCurtain
                     _enemyConfigsRepository,
                     _towerConfigsRepository,
                     _gameRepository),
-                new LoadMenuSceneOperation(_sceneSceneLoader),
+                new LoadMenuSceneOperation(_sceneSceneLoader, _modalCreatorService),
             });
         } 
     }

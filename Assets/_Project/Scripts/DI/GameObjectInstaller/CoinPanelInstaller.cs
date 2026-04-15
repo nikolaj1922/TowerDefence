@@ -6,11 +6,11 @@ namespace _Project.Scripts.DI.GameObjectInstaller
 {
     public class CoinPanelInstaller : MonoInstaller
     {
-        [SerializeField] private CoinCounterPanel _coinPanel;
+        [SerializeField] private CoinCounterView _coinView;
      
         public override void InstallBindings()
         {
-            Container.Bind<CoinCounterPanel>().FromInstance(_coinPanel).AsSingle();
+            Container.Bind<CoinCounterView>().FromInstance(_coinView).AsSingle();
             Container.BindInterfacesAndSelfTo<CoinCounterController>().AsSingle();
         }
     }

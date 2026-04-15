@@ -1,8 +1,7 @@
 ﻿using UnityEngine;
 using _Project.Scripts.Weapons;
-using _Project.Scripts.UI.TowerCreation;
-using _Project.Scripts.ConfigRepositories;
 using _Project.Scripts.UI.CoinCounter;
+using _Project.Scripts.ConfigRepositories;
 
 namespace _Project.Scripts.Towers
 {
@@ -12,8 +11,6 @@ namespace _Project.Scripts.Towers
         private readonly WeaponFactory _weaponFactory;
         private readonly TowerConfigsRepository _towerConfigsRepository;
         private readonly CoinCounterModel _coinCounterModel;
-        
-        private CreateTowerPanel _createTowerPanel;
         
         public TowerService(
             TowerFactory towerFactory, 

@@ -1,7 +1,7 @@
-﻿using System;
-using Zenject;
+﻿using Zenject;
 using UnityEngine;
 using _Project.Scripts.Configs;
+using _Project.Scripts.Enemies;
 using _Project.Scripts.Infrastructure.Constants;
 using _Project.Scripts.Infrastructure.ObjectsPool;
 
@@ -85,7 +85,8 @@ namespace _Project.Scripts.Weapons
         
         private void OnProjectileHit(WeaponProjectile projectile)
         {
-            if (_targetFinder.Target?.HealthModel.CurrentHealth <= 0)
+            Enemy target = _targetFinder.Target;
+            if (target != null && target.CurrentHealth <= 0)
                 _targetFinder.ResetTarget();
             
             _projectilePool.Release(projectile);

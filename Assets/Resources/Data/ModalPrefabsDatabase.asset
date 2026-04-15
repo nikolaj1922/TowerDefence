@@ -14,8 +14,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::_Project.Scripts.Database.ModalsPrefabDatabase.ModalsPrefabDatabase
   _modals:
   - type: 0
-    prefab: {fileID: 1380699561605749698, guid: f3aaba9f92d50f947811905c21551e0b, type: 3}
+    prefab: {fileID: 7713265728608262590, guid: f3aaba9f92d50f947811905c21551e0b, type: 3}
   - type: 2
-    prefab: {fileID: 6650872221463209979, guid: 588f0bdaf21b93c4fb9d4a139efd3704, type: 3}
+    prefab: {fileID: 3141374957888701447, guid: 588f0bdaf21b93c4fb9d4a139efd3704, type: 3}
   - type: 1
-    prefab: {fileID: 1083736632627693246, guid: f184d9cb5ceb67a44a51468cd1eeeff0, type: 3}
+    prefab: {fileID: 2352780363129658037, guid: f55be2792245e0247b3bd1f3941c717a, type: 3}

@@ -24,6 +24,7 @@ namespace _Project.Scripts.Enemies
         public EnemyDeath Death { get; private set; }
         public StateMachine StateMachine { private set; get; }
         public bool IsInitialized { get; private set; }
+        public float CurrentHealth => HealthModel.CurrentHealth;
 
         private int _coinReward;
         private Action _onDeath;
