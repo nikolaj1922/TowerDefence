@@ -84,7 +84,7 @@ namespace _Project.Scripts.UI.Modals.EndGameModal
             _sceneLoader
                 .LoadScene(
                     GameConstants.MENU_SCENE,
-                    () => _modalCreatorService.OpenModal(ModalType.Menu))
+                    () => _modalCreatorService.OpenModal(ModalType.Menu).Forget())
                 .Forget();
         }
     }

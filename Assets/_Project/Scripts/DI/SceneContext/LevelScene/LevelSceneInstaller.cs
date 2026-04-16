@@ -11,8 +11,6 @@ using _Project.Scripts.UI.WaveCounter;
 using _Project.Scripts.UI.CoinCounter;
 using _Project.Scripts.UI.TowerCreation;
 using _Project.Scripts.Database.EnemyPrefabDatabase;
-using _Project.Scripts.Infrastructure.Constants;
-using _Project.Scripts.Services.TowerUpgrade;
 using _Project.Scripts.Services.EndGame;
 
 namespace _Project.Scripts.DI.SceneContext.LevelScene

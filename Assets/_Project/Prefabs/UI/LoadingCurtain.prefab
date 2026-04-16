@@ -118,8 +118,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 57c7024016584a5d9cd21aa6f6a6ecc8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::_Project.Scripts.Infrastructure.LoadingCurtain.LoadingCurtainView
-  _description: {fileID: 7094865329054130760}
   _loadingSlider: {fileID: 457704748547756756}
+  _description: {fileID: 7094865329054130760}
 --- !u!1 &4283514993844252362
 GameObject:
   m_ObjectHideFlags: 0
@@ -185,7 +185,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Description
+  m_text: 
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: f866e009ed08dc84fb29179455eb2928, type: 2}
   m_sharedMaterial: {fileID: -7779513028491314694, guid: f866e009ed08dc84fb29179455eb2928, type: 2}
@@ -479,7 +479,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 1016664916990346920, guid: 32c4fdc1a1d378a4d9212c37f4b091e5, type: 3}
       propertyPath: m_Value
-      value: 100
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1016664916990346921, guid: 32c4fdc1a1d378a4d9212c37f4b091e5, type: 3}
       propertyPath: m_Pivot.x

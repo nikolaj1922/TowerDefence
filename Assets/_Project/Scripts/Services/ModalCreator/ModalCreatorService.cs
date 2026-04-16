@@ -1,6 +1,8 @@
 ﻿using _Project.Scripts.Database.ModalsPrefabDatabase;
+using _Project.Scripts.Services.AssetProvider;
 using UnityEngine;
 using Zenject;
+using Cysharp.Threading.Tasks;
 
 namespace _Project.Scripts.Services.ModalCreator
 {
@@ -8,22 +10,25 @@ namespace _Project.Scripts.Services.ModalCreator
     {
         private readonly IInstantiator _instantiator;
         private readonly ModalsPrefabDatabase _modalPrefabDatabase;
+        private readonly IAssetProvider _assetProvider;
 
         private GameObject _currentOpenedModal;
 
-        public ModalCreatorService(ModalsPrefabDatabase modalPrefabDatabase, IInstantiator instantiator)
+        public ModalCreatorService(ModalsPrefabDatabase modalPrefabDatabase, IAssetProvider assetProvider, IInstantiator instantiator)
         {
+            _assetProvider = assetProvider;
             _instantiator = instantiator;
             _modalPrefabDatabase =  modalPrefabDatabase;
         }
 
 
-        public GameObject OpenModal(ModalType modalType)
+        public async UniTask<GameObject> OpenModal(ModalType modalType)
         {
             if (_currentOpenedModal != null)
                 CloseModal();
 
-            _currentOpenedModal = _instantiator.InstantiatePrefab(_modalPrefabDatabase.Get(modalType));
+            GameObject modalObject = await _assetProvider.Load<GameObject>(_modalPrefabDatabase.Get(modalType));
+            _currentOpenedModal = _instantiator.InstantiatePrefab(modalObject);
             return _currentOpenedModal;
         }
 

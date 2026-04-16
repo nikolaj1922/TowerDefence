@@ -1,12 +1,12 @@
 ﻿using System;
 using System.Linq;
+using UnityEngine;
 using Cysharp.Threading.Tasks;
 using System.Collections.Generic;
 using _Project.Scripts.Towers;
 using _Project.Scripts.Configs;
-using _Project.Scripts.Infrastructure.AssetPath;
 using _Project.Scripts.Services.AssetProvider;
-using UnityEngine;
+using _Project.Scripts.Infrastructure.Constants;
 
 namespace _Project.Scripts.ConfigRepositories
 {
@@ -21,7 +21,8 @@ namespace _Project.Scripts.ConfigRepositories
         {
             try
             {
-                TowerConfig[] configs = await _assets.LoadAll<TowerConfig>(AssetPath.TOWERS);
+                TowerConfig[] configs = 
+                    await _assets.LoadByLabel<TowerConfig>(GameConstants.TOWER_CONFIG_ASSET_LABEL);
 
                 if (configs == null || configs.Length == 0)
                 {

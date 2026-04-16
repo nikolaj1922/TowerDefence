@@ -4,28 +4,29 @@ using _Project.Scripts.Database;
 using _Project.Scripts.Services.SaveLoad;
 using _Project.Scripts.Services.Analytics;
 using _Project.Scripts.ConfigRepositories;
+using _Project.Scripts.Services.ModalCreator;
+using _Project.Scripts.Services.TowerUpgrade;
 using _Project.Scripts.Services.AssetProvider;
+using _Project.Scripts.Infrastructure.LoadingScene;
 using _Project.Scripts.Services.Analytics.Firebase;
 using _Project.Scripts.Database.EnemyPrefabDatabase;
 using _Project.Scripts.Database.ModalsPrefabDatabase;
 using _Project.Scripts.Database.TowersPrefabDatabase;
 using _Project.Scripts.Database.WeaponPrefabDatabase;
+using _Project.Scripts.Infrastructure.Constants;
 using _Project.Scripts.Infrastructure.LoadingCurtain;
-using _Project.Scripts.Infrastructure.LoadingScene;
-using _Project.Scripts.Services.TowerUpgrade;
-using _Project.Scripts.Services.ModalCreator;
+using UnityEngine.AddressableAssets;
 
 namespace _Project.Scripts.DI.ProjectContext
 {
     public class ProjectContextInstaller : MonoInstaller
     {
-        [SerializeField] private LoadingCurtainView _loadingCurtainView;
+        [SerializeField] private AssetReferenceGameObject _loadingCurtain;
         [SerializeField] private EnemyPrefabsDatabase _enemyPrefabsDatabase;
         [SerializeField] private TowerPrefabsDatabase _towerPrefabsDatabase;
         [SerializeField] private WeaponPrefabsDatabase _weaponPrefabsDatabase;
         [SerializeField] private ModalsPrefabDatabase _modalPrefabsDatabase;
         [SerializeField] private UpgradesDatabase _upgradesDatabase;
-        
         
         public override void InstallBindings()
         {
@@ -41,8 +42,13 @@ namespace _Project.Scripts.DI.ProjectContext
             BindAnalytics();
             BindConfigRepositories();
             BindLoadingCurtain();
+            
+            Container
+                .Bind<AssetReferenceGameObject>()
+                .WithId(GameConstants.LOADING_CURTAIN_INJECT_ID)
+                .FromInstance(_loadingCurtain).AsSingle();
         }
-
+        
         private void BindAnalytics()
         {
             Container.Bind<IAnalyticsClient>().To<FirebaseAnalyticsClient>().AsSingle();
@@ -72,11 +78,6 @@ namespace _Project.Scripts.DI.ProjectContext
 
         private void BindLoadingCurtain()
         {
-            Container.Bind<LoadingCurtainView>()
-                .FromComponentInNewPrefab(_loadingCurtainView)
-                .AsSingle();
-            Container.Bind<LoadingCurtainModel>().AsSingle();
-            Container.BindInterfacesAndSelfTo<LoadingCurtainController>().AsSingle();
             Container.Bind<LoadingPipelineFactory>().AsSingle();
         }
     }

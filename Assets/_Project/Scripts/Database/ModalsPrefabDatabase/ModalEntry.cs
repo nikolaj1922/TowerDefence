@@ -1,5 +1,6 @@
 ﻿using System;
 using UnityEngine;
+using UnityEngine.AddressableAssets;
 
 namespace _Project.Scripts.Database.ModalsPrefabDatabase
 {
@@ -7,6 +8,6 @@ namespace _Project.Scripts.Database.ModalsPrefabDatabase
     public class ModalEntry
     {
         public ModalType type;
-        public GameObject prefab;
+        public AssetReferenceGameObject prefab;
     }
 }

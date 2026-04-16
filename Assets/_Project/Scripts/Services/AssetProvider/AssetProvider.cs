@@ -1,47 +1,79 @@
-﻿using UnityEngine;
-using System.Collections.Generic;
+﻿using System;
+using UnityEngine;
+using System.Linq;
 using Cysharp.Threading.Tasks;
+using System.Collections.Generic;
+using UnityEngine.AddressableAssets;
+using UnityEngine.ResourceManagement.AsyncOperations;
 
 namespace _Project.Scripts.Services.AssetProvider
 {
     public class AssetProvider : IAssetProvider
     {
-        private readonly Dictionary<string, Object> _cache = new();
+        private readonly Dictionary<string, AsyncOperationHandle> _cache = new();
 
-        public async UniTask<T> Load<T>(string path) where T : Object
+        public async UniTask<T> Load<T>(AssetReference reference) where T : class
         {
-            if (_cache.TryGetValue(path, out Object cached))
-            {
-                return cached as T;
-            }
+            string key = reference.RuntimeKey.ToString();
 
-            ResourceRequest request = Resources.LoadAsync<T>(path);
-            await request;
+            if (_cache.TryGetValue(key, out var handleOperation))
+                return handleOperation.Result as T;
             
-            T asset = request.asset as T;
+            AsyncOperationHandle<T> handle = Addressables.LoadAssetAsync<T>(reference);
+            await handle.Task;
 
-            if (asset == null)
-            {
-                Debug.LogError($"Asset not found at path: {path}");
-                return null;
-            }
+            if (handle.Status != AsyncOperationStatus.Succeeded)
+                throw new Exception($"Failed to load asset: {handle.Status}");
+            
+            _cache[key] = handle;
 
-            _cache[path] = asset;
-
-            return asset;
+            return handle.Result;
         }
 
-        public UniTask<T[]> LoadAll<T>(string path) where T : Object
+        public async UniTask<T[]> LoadByLabel<T>(string label)
         {
-            T[] asset = Resources.LoadAll<T>(path);
+            AsyncOperationHandle<IList<T>> handle = Addressables.LoadAssetsAsync<T>(label);
+            await handle.Task;
+            
+            if (handle.Status != AsyncOperationStatus.Succeeded)
+                throw new Exception($"Failed to load asset: {handle.Status}");
 
-            if (asset == null || asset.Length == 0)
+            return handle.Result.ToArray();
+        }
+
+        public async UniTask<GameObject> Instantiate(AssetReferenceGameObject reference, Transform parent = null)
+        {
+            AsyncOperationHandle<GameObject> handle = Addressables.InstantiateAsync(reference, parent);
+            await handle.Task;
+            
+            if(handle.Status != AsyncOperationStatus.Succeeded)
+                throw new Exception($"Failed to instantiate asset: {reference.RuntimeKey}");
+
+            return handle.Result;
+        }
+
+        public void Release(AssetReference reference)
+        {
+            string key = reference.RuntimeKey.ToString();
+
+            if (_cache.TryGetValue(key, out var handleOperation))
             {
-                Debug.LogError($"Asset not found at path: {path}");
-                return UniTask.FromResult<T[]>(null);
+                Addressables.Release(handleOperation);
+                _cache.Remove(key);
             }
+        }
 
-            return UniTask.FromResult(asset);
+        public void ReleaseInstance(GameObject reference)
+        {
+            Addressables.ReleaseInstance(reference);
+        }
+
+        public void Clear()
+        {
+            foreach (var handle in _cache.Values)
+                Addressables.Release(handle);
+
+            _cache.Clear();
         }
     }
 }

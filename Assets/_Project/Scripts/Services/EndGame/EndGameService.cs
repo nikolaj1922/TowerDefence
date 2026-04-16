@@ -1,4 +1,6 @@
-﻿using _Project.Scripts.Logic.Wave;
+﻿using UnityEngine;
+using Cysharp.Threading.Tasks;
+using _Project.Scripts.Logic.Wave;
 using _Project.Scripts.Services.SaveLoad;
 using _Project.Scripts.Services.Analytics;
 using _Project.Scripts.Services.ModalCreator;
@@ -35,19 +37,20 @@ namespace _Project.Scripts.Services.EndGame
                 towersBuilt, 
                 _waveManager.GetRewardForWaves());
             
-            EndLevel("Defeat!");
+            EndLevel("Defeat!").Forget();
         }
         
-        public void GameVictory() => EndLevel("Victory!");
+        public void GameVictory() => EndLevel("Victory!").Forget();
         
-        private void EndLevel(string headerText)
+        private async UniTask EndLevel(string headerText)
         {
             int metaAdded = _waveManager.GetRewardForWaves();
             _saveLoad.AddMetaCoins(metaAdded);
+
+            GameObject endGameModalObject = await _modalCreatorService.OpenModal(ModalType.EndGame);
+            EndGameModalView endGameModal = endGameModalObject.GetComponent<EndGameModalView>();
             
-            EndGameModalView endGameModalView =
-                _modalCreatorService.OpenModal(ModalType.EndGame).GetComponent<EndGameModalView>();
-            endGameModalView.Initialize(headerText, metaAdded, _waveManager.CurrentWave);
+            endGameModal.Initialize(headerText, metaAdded, _waveManager.CurrentWave);
         }
     }
 }

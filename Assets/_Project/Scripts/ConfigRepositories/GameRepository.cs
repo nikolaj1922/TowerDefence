@@ -3,7 +3,7 @@ using UnityEngine;
 using Cysharp.Threading.Tasks;
 using _Project.Scripts.Configs;
 using _Project.Scripts.Services.AssetProvider;
-using _Project.Scripts.Infrastructure.AssetPath;
+using _Project.Scripts.Infrastructure.Constants;
 
 namespace _Project.Scripts.ConfigRepositories
 {
@@ -19,7 +19,8 @@ namespace _Project.Scripts.ConfigRepositories
         {
             try
             {
-                GameConfig config = await _assets.Load<GameConfig>(AssetPath.GAME_CONFIG);
+                GameConfig[] config = 
+                    await _assets.LoadByLabel<GameConfig>(GameConstants.GAME_CONFIG_ASSET_LABEL);
 
                 if (config == null)
                 {
@@ -27,7 +28,7 @@ namespace _Project.Scripts.ConfigRepositories
                     return;
                 }
             
-                GameConfig = config;
+                GameConfig = config[0];
             }
             catch (Exception ex)
             {

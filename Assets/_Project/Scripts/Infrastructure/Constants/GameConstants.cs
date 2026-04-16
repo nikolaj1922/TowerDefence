@@ -14,5 +14,12 @@
         public const string WEAPON_BASE_INJECT_ID = "WeaponBase";
         public const string WEAPON_HEAD_INJECT_ID = "WeaponHead";
         public const string PROJECTILE_POINT_INJECT_ID = "ProjectileSpawnPoint";
+
+        public const string ENEMY_CONFIG_ASSET_LABEL = "EnemyConfig";
+        public const string TOWER_CONFIG_ASSET_LABEL = "TowerConfig";
+        public const string WEAPON_CONFIG_ASSET_LABEL = "WeaponConfig";
+        public const string GAME_CONFIG_ASSET_LABEL = "GameConfig";
+        
+        public const string LOADING_CURTAIN_INJECT_ID = "LoadingCurtain";
     }
 }

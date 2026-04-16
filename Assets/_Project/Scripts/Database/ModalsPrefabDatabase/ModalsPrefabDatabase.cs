@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections.Generic;
+using UnityEngine.AddressableAssets;
 
 namespace _Project.Scripts.Database.ModalsPrefabDatabase
 {
@@ -8,17 +9,17 @@ namespace _Project.Scripts.Database.ModalsPrefabDatabase
     {
         [SerializeField] private List<ModalEntry> _modals;
         
-        private Dictionary<ModalType, GameObject> _map;
+        private Dictionary<ModalType, AssetReferenceGameObject> _map;
 
         public void Init()
         {
-            _map = new Dictionary<ModalType, GameObject>();
+            _map = new Dictionary<ModalType, AssetReferenceGameObject>();
 
             foreach (var entry in _modals)
                 _map[entry.type] = entry.prefab;
         }
 
-        public GameObject Get(ModalType type)
+        public AssetReferenceGameObject Get(ModalType type)
         {
             if (!_map.TryGetValue(type, out var prefab))
             {

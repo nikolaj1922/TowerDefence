@@ -47,7 +47,7 @@ namespace _Project.Scripts.UI.Modals.MenuModal
         }
 
         private void OnOpenUpgradesClick() =>
-            _modalCreatorService.OpenModal(ModalType.Upgrades);
+            _modalCreatorService.OpenModal(ModalType.Upgrades).Forget();
     }
 }
 

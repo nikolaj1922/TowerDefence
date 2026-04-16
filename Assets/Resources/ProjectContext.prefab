@@ -74,7 +74,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 39fa5be8b2d14541a62f315fb77e216b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::_Project.Scripts.DI.ProjectContext.ProjectContextInstaller
-  _loadingCurtainView: {fileID: 475659910205787159, guid: 1ca9f04152d43634d8f67c3a9044230a, type: 3}
+  _loadingCurtain:
+    m_AssetGUID: 1ca9f04152d43634d8f67c3a9044230a
+    m_SubObjectName: 
+    m_SubObjectType: 
+    m_SubObjectGUID: 
+    m_EditorAssetChanged: 0
   _enemyPrefabsDatabase: {fileID: 11400000, guid: d05b69215a4c8cf4788123c9567dfaff, type: 2}
   _towerPrefabsDatabase: {fileID: 11400000, guid: b87c2713842875141842e979d95c126d, type: 2}
   _weaponPrefabsDatabase: {fileID: 11400000, guid: d1bb9ea55e5c2f8439783ed7a90234aa, type: 2}

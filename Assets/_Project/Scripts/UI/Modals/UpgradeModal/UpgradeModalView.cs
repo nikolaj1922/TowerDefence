@@ -9,6 +9,7 @@ using _Project.Scripts.Database.ModalsPrefabDatabase;
 using _Project.Scripts.Services.ModalCreator;
 using _Project.Scripts.Services.TowerUpgrade;
 using _Project.Scripts.UI.Modals.UpgradeModal.UpgradeItem;
+using Cysharp.Threading.Tasks;
 
 namespace _Project.Scripts.UI.Modals.UpgradeModal
 {
@@ -55,7 +56,7 @@ namespace _Project.Scripts.UI.Modals.UpgradeModal
             _backButton.onClick.RemoveListener(BackToMainMenu);
         }
 
-        private void BackToMainMenu() => _modalCreatorService.OpenModal(ModalType.Menu);
+        private void BackToMainMenu() => _modalCreatorService.OpenModal(ModalType.Menu).Forget();
         
         private void CreateUpgradeList()
         {

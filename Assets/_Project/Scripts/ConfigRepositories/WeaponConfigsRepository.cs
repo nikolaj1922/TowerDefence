@@ -1,12 +1,12 @@
 ﻿using System;
 using System.Linq;
+using UnityEngine;
+using Cysharp.Threading.Tasks;
 using System.Collections.Generic;
 using _Project.Scripts.Configs;
 using _Project.Scripts.Weapons;
 using _Project.Scripts.Services.AssetProvider;
-using _Project.Scripts.Infrastructure.AssetPath;
-using Cysharp.Threading.Tasks;
-using UnityEngine;
+using _Project.Scripts.Infrastructure.Constants;
 
 namespace _Project.Scripts.ConfigRepositories
 {
@@ -21,7 +21,8 @@ namespace _Project.Scripts.ConfigRepositories
         {
             try
             {
-                WeaponConfig[] configs = await _assets.LoadAll<WeaponConfig>(AssetPath.WEAPONS);
+                WeaponConfig[] configs = 
+                    await _assets.LoadByLabel<WeaponConfig>(GameConstants.WEAPON_CONFIG_ASSET_LABEL);
 
                 if (configs == null || configs.Length == 0)
                 {

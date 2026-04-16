@@ -41,11 +41,11 @@ namespace _Project.Scripts.Infrastructure.LoadingCurtain
             return new Queue<ILoadingOperation>(new ILoadingOperation[]
             {
                 new LoadPlayerProgressOperation(_saveLoad),
-                new LoadConfigsOperation(
-                    _weaponConfigsRepository,
-                    _enemyConfigsRepository,
-                    _towerConfigsRepository,
-                    _gameRepository),
+                // new LoadConfigsOperation(
+                //     _weaponConfigsRepository,
+                //     _enemyConfigsRepository,
+                //     _towerConfigsRepository,
+                //     _gameRepository),
                 new LoadMenuSceneOperation(_sceneSceneLoader, _modalCreatorService),
             });
         } 

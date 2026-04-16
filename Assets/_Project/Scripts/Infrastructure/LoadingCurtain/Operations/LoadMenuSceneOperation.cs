@@ -20,6 +20,6 @@ namespace _Project.Scripts.Infrastructure.LoadingCurtain.Operations
         }
 
         public async UniTask Load() => 
-            await _sceneLoader.LoadScene(GameConstants.MENU_SCENE, () => _modalCreatorService.OpenModal(ModalType.Menu));
+            await _sceneLoader.LoadScene(GameConstants.MENU_SCENE, () => _modalCreatorService.OpenModal(ModalType.Menu).Forget());
     }
 }

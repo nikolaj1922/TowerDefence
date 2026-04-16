@@ -6,7 +6,7 @@ using System.Collections.Generic;
 using _Project.Scripts.Configs;
 using _Project.Scripts.Enemies;
 using _Project.Scripts.Services.AssetProvider;
-using _Project.Scripts.Infrastructure.AssetPath;
+using _Project.Scripts.Infrastructure.Constants;
 
 namespace _Project.Scripts.ConfigRepositories
 {
@@ -21,8 +21,8 @@ namespace _Project.Scripts.ConfigRepositories
         {
             try
             {
-                EnemyConfig[] configs = await _assets
-                    .LoadAll<EnemyConfig>(AssetPath.ENEMIES);
+                EnemyConfig[] configs =
+                    await _assets.LoadByLabel<EnemyConfig>(GameConstants.ENEMY_CONFIG_ASSET_LABEL);
 
                 if (configs == null || configs.Length == 0)
                 {
