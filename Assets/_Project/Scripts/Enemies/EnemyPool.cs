@@ -1,5 +1,6 @@
 ﻿using Zenject;
 using System.Collections.Generic;
+using _Project.Scripts.Enemies.Behaviour;
 
 namespace _Project.Scripts.Enemies
 {

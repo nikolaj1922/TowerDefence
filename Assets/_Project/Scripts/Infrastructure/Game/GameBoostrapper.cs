@@ -3,6 +3,7 @@ using _Project.Scripts.ConfigRepositories;
 using _Project.Scripts.Database.ModalsPrefabDatabase;
 using _Project.Scripts.Services.ModalCreator;
 using _Project.Scripts.Services.SaveLoad;
+using _Project.Scripts.Services.SceneLoader;
 using Cysharp.Threading.Tasks;
 
 namespace _Project.Scripts.Infrastructure.Game
@@ -11,11 +12,11 @@ namespace _Project.Scripts.Infrastructure.Game
     {
         private readonly ISaveLoad _saveLoad;
         private readonly GameRepository _gameRepository;
-        private readonly SceneLoader.SceneLoader _sceneLoader;
+        private readonly ISceneLoader _sceneLoader;
         private readonly WeaponConfigsRepository _weaponConfigsRepository;
         private readonly EnemyConfigsRepository _enemyConfigsRepository;
         private readonly TowerConfigsRepository _towerConfigsRepository;
-        private readonly ModalCreatorService _modalCreatorService;
+        private readonly IModalCreatorService _modalCreatorService;
 
         public GameBoostrapper(
             TowerConfigsRepository towerConfigsRepository,
@@ -23,8 +24,8 @@ namespace _Project.Scripts.Infrastructure.Game
             WeaponConfigsRepository weaponConfigsRepository,
             GameRepository gameRepository,
             ISaveLoad saveLoad,
-            SceneLoader.SceneLoader sceneLoader,
-            ModalCreatorService modalCreatorService)
+            ISceneLoader sceneLoader,
+            IModalCreatorService modalCreatorService)
         {
             _modalCreatorService = modalCreatorService;
             _saveLoad = saveLoad;

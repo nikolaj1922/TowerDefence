@@ -1,7 +1,7 @@
 ﻿using Zenject;
 using UnityEngine;
 using _Project.Scripts.Configs;
-using _Project.Scripts.Enemies;
+using _Project.Scripts.Enemies.Behaviour;
 
 namespace _Project.Scripts.Weapons
 {

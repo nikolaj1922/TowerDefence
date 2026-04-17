@@ -9,18 +9,18 @@ using Zenject;
 
 namespace _Project.Scripts.Logic.Wave
 {
-    public class WaveManager
+    public class WaveManager : IWaveManager
     {
         public event Action<int> OnWaveTimerStart;
         public event Action OnCompleteLevel;
         public event Action<int> OnCompleteWave;
 
-        private EnemyFactory _enemyFactory;
+        private IEnemyFactory _enemyFactory;
         private GameRepository _gameRepository;
-        private AnalyticsService _analyticsService;
-        private int _waveIndex = 0;
-        private int _enemyKilledOnWave = 0;
-        private int _totalEnemiesOnWave = 0;
+        private IAnalyticsService _analyticsService;
+        private int _waveIndex;
+        private int _enemyKilledOnWave;
+        private int _totalEnemiesOnWave;
         
         private CancellationTokenSource _waveCancelToken;
 
@@ -29,9 +29,9 @@ namespace _Project.Scripts.Logic.Wave
 
         [Inject]
         private void Construct(
-            EnemyFactory enemyFactory,
+            IEnemyFactory enemyFactory,
             GameRepository gameRepository,
-            AnalyticsService analyticsService
+            IAnalyticsService analyticsService
         )
         {
             _gameRepository = gameRepository;

@@ -10,6 +10,7 @@ namespace _Project.Scripts.UI.WaveCounter
 
         private readonly int _timeBetweenWaves;
         private int _currentTimeBetweenWaves;
+        
         public int CurrentTimeBetweenWaves
         {
             get => _currentTimeBetweenWaves;

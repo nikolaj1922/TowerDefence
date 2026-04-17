@@ -2,7 +2,7 @@
 
 namespace _Project.Scripts.Enemies
 {
-    public class EnemySpawner
+    public class EnemySpawner : IEnemySpawner
     {
         private const int MAX_SIDES = 4;
         private const float SPAWN_HEIGHT = 1f;

@@ -127,6 +127,8 @@ GameObject:
   - component: {fileID: 7633397490035048276}
   - component: {fileID: 1147372158218767230}
   - component: {fileID: 614043449085760536}
+  - component: {fileID: -3438600185839729842}
+  - component: {fileID: -7971252553251131828}
   m_Layer: 5
   m_Name: MainMenuModal
   m_TagString: Untagged
@@ -231,6 +233,37 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::_Project.Scripts.UI.Modals.MenuModal.MenuModal
   _startButton: {fileID: 5693177234705475395}
   _upgradeButton: {fileID: 7175080324268535187}
+--- !u!114 &-3438600185839729842
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7713265728608262590}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 442d70550aa84c0a876b7bf2d44f0201, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::_Project.Scripts.DI.GameObjectInstaller.MenuModalInstaller
+  _view: {fileID: 614043449085760536}
+--- !u!114 &-7971252553251131828
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7713265728608262590}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 08eca9f7688a0a24685b89133b020c8e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Zenject::Zenject.GameObjectContext
+  _scriptableObjectInstallers: []
+  _monoInstallers:
+  - {fileID: -3438600185839729842}
+  _installerPrefabs: []
+  _autoRun: 1
+  _kernel: {fileID: 0}
 --- !u!1001 &399159091439354228
 PrefabInstance:
   m_ObjectHideFlags: 0

@@ -5,13 +5,13 @@ using _Project.Scripts.Services.SaveLoad;
 using _Project.Scripts.Services.Analytics;
 using _Project.Scripts.ConfigRepositories;
 using _Project.Scripts.Services.AssetProvider;
-using _Project.Scripts.Infrastructure.SceneLoader;
 using _Project.Scripts.Services.Analytics.Firebase;
 using _Project.Scripts.Database.EnemyPrefabDatabase;
 using _Project.Scripts.Database.ModalsPrefabDatabase;
 using _Project.Scripts.Database.TowersPrefabDatabase;
 using _Project.Scripts.Database.WeaponPrefabDatabase;
 using _Project.Scripts.Services.ModalCreator;
+using _Project.Scripts.Services.SceneLoader;
 using _Project.Scripts.Services.Upgrade;
 
 namespace _Project.Scripts.DI.ProjectContext
@@ -24,20 +24,19 @@ namespace _Project.Scripts.DI.ProjectContext
         [SerializeField] private ModalsPrefabDatabase _modalPrefabsDatabase;
         [SerializeField] private UpgradesDatabase _upgradesDatabase;
         
-        
         public override void InstallBindings()
         {
             Container.BindInterfacesAndSelfTo<FirebaseInitializer>().AsSingle().NonLazy();
             BindDatabases(); 
             
-            Container.Bind<ModalCreatorService>().AsSingle();
+            Container.Bind<IModalCreatorService>().To<ModalCreatorService>().AsSingle();
             Container.BindInterfacesAndSelfTo<AssetProvider>().AsSingle();
-            Container.Bind<SceneLoader>().AsSingle().NonLazy();
+            Container.Bind<ISceneLoader>().To<SceneLoader>().AsSingle().NonLazy();
             Container.Bind<ISaveLoad>().To<SaveLoad>().AsSingle();
-            Container.Bind<UpgradeService>().AsSingle();
+            Container.Bind<IUpgradeService>().To<UpgradeService>().AsSingle();
             
             Container.Bind<IAnalyticsClient>().To<FirebaseAnalyticsClient>().AsSingle();
-            Container.Bind<AnalyticsService>().AsSingle();
+            Container.Bind<IAnalyticsService>().To<AnalyticsService>().AsSingle();
 
             BindConfigRepositories();
         }

@@ -7,6 +7,6 @@ namespace _Project.Scripts.UI.CoinCounter
     {
         [SerializeField] private TextMeshProUGUI _coinText;
         
-        public void UpdateView(int coins) => _coinText.text = coins.ToString();
+        public void SetCoins(int coins) => _coinText.text = coins.ToString();
     }
 }

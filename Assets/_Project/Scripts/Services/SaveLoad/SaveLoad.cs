@@ -9,7 +9,7 @@ namespace _Project.Scripts.Services.SaveLoad
         
         public void AddMetaCoins(int amount)
         {
-            PlayerProgress.metaCoinsCount += amount;
+            PlayerProgress.MetaCoinsCount += amount;
             SaveProgress();
         }
         
@@ -37,7 +37,7 @@ namespace _Project.Scripts.Services.SaveLoad
         {
             PlayerProgress = new PlayerProgress
             {
-                metaCoinsCount = 1000,
+                MetaCoinsCount = 1000,
                 upgrades = new PlayerUpgrades()
             };
         }

@@ -2,7 +2,7 @@
 
 namespace _Project.Scripts.Services.Analytics
 {
-    public class AnalyticsService
+    public class AnalyticsService : IAnalyticsService
     {
         private readonly IAnalyticsClient _client;
         

@@ -79,3 +79,7 @@ MonoBehaviour:
   _weaponPrefabsDatabase: {fileID: 11400000, guid: d1bb9ea55e5c2f8439783ed7a90234aa, type: 2}
   _modalPrefabsDatabase: {fileID: 11400000, guid: 0757c5b56d5589b48b595b3cc3dcfc5c, type: 2}
   _upgradesDatabase: {fileID: 11400000, guid: 43c114dd994f8404eac3f99424a717f0, type: 2}
+  _coinCounterView: {fileID: 4046331802034567457, guid: 0d0c84fe175bed34cad7a884afddb360, type: 3}
+  _waveCounterView: {fileID: 5179343230739382028, guid: b53f73133fa879d46bda5c91864f850d, type: 3}
+  _createTowerPanelView: {fileID: 2053579954866188841, guid: fc2c2a5affe624f438691e6eb865f5df, type: 3}
+  _createTowerButtonView: {fileID: 7214205501385807217, guid: a65f321222fb9a24898ac5f5be2eef78, type: 3}

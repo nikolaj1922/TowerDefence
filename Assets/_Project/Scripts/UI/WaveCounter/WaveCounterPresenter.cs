@@ -12,14 +12,14 @@ namespace _Project.Scripts.UI.WaveCounter
         
         private readonly WaveCounterModel _counterModel;
         private readonly WaveCounterView _view;
-        private readonly WaveManager _waveManager;
+        private readonly IWaveManager _waveManager;
         
         private CancellationTokenSource _cancellationToken;
         
         public WaveCounterPresenter(
             WaveCounterModel counterModel, 
             WaveCounterView view, 
-            WaveManager waveManager)
+            IWaveManager waveManager)
         {
             _view = view;
             _counterModel = counterModel;

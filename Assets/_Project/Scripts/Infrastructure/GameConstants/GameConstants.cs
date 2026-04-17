@@ -14,5 +14,6 @@
         public const string WEAPON_BASE_INJECT_ID = "WeaponBase";
         public const string WEAPON_HEAD_INJECT_ID = "WeaponHead";
         public const string PROJECTILE_POINT_INJECT_ID = "ProjectileSpawnPoint";
+        public const int MAX_META_COIN_COUNT = 10_000;
     }
 }

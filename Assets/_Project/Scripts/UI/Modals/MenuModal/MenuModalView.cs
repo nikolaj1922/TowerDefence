@@ -1,53 +1,32 @@
-using Zenject;
+using System;
 using UnityEngine;
 using UnityEngine.UI;
-using Cysharp.Threading.Tasks;
-using _Project.Scripts.Database.ModalsPrefabDatabase;
-using _Project.Scripts.Infrastructure.GameConstants;
-using _Project.Scripts.Infrastructure.SceneLoader;
-using _Project.Scripts.Services.ModalCreator;
 
 namespace _Project.Scripts.UI.Modals.MenuModal
 {
     public class MenuModalView : MonoBehaviour
     {
+        public event Action OnStartClicked;
+        public event Action OnOpenUpgradesClicked;
+        
         [Header("Buttons")]
         [SerializeField] private Button _startButton;
         [SerializeField] private Button _upgradeButton;
-
-        private SceneLoader _sceneLoader;
-        private ModalCreatorService _modalCreatorService;
-
-        [Inject]
-        public void Construct(
-            SceneLoader sceneLoader,
-            ModalCreatorService modalCreatorService
-            )
-        {
-            _sceneLoader = sceneLoader;
-            _modalCreatorService = modalCreatorService;
-        }
         
         private void Awake()
         {
-            _startButton.onClick.AddListener(OnStartClick);
-            _upgradeButton.onClick.AddListener(OnOpenUpgradesClick);
+            _startButton.onClick.AddListener(OnStartButtonClicked);
+            _upgradeButton.onClick.AddListener(OnUpgradeButtonClicked);
         }
 
-        private void OnDisable()
+        private void OnDestroy()
         {
-            _startButton.onClick.RemoveListener(OnStartClick);
-            _upgradeButton.onClick.RemoveListener(OnOpenUpgradesClick);
+            _startButton.onClick.RemoveListener(OnStartButtonClicked);
+            _upgradeButton.onClick.RemoveListener(OnUpgradeButtonClicked);
         }
-
-        private void OnStartClick()
-        {
-            _sceneLoader.LoadScene(GameConstants.LEVEL_SCENE).Forget();
-            _modalCreatorService.CloseModal();
-        }
-
-        private void OnOpenUpgradesClick() =>
-            _modalCreatorService.OpenModal(ModalType.Upgrades);
+        
+        private void OnStartButtonClicked() => OnStartClicked?.Invoke();
+        private void OnUpgradeButtonClicked() => OnOpenUpgradesClicked?.Invoke();
     }
 }
 

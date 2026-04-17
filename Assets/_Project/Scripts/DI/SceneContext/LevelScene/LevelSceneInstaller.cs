@@ -1,17 +1,18 @@
 ﻿using Zenject;
 using UnityEngine;
-using _Project.Scripts.UI;
 using _Project.Scripts.Towers;
 using _Project.Scripts.Weapons;
 using _Project.Scripts.Enemies;
 using _Project.Scripts.Logic.Wave;
 using _Project.Scripts.Logic.Level;
 using _Project.Scripts.Towers.Castle;
-using _Project.Scripts.UI.WaveCounter;
 using _Project.Scripts.UI.CoinCounter;
-using _Project.Scripts.UI.TowerCreation;
-using _Project.Scripts.Services.EndGame;
 using _Project.Scripts.Database.EnemyPrefabDatabase;
+using _Project.Scripts.Enemies.Behaviour;
+using _Project.Scripts.UI;
+using _Project.Scripts.UI.TowerCreation;
+using _Project.Scripts.UI.TowerCreation.CreateTowerButton;
+using _Project.Scripts.UI.WaveCounter;
 
 namespace _Project.Scripts.DI.SceneContext.LevelScene
 {
@@ -22,9 +23,9 @@ namespace _Project.Scripts.DI.SceneContext.LevelScene
         [SerializeField] private LayerMask _groundLayerMask;
         [SerializeField] private CoinCounterView _coinCounterView;
         [SerializeField] private WaveCounterView _waveCounterView;
-        [SerializeField] private CreateTowerView _createTowerView;
-        [SerializeField] private CreateTowerItemButton _createTowerItemButton;
-
+        [SerializeField] private CreateTowerPanelView _createTowerPanelView;
+        [SerializeField] private CreateTowerButtonView _createTowerButtonView;
+        
         private EnemyPrefabsDatabase _enemyPrefabsDatabase;
         
         [Inject]
@@ -43,7 +44,7 @@ namespace _Project.Scripts.DI.SceneContext.LevelScene
         {
             float viewHeight = _camera.orthographicSize * 2;
             float viewWidth = viewHeight * _camera.aspect;
-            Container.Bind<EnemySpawner>().AsSingle().WithArguments(viewHeight, viewWidth);
+            Container.Bind<IEnemySpawner>().To<EnemySpawner>().AsSingle().WithArguments(viewHeight, viewWidth);
         } 
 
         private void BindLevel()
@@ -51,23 +52,23 @@ namespace _Project.Scripts.DI.SceneContext.LevelScene
             Container.BindInterfacesAndSelfTo<TowerPlacement>().AsSingle().WithArguments(_camera, _towerOccupiedLayerMask, _groundLayerMask);
 
             Container.Bind<CoinCounterModel>().AsSingle();
-            Container.BindInterfacesAndSelfTo<WaveManager>().AsSingle();
-            Container.Bind<TowerService>().AsSingle();
-            Container.Bind<CastleInitializer>().AsSingle();
-            Container.Bind<EndGameService>().AsSingle();
+            Container.Bind<IWaveManager>().To<WaveManager>().AsSingle();
+            Container.Bind<ITowerService>().To<TowerService>().AsSingle();
+            Container.Bind<ICastleInitializer>().To<CastleInitializer>().AsSingle();
             Container.BindInterfacesAndSelfTo<LevelBootstrapper>().AsSingle();
+            
+            Container.BindInterfacesAndSelfTo<UIFactory>().AsSingle().WithArguments(
+                _createTowerPanelView, 
+                _createTowerButtonView, 
+                _coinCounterView,
+                _waveCounterView);
         }
 
         private void BindFactories()
         {
-            Container.Bind<EnemyFactory>().AsSingle();
-            Container.Bind<TowerFactory>().AsSingle();
-            Container.Bind<WeaponFactory>().AsSingle();
-            Container.BindInterfacesAndSelfTo<UIFactory>().AsSingle().WithArguments(
-                _createTowerView, 
-                _createTowerItemButton, 
-                _coinCounterView,
-                _waveCounterView);
+            Container.Bind<IEnemyFactory>().To<EnemyFactory>().AsSingle();
+            Container.Bind<ITowerFactory>().To<TowerFactory>().AsSingle();
+            Container.Bind<IWeaponFactory>().To<WeaponFactory>().AsSingle();
         }
 
         private void BindEnemyPools()

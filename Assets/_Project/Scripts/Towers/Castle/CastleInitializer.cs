@@ -6,12 +6,12 @@ using _Project.Scripts.Infrastructure.GameConstants;
 
 namespace _Project.Scripts.Towers.Castle
 {
-    public class CastleInitializer
+    public class CastleInitializer : ICastleInitializer
     {
-        private readonly TowerService _towerService;
+        private readonly ITowerService _towerService;
         
         [Inject]
-        public CastleInitializer(TowerService towerService) => _towerService = towerService;
+        public CastleInitializer(ITowerService towerService) => _towerService = towerService;
 
         public CastleTower CreateCastle(
             Vector3 position, 

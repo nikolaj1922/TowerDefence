@@ -12382,8 +12382,8 @@ MonoBehaviour:
     m_Bits: 1024
   _coinCounterView: {fileID: 4046331802034567457, guid: 0d0c84fe175bed34cad7a884afddb360, type: 3}
   _waveCounterView: {fileID: 5179343230739382028, guid: b53f73133fa879d46bda5c91864f850d, type: 3}
-  _createTowerView: {fileID: 2053579954866188841, guid: fc2c2a5affe624f438691e6eb865f5df, type: 3}
-  _createTowerItemButton: {fileID: 7214205501385807217, guid: a65f321222fb9a24898ac5f5be2eef78, type: 3}
+  _createTowerPanelView: {fileID: 2053579954866188841, guid: fc2c2a5affe624f438691e6eb865f5df, type: 3}
+  _createTowerButtonView: {fileID: 7214205501385807217, guid: a65f321222fb9a24898ac5f5be2eef78, type: 3}
 --- !u!1001 &338856743
 PrefabInstance:
   m_ObjectHideFlags: 0

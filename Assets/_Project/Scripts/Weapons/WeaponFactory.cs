@@ -4,7 +4,7 @@ using _Project.Scripts.Database.WeaponPrefabDatabase;
 
 namespace _Project.Scripts.Weapons
 {
-    public class WeaponFactory
+    public class WeaponFactory : IWeaponFactory
     {
         private readonly IInstantiator _instantiator;
         private readonly WeaponPrefabsDatabase _weaponPrefabsDatabase;

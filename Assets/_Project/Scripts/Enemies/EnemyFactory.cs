@@ -1,20 +1,18 @@
 ﻿using System;
-using Zenject;
 using UnityEngine;
 using _Project.Scripts.Configs;
-using _Project.Scripts.Logic.Health;
 using _Project.Scripts.Enemies.States;
 using _Project.Scripts.ConfigRepositories;
+using _Project.Scripts.Enemies.Behaviour;
 using _Project.Scripts.Infrastructure.GameConstants;
 using _Project.Scripts.Infrastructure.StateMachine;
-using _Project.Scripts.Towers.Castle;
 
 namespace _Project.Scripts.Enemies
 {
-    public class EnemyFactory
+    public class EnemyFactory : IEnemyFactory
     {
         private readonly EnemyPool _orksPool;
-        private readonly EnemySpawner _enemySpawner;
+        private readonly IEnemySpawner _enemySpawner;
         private readonly EnemyConfigsRepository _configsRepository;
 
         private Action _onDeathCached;
@@ -22,7 +20,7 @@ namespace _Project.Scripts.Enemies
 
         public EnemyFactory(
             EnemyPool orksPool,
-            EnemySpawner enemySpawner,
+            IEnemySpawner enemySpawner,
             EnemyConfigsRepository configsRepository
         )
         {

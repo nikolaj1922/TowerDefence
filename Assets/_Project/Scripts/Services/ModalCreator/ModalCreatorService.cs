@@ -4,7 +4,7 @@ using Zenject;
 
 namespace _Project.Scripts.Services.ModalCreator
 {
-    public class ModalCreatorService
+    public class ModalCreatorService : IModalCreatorService
     {
         private readonly IInstantiator _instantiator;
         private readonly ModalsPrefabDatabase _modalPrefabDatabase;
@@ -16,8 +16,7 @@ namespace _Project.Scripts.Services.ModalCreator
             _instantiator = instantiator;
             _modalPrefabDatabase =  modalPrefabDatabase;
         }
-
-
+        
         public GameObject OpenModal(ModalType modalType)
         {
             if (_currentOpenedModal != null)

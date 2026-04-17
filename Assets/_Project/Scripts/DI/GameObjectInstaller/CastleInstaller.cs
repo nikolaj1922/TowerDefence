@@ -11,12 +11,12 @@ namespace _Project.Scripts.DI.GameObjectInstaller
         [SerializeField] private HealthBarView _healthBarView;
         
         private GameRepository _gameRepository;
-        private UpgradeService _upgradeService;
+        private IUpgradeService _upgradeService;
 
         [Inject]
         public void Construct(
             GameRepository gameRepository,
-            UpgradeService upgradeService
+            IUpgradeService upgradeService
         )
         {
             _upgradeService = upgradeService;

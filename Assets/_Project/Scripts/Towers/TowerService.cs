@@ -5,16 +5,16 @@ using _Project.Scripts.ConfigRepositories;
 
 namespace _Project.Scripts.Towers
 {
-    public class TowerService
+    public class TowerService : ITowerService
     {
-        private readonly TowerFactory _towerFactory;
-        private readonly WeaponFactory _weaponFactory;
+        private readonly ITowerFactory _towerFactory;
+        private readonly IWeaponFactory _weaponFactory;
         private readonly TowerConfigsRepository _towerConfigsRepository;
         private readonly CoinCounterModel _coinCounterModel;
         
         public TowerService(
-            TowerFactory towerFactory, 
-            WeaponFactory weaponFactory,
+            ITowerFactory towerFactory, 
+            IWeaponFactory weaponFactory,
             TowerConfigsRepository towerConfigsRepository,
             CoinCounterModel coinCounterModel
             )

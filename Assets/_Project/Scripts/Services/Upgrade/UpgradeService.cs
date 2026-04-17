@@ -5,7 +5,7 @@ using _Project.Scripts.Services.SaveLoad;
 
 namespace _Project.Scripts.Services.Upgrade
 {
-    public class UpgradeService
+    public class UpgradeService : IUpgradeService
     {
         private readonly ISaveLoad _saveLoad;
         private readonly UpgradesDatabase _upgradesDatabase;
@@ -26,9 +26,6 @@ namespace _Project.Scripts.Services.Upgrade
             return 1 + upgradeConfig.statMultiplierByLevel * (upgradeLevel - 1);
         }
         
-        private BoughtUpgrade GetUpgrade(string id) =>
-            Upgrades.boughtUpgradeLevelsById.FirstOrDefault(x => x.id == id);
-
         public int GetUpgradeLevel(string id) => GetUpgrade(id)?.level ?? 1;
 
         public void SetUpgradeLevel(string id, int level)
@@ -50,5 +47,8 @@ namespace _Project.Scripts.Services.Upgrade
                 upgrade.level = level;
             }
         }
+        
+        private BoughtUpgrade GetUpgrade(string id) =>
+            Upgrades.boughtUpgradeLevelsById.FirstOrDefault(x => x.id == id);
     }
 }

@@ -1,0 +1,99 @@
+﻿using System;
+using Zenject;
+using System.Collections.Generic;
+using _Project.Scripts.Configs;
+using _Project.Scripts.Database;
+using _Project.Scripts.Database.ModalsPrefabDatabase;
+using _Project.Scripts.Services.Upgrade;
+using _Project.Scripts.Services.SaveLoad;
+using _Project.Scripts.Services.ModalCreator;
+using _Project.Scripts.UI.Modals.UpgradeModal.UpgradeButton;
+
+namespace _Project.Scripts.UI.Modals.UpgradeModal
+{
+    public class UpgradeModalPresenter : IInitializable, IDisposable
+    {
+        private readonly UpgradeModalView _view;
+        private readonly UpgradeButtonView _upgradeButtonView;
+
+        private readonly ISaveLoad _saveLoad;
+        private readonly IInstantiator _instantiator;
+        private readonly IUpgradeService _upgradeService;
+        private readonly UpgradesDatabase _upgradeDatabase;
+        private readonly IModalCreatorService _modalCreatorService;
+
+        private List<UpgradeButtonPresenter> _upgradeButtons;
+        private List<UpgradeButtonView> _upgradeViews;
+
+        public UpgradeModalPresenter(
+            IInstantiator instantiator, 
+            UpgradeButtonView upgradeButtonView, 
+            UpgradeModalView view,
+            ISaveLoad saveLoad, 
+            IModalCreatorService modalCreatorService, 
+            IUpgradeService upgradeService, 
+            UpgradesDatabase upgradeDatabase)
+        {
+            _view = view;
+            _instantiator = instantiator;
+
+            _saveLoad = saveLoad;
+            _upgradeService = upgradeService;
+            _upgradeDatabase = upgradeDatabase;
+            _modalCreatorService = modalCreatorService;
+            _upgradeButtonView = upgradeButtonView;
+        }
+        
+        public void Initialize()
+        {
+            _view.OnBackToMainMenuClicked += OnBackToMainMenuClick;
+            
+            _upgradeButtons = new  List<UpgradeButtonPresenter>();
+            _upgradeViews = new  List<UpgradeButtonView>();
+            
+            foreach (var upgrade in _upgradeDatabase.upgrades)
+                CreateUpgradeButton(upgrade);
+        }
+        
+        public void Dispose()
+        {
+            _view.OnBackToMainMenuClicked -= OnBackToMainMenuClick;
+            
+            foreach (UpgradeButtonView upgradeButtonView in _upgradeViews)
+                upgradeButtonView.OnBuyClicked -= RefreshListAfterBuy;
+            
+            foreach (UpgradeButtonPresenter upgradeButton in _upgradeButtons)
+                upgradeButton.Dispose();
+        }
+        
+        private void OnBackToMainMenuClick() => _modalCreatorService.OpenModal(ModalType.Menu);  
+        
+        private void CreateUpgradeButton(UpgradeConfig upgradeConfig)
+        {
+            UpgradeButtonView upgradeView = 
+                _instantiator.InstantiatePrefabForComponent<UpgradeButtonView>(
+                    _upgradeButtonView, 
+                    _view.GridContainer);
+            
+            UpgradeButtonPresenter upgradeButton = new UpgradeButtonPresenter(
+                _saveLoad, 
+                upgradeView, 
+                _upgradeService, 
+                upgradeConfig);
+            
+            upgradeButton.Initialize();
+            upgradeView.OnBuyClicked += RefreshListAfterBuy;
+            
+            _upgradeButtons.Add(upgradeButton);
+            _upgradeViews.Add(upgradeView);
+        } 
+        
+        private void RefreshListAfterBuy()
+        {
+            _view.MetaCounterView.UpdateView();
+            
+            foreach (UpgradeButtonPresenter upgradeButton in _upgradeButtons)
+                upgradeButton.Draw();
+        }
+    }
+}

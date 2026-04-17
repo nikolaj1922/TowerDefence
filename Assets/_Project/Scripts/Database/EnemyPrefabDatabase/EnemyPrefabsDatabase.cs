@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections.Generic;
 using _Project.Scripts.Enemies;
+using _Project.Scripts.Enemies.Behaviour;
 
 namespace _Project.Scripts.Database.EnemyPrefabDatabase
 {
