@@ -20,6 +20,6 @@
         public const string WEAPON_CONFIG_ASSET_LABEL = "WeaponConfig";
         public const string GAME_CONFIG_ASSET_LABEL = "GameConfig";
         
-        public const string LOADING_CURTAIN_INJECT_ID = "LoadingCurtain";
+        public const int MAX_META_COIN_COUNT = 10_000;
     }
 }

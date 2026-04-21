@@ -1,10 +1,10 @@
-﻿using Zenject;
+﻿using _Project.Scripts.Database.Towers;
+using Zenject;
 using UnityEngine;
-using _Project.Scripts.Database.TowersPrefabDatabase;
 
 namespace _Project.Scripts.Towers
 {
-    public class TowerFactory
+    public class TowerFactory : ITowerFactory
     {
         private const float CASTLE_INIT_HEIGHT = 0.2f;
         

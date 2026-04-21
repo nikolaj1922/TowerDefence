@@ -12,8 +12,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c3a909fd610344e080420382a79c077f, type: 3}
   m_Name: WeaponPrefabsDatabase
   m_EditorClassIdentifier: Assembly-CSharp::_Project.Scripts.Database.WeaponDatabase.WeaponPrefabsDatabase
-  _weapons:
+  _weaponAssets:
   - type: 0
-    prefab: {fileID: 8562319909079802671, guid: b5ff6bac1833f49478bdf466c2ba62b1, type: 3}
+    prefab:
+      m_AssetGUID: b5ff6bac1833f49478bdf466c2ba62b1
+      m_SubObjectName: 
+      m_SubObjectType: 
+      m_SubObjectGUID: 
+      m_EditorAssetChanged: 0
   - type: 1
-    prefab: {fileID: 6918689046080396322, guid: 07194f17402630d43a1e2db8f9ade54c, type: 3}
+    prefab:
+      m_AssetGUID: 07194f17402630d43a1e2db8f9ade54c
+      m_SubObjectName: 
+      m_SubObjectType: 
+      m_SubObjectGUID: 
+      m_EditorAssetChanged: 1

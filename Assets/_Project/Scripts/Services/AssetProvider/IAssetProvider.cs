@@ -1,7 +1,6 @@
 ﻿using Cysharp.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
-using System.Collections.Generic;
 
 namespace _Project.Scripts.Services.AssetProvider
 {

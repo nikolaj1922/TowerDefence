@@ -1,5 +1,5 @@
 ﻿using System;
-using _Project.Scripts.ConfigRepositories;
+using _Project.Scripts.Database.Game;
 
 namespace _Project.Scripts.UI.WaveCounter
 {
@@ -10,6 +10,7 @@ namespace _Project.Scripts.UI.WaveCounter
 
         private readonly int _timeBetweenWaves;
         private int _currentTimeBetweenWaves;
+        
         public int CurrentTimeBetweenWaves
         {
             get => _currentTimeBetweenWaves;
@@ -22,7 +23,7 @@ namespace _Project.Scripts.UI.WaveCounter
             }
         }
 
-        public WaveCounterModel(GameRepository gameRepository) => _timeBetweenWaves = gameRepository.GameConfig.TimeBetweenWaves;
+        public WaveCounterModel(GameConfigDatabase gameConfigDatabase) => _timeBetweenWaves = gameConfigDatabase.GameConfig.TimeBetweenWaves;
 
         public void TickTimer() => CurrentTimeBetweenWaves--;
 

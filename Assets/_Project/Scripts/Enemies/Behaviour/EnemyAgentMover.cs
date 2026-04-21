@@ -1,0 +1,54 @@
+﻿using _Project.Scripts.Configs;
+using _Project.Scripts.Database.Game;
+using UnityEngine;
+using UnityEngine.AI;
+using Zenject;
+
+namespace _Project.Scripts.Enemies.Behaviour
+{
+    [RequireComponent(typeof(NavMeshAgent))]
+    public class EnemyAgentMover : MonoBehaviour
+    {
+        private const float CASTLE_SIZE = 0.2f;
+        
+        private NavMeshAgent _navMeshAgent;
+        private float _speed;
+        private float _attackRange;
+        private Vector3 _destination;
+        
+        public bool IsTargetReached { get; private set; }
+
+        [Inject]
+        public void Construct(EnemyConfig config, GameConfigDatabase configDatabase)
+        {
+            _speed = config.Speed;
+            _attackRange = config.AttackRange;
+            _destination = configDatabase.GameConfig.CastlePosition;
+        }
+
+        private void Awake() => _navMeshAgent = GetComponent<NavMeshAgent>();
+
+        private void OnEnable()
+        {
+            if (!_navMeshAgent.isOnNavMesh)
+                return;
+
+            _navMeshAgent.ResetPath();
+            _navMeshAgent.SetDestination(_destination);
+            
+           
+            IsTargetReached = false;
+            _navMeshAgent.speed = _speed;
+            _navMeshAgent.stoppingDistance = CASTLE_SIZE + _navMeshAgent.radius + _attackRange;
+        }
+
+        private void Update()
+        {
+            if (_navMeshAgent.pathPending || IsTargetNotReached()) return;
+            
+            IsTargetReached = true;
+        }
+
+        private bool IsTargetNotReached() => _navMeshAgent.remainingDistance > _navMeshAgent.stoppingDistance;
+    }
+}

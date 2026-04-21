@@ -1,48 +1,25 @@
-﻿using System;
-using Zenject;
-using UnityEngine;
-using Cysharp.Threading.Tasks;
-using UnityEngine.AddressableAssets;
-using _Project.Scripts.Infrastructure.Constants;
-using _Project.Scripts.Services.AssetProvider;
+﻿using Zenject;
 using _Project.Scripts.Infrastructure.LoadingCurtain;
 
 namespace _Project.Scripts.Infrastructure.Game
 {
     public class GameBoostrapper : IInitializable
     {
-        private IAssetProvider _assetProvider;
-        private LoadingPipelineFactory _loadingPipelineFactory;
-        private AssetReferenceGameObject _loadingCurtainView;
-
+        private ILoadingPipelineFactory _loadingPipelineFactory;
+        private ILoadingCurtainFactory _loadingCurtainFactory;
+        
         [Inject]
         public void Construct(
-            IAssetProvider assetProvider, 
-            LoadingPipelineFactory loadingPipelineFactory, 
-            [Inject(Id = GameConstants.LOADING_CURTAIN_INJECT_ID)] AssetReferenceGameObject loadingCurtainView)
+            ILoadingCurtainFactory loadingCurtainFactory,
+            ILoadingPipelineFactory loadingPipelineFactory)
         {
-            _loadingCurtainView = loadingCurtainView;
             _loadingPipelineFactory = loadingPipelineFactory;
-            _assetProvider = assetProvider;
+            _loadingCurtainFactory = loadingCurtainFactory;
         }
 
-        public void Initialize() => StartLoadAssetsAsync().Forget();
-        
-        private async UniTaskVoid StartLoadAssetsAsync()
-        {
-            try
-            {
-                GameObject curtainObject = await _assetProvider.Instantiate(_loadingCurtainView);
-                LoadingCurtainView curtain = curtainObject.GetComponent<LoadingCurtainView>();
-
-                await curtain.StartLoadingOperations(_loadingPipelineFactory.GetStartGamePipeline());
-                
-                _assetProvider.ReleaseInstance(curtainObject);
-            }
-            catch (Exception e)
-            {
-                Debug.LogException(e);
-            }
-        }
+        public void Initialize() => 
+            _loadingCurtainFactory
+                .Create(_loadingPipelineFactory.StartGamePipeline())
+                .Forget();
     }
 }

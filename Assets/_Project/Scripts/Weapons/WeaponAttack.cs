@@ -1,7 +1,7 @@
 ﻿using Zenject;
 using UnityEngine;
 using _Project.Scripts.Configs;
-using _Project.Scripts.Enemies;
+using _Project.Scripts.Enemies.Behaviour;
 using _Project.Scripts.Infrastructure.Constants;
 using _Project.Scripts.Infrastructure.ObjectsPool;
 
@@ -79,8 +79,9 @@ namespace _Project.Scripts.Weapons
             projectile.transform.position = _projectileSpawnPoint.position;
             projectile.Initialize(
                 target: _targetFinder.Target,
-                damage: _damage * _weapon.DamageMultiplier,
-                onHit: () => OnProjectileHit(projectile));
+                damage: _damage * _weapon.DamageMultiplier);
+
+            projectile.OnHit += OnProjectileHit;
         }
         
         private void OnProjectileHit(WeaponProjectile projectile)
@@ -88,7 +89,8 @@ namespace _Project.Scripts.Weapons
             Enemy target = _targetFinder.Target;
             if (target != null && target.CurrentHealth <= 0)
                 _targetFinder.ResetTarget();
-            
+
+            projectile.OnHit -= OnProjectileHit;
             _projectilePool.Release(projectile);
         }
 

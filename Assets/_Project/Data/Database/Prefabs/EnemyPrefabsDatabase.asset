@@ -12,6 +12,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bba7809251be4c4a802c2a92d1f60f0a, type: 3}
   m_Name: EnemyPrefabsDatabase
   m_EditorClassIdentifier: Assembly-CSharp::_Project.Scripts.Database.EnemyDatabase
-  _enemies:
+  _enemyAssets:
   - type: 0
-    prefab: {fileID: 5804415847503915, guid: 7df524699deb44341b3693c8538df185, type: 3}
+    prefab:
+      m_AssetGUID: 7df524699deb44341b3693c8538df185
+      m_SubObjectName: 
+      m_SubObjectType: 
+      m_SubObjectGUID: 
+      m_EditorAssetChanged: 0

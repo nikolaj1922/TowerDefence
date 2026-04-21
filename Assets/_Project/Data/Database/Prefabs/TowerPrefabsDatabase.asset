@@ -12,10 +12,25 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 48b15a134051459d9c9abde27c8e51e4, type: 3}
   m_Name: TowerPrefabsDatabase
   m_EditorClassIdentifier: Assembly-CSharp::_Project.Scripts.Database.TowersDatabase.TowersDatabase
-  _towers:
+  _towerAssets:
   - type: 0
-    prefab: {fileID: 2292532665050426739, guid: c0c694697f0fa5043bf280d711cc4440, type: 3}
-  - type: 3
-    prefab: {fileID: 5949738700478435343, guid: 6e3585de0aebb4642933e84be16cb9f5, type: 3}
+    prefab:
+      m_AssetGUID: c0c694697f0fa5043bf280d711cc4440
+      m_SubObjectName: 
+      m_SubObjectType: 
+      m_SubObjectGUID: 
+      m_EditorAssetChanged: 0
   - type: 2
-    prefab: {fileID: 2501293871297066291, guid: b47a6b2bad6e6e94dac3949d87d6738e, type: 3}
+    prefab:
+      m_AssetGUID: b47a6b2bad6e6e94dac3949d87d6738e
+      m_SubObjectName: 
+      m_SubObjectType: 
+      m_SubObjectGUID: 
+      m_EditorAssetChanged: 1
+  - type: 3
+    prefab:
+      m_AssetGUID: 6e3585de0aebb4642933e84be16cb9f5
+      m_SubObjectName: 
+      m_SubObjectType: 
+      m_SubObjectGUID: 
+      m_EditorAssetChanged: 1

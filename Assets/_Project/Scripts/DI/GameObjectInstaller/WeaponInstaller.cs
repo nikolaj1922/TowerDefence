@@ -1,7 +1,7 @@
 ﻿using Zenject;
 using UnityEngine;
 using _Project.Scripts.Configs;
-using _Project.Scripts.ConfigRepositories;
+using _Project.Scripts.Database.Weapons;
 using _Project.Scripts.Infrastructure.Constants;
 using _Project.Scripts.Weapons;
 using CartoonFX;
@@ -19,14 +19,14 @@ namespace _Project.Scripts.DI.GameObjectInstaller
         [SerializeField] private CFXR_Effect _onAttackEffect;
         [SerializeField] private WeaponProjectile _projectile;
 
-        private WeaponConfigsRepository _configRepository;
+        private WeaponConfigsDatabase _configDatabase;
         
         [Inject]
-        private void Construct(WeaponConfigsRepository configRepository) => _configRepository = configRepository;
+        private void Construct(WeaponConfigsDatabase configDatabase) => _configDatabase = configDatabase;
         
         public override void InstallBindings()
         {
-            WeaponConfig config = _configRepository.Get(_weaponType);
+            WeaponConfig config = _configDatabase.Get(_weaponType);
             Container.Bind<WeaponConfig>().FromInstance(config).AsSingle();
 
             Container.Bind<Transform>().WithId(GameConstants.WEAPON_BASE_INJECT_ID).FromInstance(_weaponBase);

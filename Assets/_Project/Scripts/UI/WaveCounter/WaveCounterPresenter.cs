@@ -1,25 +1,23 @@
 ﻿using System;
+using Zenject;
 using System.Threading;
 using _Project.Scripts.Logic.Wave;
 using Cysharp.Threading.Tasks;
-using Zenject;
 
 namespace _Project.Scripts.UI.WaveCounter
 {
     public class WaveCounterPresenter: IInitializable, IDisposable
     {
-        private const int WAVE_TIMER_TICK_SECONDS = 1;
-        
         private readonly WaveCounterModel _counterModel;
         private readonly WaveCounterView _view;
-        private readonly WaveManager _waveManager;
+        private readonly IWaveManager _waveManager;
         
         private CancellationTokenSource _cancellationToken;
         
         public WaveCounterPresenter(
             WaveCounterModel counterModel, 
             WaveCounterView view, 
-            WaveManager waveManager)
+            IWaveManager waveManager)
         {
             _view = view;
             _counterModel = counterModel;
@@ -70,7 +68,7 @@ namespace _Project.Scripts.UI.WaveCounter
             {
                 _counterModel.TickTimer();
                 await UniTask.WaitForSeconds(
-                    WAVE_TIMER_TICK_SECONDS,
+                    1,
                     false,
                     PlayerLoopTiming.Update,
                     token);

@@ -1,15 +1,20 @@
 ﻿using System;
+using _Project.Scripts.Database.Game;
 using Zenject;
 using _Project.Scripts.UI;
 using _Project.Scripts.Towers;
 using _Project.Scripts.Towers.Castle;
-using _Project.Scripts.ConfigRepositories;
+using _Project.Scripts.Database.Modals;
 using _Project.Scripts.Logic.Wave;
 using _Project.Scripts.Services.Analytics;
+using _Project.Scripts.Services.ModalCreator;
+using _Project.Scripts.Services.SaveLoad;
 using _Project.Scripts.Services.TowerUpgrade;
-using _Project.Scripts.Services.EndGame;
 using _Project.Scripts.UI.CoinCounter;
+using _Project.Scripts.UI.Modals.EndGameModal;
 using _Project.Scripts.UI.TowerCreation;
+using Cysharp.Threading.Tasks;
+using UnityEngine;
 
 namespace _Project.Scripts.Logic.Level
 {
@@ -17,40 +22,44 @@ namespace _Project.Scripts.Logic.Level
     {
         private CastleTower _castle;
         private UIFactory _uiFactory;
-        private WaveManager _waveManager;
-        private GameRepository _gameRepository;
+        private IWaveManager _waveManager;
+        private GameConfigDatabase _gameConfigDatabase;
         private TowerPlacement _towerPlacement;
-        private EndGameService _endGameService;
-        private CreateTowerView _createTowerView;
-        private CastleInitializer _castleInitializer;
-        private AnalyticsService _analyticsService;
+        private CreateTowerPanelView _createTowerPanelView;
+        private ICastleInitializer _castleInitializer;
+        private IAnalyticsService _analyticsService;
         private CoinCounterModel _coinCounterModel;
-        private TowerUpgradeService _towerUpgradeService;
+        private IModalCreatorService _modalCreatorService;
+        private ISaveLoad _saveLoad;
+        private ITowerUpgradeService _towerUpgradeService;
 
         private int _totalTowersBuilt;
 
         [Inject]
         private void Construct(
-            GameRepository gameRepository,
+            ISaveLoad saveLoad,
+            GameConfigDatabase gameConfigDatabase,
             UIFactory uiFactory,
             TowerPlacement towerPlacement,
-            WaveManager waveManager,
+            IWaveManager waveManager,
             CoinCounterModel coinCounterModel,
-            CastleInitializer castleInitializer,
-            AnalyticsService analyticsService,
-            EndGameService endGameService,
-            TowerUpgradeService towerUpgradeService
+            ICastleInitializer castleInitializer,
+            IAnalyticsService analyticsService,
+            ITowerUpgradeService upgradeService,
+            IModalCreatorService modalCreatorService,
+            ITowerUpgradeService towerUpgradeService
             )
         {
+            _saveLoad = saveLoad;
             _castleInitializer = castleInitializer;
             _towerPlacement = towerPlacement;
-            _gameRepository = gameRepository;
+            _gameConfigDatabase = gameConfigDatabase;
             _uiFactory = uiFactory;
             _waveManager = waveManager;
-            _endGameService = endGameService;
             _towerUpgradeService = towerUpgradeService;
             _analyticsService = analyticsService;
             _coinCounterModel = coinCounterModel;
+            _modalCreatorService = modalCreatorService;
         }
 
         public void Initialize()
@@ -58,19 +67,19 @@ namespace _Project.Scripts.Logic.Level
             CreateUI();
             CreateCastle();
             
-            _towerPlacement.OnPlaceClicked += _createTowerView.ShowPanel;
-            _waveManager.OnCompleteLevel += GameVictory;
+            _towerPlacement.OnPlaceClicked += _createTowerPanelView.ShowPanel;
+            _waveManager.OnCompleteLevel += OnVictory;
             _waveManager.OnCompleteWave += OnCompleteWave;
             _waveManager.StartTimer(waveCount: 1);
         }
         
         public void Dispose()
         {
-            _towerPlacement.OnPlaceClicked -= _createTowerView.ShowPanel;
-            _castle.OnCastleDestroy -= GameOver;
+            _towerPlacement.OnPlaceClicked -= _createTowerPanelView.ShowPanel;
+            _castle.OnCastleDestroy -= OnDefeat;
             _castle.OnCastleDestroy -= _waveManager.StopWave;
             _castle.OnCastleDamaged -= OnCastleDamaged;
-            _waveManager.OnCompleteLevel -= GameVictory;
+            _waveManager.OnCompleteLevel -= OnVictory;
             _waveManager.OnCompleteWave -= OnCompleteWave;
         }
 
@@ -78,24 +87,29 @@ namespace _Project.Scripts.Logic.Level
         {
             _uiFactory.CreateCoinCounterPanel();
             _uiFactory.CreateWaveCounterPanel();
-            _createTowerView = _uiFactory.CreateTowerPanel(onCreateTower: OnCreateTower);
+            _createTowerPanelView = _uiFactory.CreateTowerPanel(onCreateTower: OnCreateTower);
         }
 
         private void CreateCastle()
         {
             _castle = _castleInitializer.CreateCastle(
-                _gameRepository.GameConfig.CastlePosition,
+                _gameConfigDatabase.GameConfig.CastlePosition,
                 _towerUpgradeService.GetUpgradeMultiplier(TowerUpgradeIdMatcher.CASTLE_DAMAGE_ID),
                 _towerUpgradeService.GetUpgradeMultiplier(TowerUpgradeIdMatcher.CASTLE_ATTACK_SPEED_ID)
                 );
-            _castle.OnCastleDestroy += GameOver;
+            _castle.OnCastleDestroy += OnDefeat;
             _castle.OnCastleDestroy += _waveManager.StopWave;
             _castle.OnCastleDamaged += OnCastleDamaged;
         }
         
-        private void GameOver() => _endGameService.GameOver(_totalTowersBuilt);
-        
-        private void GameVictory() => _endGameService.GameVictory();
+        private async UniTask CreateEndGameModal(string headerText)
+        {
+            GameObject modalObject = await _modalCreatorService.OpenModal(ModalType.EndGame);
+            EndGameModalView endGameModalView = modalObject.GetComponent<EndGameModalView>();
+            
+            endGameModalView.SetCurrentWave(_waveManager.CurrentWave);
+            endGameModalView.Draw(headerText, _waveManager.GetRewardForWaves());
+        }
         
         private void OnCreateTower(int coinPrice)
         {
@@ -109,6 +123,26 @@ namespace _Project.Scripts.Logic.Level
         }
         
         private void OnCompleteWave(int wave) => _analyticsService.WaveCompleted(wave, _totalTowersBuilt, _coinCounterModel.Coins);
+        
         private void OnCastleDamaged(float currentHealth) => _analyticsService.CastleDamaged(_waveManager.CurrentWave, currentHealth);
+        
+        private void OnDefeat()
+        {
+            _analyticsService.GameOver(
+                _waveManager.CurrentWave, 
+                _waveManager.TotalEnemyKilled, 
+                _totalTowersBuilt, 
+                _waveManager.GetRewardForWaves());
+            SaveMetaCoins();
+            CreateEndGameModal("Defeat!").Forget();
+        }
+
+        private void OnVictory()
+        {
+            SaveMetaCoins();
+            CreateEndGameModal("Victory!").Forget();
+        }
+        
+        private void SaveMetaCoins() => _saveLoad.AddMetaCoins(_waveManager.GetRewardForWaves());
     }
 }

@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Linq;
 using System.Threading;
-using _Project.Scripts.ConfigRepositories;
+using _Project.Scripts.Database.Game;
 using _Project.Scripts.Enemies;
 using _Project.Scripts.Services.Analytics;
 using Cysharp.Threading.Tasks;
@@ -9,18 +9,18 @@ using Zenject;
 
 namespace _Project.Scripts.Logic.Wave
 {
-    public class WaveManager
+    public class WaveManager : IWaveManager
     {
         public event Action<int> OnWaveTimerStart;
         public event Action OnCompleteLevel;
         public event Action<int> OnCompleteWave;
 
-        private EnemyFactory _enemyFactory;
-        private GameRepository _gameRepository;
-        private AnalyticsService _analyticsService;
-        private int _waveIndex = 0;
-        private int _enemyKilledOnWave = 0;
-        private int _totalEnemiesOnWave = 0;
+        private IEnemyFactory _enemyFactory;
+        private GameConfigDatabase _gameConfigDatabase;
+        private IAnalyticsService _analyticsService;
+        private int _waveIndex;
+        private int _enemyKilledOnWave;
+        private int _totalEnemiesOnWave;
         
         private CancellationTokenSource _waveCancelToken;
 
@@ -29,12 +29,12 @@ namespace _Project.Scripts.Logic.Wave
 
         [Inject]
         private void Construct(
-            EnemyFactory enemyFactory,
-            GameRepository gameRepository,
-            AnalyticsService analyticsService
+            IEnemyFactory enemyFactory,
+            GameConfigDatabase gameConfigDatabase,
+            IAnalyticsService analyticsService
         )
         {
-            _gameRepository = gameRepository;
+            _gameConfigDatabase = gameConfigDatabase;
             _analyticsService = analyticsService;
             _enemyFactory = enemyFactory;
         }
@@ -53,8 +53,8 @@ namespace _Project.Scripts.Logic.Wave
         }
         
         public int GetRewardForWaves() =>
-            (CurrentWave) * _gameRepository.GameConfig.CoinsPerWave
-            + TotalEnemyKilled * _gameRepository.GameConfig.CoinsPerKill;
+            (CurrentWave) * _gameConfigDatabase.GameConfig.CoinsPerWave
+            + TotalEnemyKilled * _gameConfigDatabase.GameConfig.CoinsPerKill;
         
         public void StopWave()
         {
@@ -63,8 +63,8 @@ namespace _Project.Scripts.Logic.Wave
         }
         
         private Configs.Wave GetNextWave() => 
-            _waveIndex < _gameRepository.GameConfig.Waves.Length 
-                ? _gameRepository.GameConfig.Waves[_waveIndex]
+            _waveIndex < _gameConfigDatabase.GameConfig.Waves.Length 
+                ? _gameConfigDatabase.GameConfig.Waves[_waveIndex]
                 : null;
 
         private async UniTaskVoid StartWave(Configs.Wave wave, CancellationToken token)

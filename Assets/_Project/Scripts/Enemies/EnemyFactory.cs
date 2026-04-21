@@ -1,34 +1,32 @@
 ﻿using System;
-using Zenject;
 using UnityEngine;
 using _Project.Scripts.Configs;
-using _Project.Scripts.Logic.Health;
 using _Project.Scripts.Enemies.States;
-using _Project.Scripts.ConfigRepositories;
+using _Project.Scripts.Database.Enemies;
+using _Project.Scripts.Enemies.Behaviour;
 using _Project.Scripts.Infrastructure.Constants;
 using _Project.Scripts.Infrastructure.StateMachine;
-using _Project.Scripts.Towers.Castle;
 
 namespace _Project.Scripts.Enemies
 {
-    public class EnemyFactory
+    public class EnemyFactory : IEnemyFactory
     {
         private readonly EnemyPool _orksPool;
-        private readonly EnemySpawner _enemySpawner;
-        private readonly EnemyConfigsRepository _configsRepository;
+        private readonly IEnemySpawner _enemySpawner;
+        private readonly EnemyConfigsDatabase _configsDatabase;
 
         private Action _onDeathCached;
         private Action _addCoinsCached;
 
         public EnemyFactory(
             EnemyPool orksPool,
-            EnemySpawner enemySpawner,
-            EnemyConfigsRepository configsRepository
+            IEnemySpawner enemySpawner,
+            EnemyConfigsDatabase configsDatabase
         )
         {
             _orksPool = orksPool;
             _enemySpawner = enemySpawner;
-            _configsRepository = configsRepository;
+            _configsDatabase = configsDatabase;
         }
 
         public void CreateEnemy(EnemyType type, Action onDeath)
@@ -98,7 +96,7 @@ namespace _Project.Scripts.Enemies
         {
             return type switch
             {
-                EnemyType.Ork => _configsRepository.Get(EnemyType.Ork),
+                EnemyType.Ork => _configsDatabase.Get(EnemyType.Ork),
                 _ => throw new ArgumentOutOfRangeException(nameof(type), type, "Unknown enemy type")
             };
         }

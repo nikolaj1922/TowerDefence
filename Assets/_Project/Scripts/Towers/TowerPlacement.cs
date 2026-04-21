@@ -14,15 +14,15 @@ namespace _Project.Scripts.Towers
         public event Action<Vector3> OnPlaceClicked;
         
         private readonly Camera _camera;
-        private readonly WaveManager _waveManager;
+        private readonly IWaveManager _waveManager;
         private readonly LayerMask _groundLayer;
         private readonly LayerMask _towerOccupiedLayer;
-        private readonly AnalyticsService _analyticsService;
+        private readonly IAnalyticsService _analyticsService;
 
         public TowerPlacement(
             Camera camera,
-            AnalyticsService analyticsService,
-            WaveManager waveManager,
+            IAnalyticsService analyticsService,
+            IWaveManager waveManager,
             LayerMask towerOccupiedLayer, 
             LayerMask groundLayer)
         {

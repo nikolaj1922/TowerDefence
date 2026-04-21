@@ -1,27 +1,27 @@
 ﻿using UnityEngine;
 using _Project.Scripts.Weapons;
 using _Project.Scripts.UI.CoinCounter;
-using _Project.Scripts.ConfigRepositories;
+using _Project.Scripts.Database.Towers;
 
 namespace _Project.Scripts.Towers
 {
-    public class TowerService
+    public class TowerService : ITowerService
     {
-        private readonly TowerFactory _towerFactory;
-        private readonly WeaponFactory _weaponFactory;
-        private readonly TowerConfigsRepository _towerConfigsRepository;
+        private readonly ITowerFactory _towerFactory;
+        private readonly IWeaponFactory _weaponFactory;
+        private readonly TowerConfigsDatabase _towerConfigsDatabase;
         private readonly CoinCounterModel _coinCounterModel;
         
         public TowerService(
-            TowerFactory towerFactory, 
-            WeaponFactory weaponFactory,
-            TowerConfigsRepository towerConfigsRepository,
+            ITowerFactory towerFactory, 
+            IWeaponFactory weaponFactory,
+            TowerConfigsDatabase towerConfigsDatabase,
             CoinCounterModel coinCounterModel
             )
         {
             _coinCounterModel = coinCounterModel;
             _towerFactory = towerFactory;
-            _towerConfigsRepository = towerConfigsRepository;
+            _towerConfigsDatabase = towerConfigsDatabase;
             _weaponFactory = weaponFactory;
         }
         
@@ -30,7 +30,7 @@ namespace _Project.Scripts.Towers
             Tower tower = _towerFactory.CreateTower(towerType, position);
             Weapon weapon = 
                 _weaponFactory.CreateWeapon(
-                    _towerConfigsRepository.Get(towerType).WeaponType, 
+                    _towerConfigsDatabase.Get(towerType).WeaponType, 
                     tower.WeaponPoint.transform.position, 
                     tower.WeaponPoint.transform, 
                     damageMultiplier, 

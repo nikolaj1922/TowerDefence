@@ -1,4 +1,5 @@
-﻿using _Project.Scripts.Infrastructure.StateMachine;
+﻿using _Project.Scripts.Enemies.Behaviour;
+using _Project.Scripts.Infrastructure.StateMachine;
 
 namespace _Project.Scripts.Enemies.States
 {

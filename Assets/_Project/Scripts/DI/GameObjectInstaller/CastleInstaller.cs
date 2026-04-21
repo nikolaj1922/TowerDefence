@@ -1,7 +1,7 @@
-﻿using Zenject;
+﻿using _Project.Scripts.Database.Game;
+using Zenject;
 using UnityEngine;
 using _Project.Scripts.UI.HealthBar;
-using _Project.Scripts.ConfigRepositories;
 using _Project.Scripts.Services.TowerUpgrade;
 
 namespace _Project.Scripts.DI.GameObjectInstaller
@@ -10,23 +10,23 @@ namespace _Project.Scripts.DI.GameObjectInstaller
     {
         [SerializeField] private HealthBarView _healthBarView;
         
-        private GameRepository _gameRepository;
-        private TowerUpgradeService _towerUpgradeService;
+        private GameConfigDatabase _gameConfigDatabase;
+        private ITowerUpgradeService _towerUpgradeService;
 
         [Inject]
         public void Construct(
-            GameRepository gameRepository,
-            TowerUpgradeService towerUpgradeService
+            GameConfigDatabase gameConfigDatabase,
+            ITowerUpgradeService towerUpgradeService
         )
         {
             _towerUpgradeService = towerUpgradeService;
-            _gameRepository = gameRepository;
+            _gameConfigDatabase = gameConfigDatabase;
         }
         
         public override void InstallBindings()
         {
             float castleHp = 
-                _gameRepository.GameConfig.CastleHealth *
+                _gameConfigDatabase.GameConfig.CastleHealth *
                 _towerUpgradeService.GetUpgradeMultiplier(TowerUpgradeIdMatcher.CASTLE_HP_ID);
             
             Container

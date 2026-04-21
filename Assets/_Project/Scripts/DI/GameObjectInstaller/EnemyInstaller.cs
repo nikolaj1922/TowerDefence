@@ -1,7 +1,7 @@
 ﻿using Zenject;
 using UnityEngine;
 using _Project.Scripts.Configs;
-using _Project.Scripts.ConfigRepositories;
+using _Project.Scripts.Database.Enemies;
 using _Project.Scripts.Enemies;
 using _Project.Scripts.UI.HealthBar;
 
@@ -12,14 +12,14 @@ namespace _Project.Scripts.DI.GameObjectInstaller
         [SerializeField] private EnemyType _enemyType;
         [SerializeField] private HealthBarView _healthBarView;
         
-        private EnemyConfigsRepository _enemyRepository;
+        private EnemyConfigsDatabase _enemyDatabase;
         
         [Inject]
-        public void Construct(EnemyConfigsRepository enemyRepository) => _enemyRepository = enemyRepository;
+        public void Construct(EnemyConfigsDatabase enemyDatabase) => _enemyDatabase = enemyDatabase;
         
         public override void InstallBindings()
         {
-            EnemyConfig config = _enemyRepository.Get(_enemyType);
+            EnemyConfig config = _enemyDatabase.Get(_enemyType);
             Container.Bind<EnemyConfig>().FromInstance(config).AsSingle();
             Container.Bind<HealthModel>().FromMethod(_ => new HealthModel(config.Health)).AsSingle();
             Container.Bind<HealthBarView>().FromInstance(_healthBarView).AsSingle();

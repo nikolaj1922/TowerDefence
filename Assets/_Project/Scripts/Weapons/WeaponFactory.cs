@@ -1,10 +1,10 @@
-﻿using Zenject;
+﻿using _Project.Scripts.Database.Weapons;
+using Zenject;
 using UnityEngine;
-using _Project.Scripts.Database.WeaponPrefabDatabase;
 
 namespace _Project.Scripts.Weapons
 {
-    public class WeaponFactory
+    public class WeaponFactory : IWeaponFactory
     {
         private readonly IInstantiator _instantiator;
         private readonly WeaponPrefabsDatabase _weaponPrefabsDatabase;

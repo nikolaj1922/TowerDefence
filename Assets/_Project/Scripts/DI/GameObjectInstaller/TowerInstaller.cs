@@ -1,7 +1,7 @@
 ﻿using Zenject;
 using UnityEngine;
 using _Project.Scripts.Configs;
-using _Project.Scripts.ConfigRepositories;
+using _Project.Scripts.Database.Towers;
 using _Project.Scripts.Towers;
 
 namespace _Project.Scripts.DI.GameObjectInstaller
@@ -10,14 +10,14 @@ namespace _Project.Scripts.DI.GameObjectInstaller
     {
         [SerializeField] private TowerType _towerType;
         
-        private TowerConfigsRepository _configsRepository;
+        private TowerConfigsDatabase _configsDatabase;
         
         [Inject]
-        public void Construct(TowerConfigsRepository repository) => _configsRepository = repository;
+        public void Construct(TowerConfigsDatabase database) => _configsDatabase = database;
         
         public override void InstallBindings()
         {
-            TowerConfig config = _configsRepository.Get(_towerType);
+            TowerConfig config = _configsDatabase.Get(_towerType);
             Container.Bind<TowerConfig>().FromInstance(config).AsSingle();
         }
     }

@@ -11,7 +11,6 @@ namespace _Project.Scripts.Infrastructure.LoadingCurtain
     {
         [SerializeField] private Slider _loadingSlider;
         [SerializeField] private TextMeshProUGUI _description;
-
         
         public async UniTask StartLoadingOperations(Queue<ILoadingOperation> loadingOperations)
         {

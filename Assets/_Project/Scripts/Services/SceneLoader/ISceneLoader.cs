@@ -1,0 +1,11 @@
+﻿using System;
+using Cysharp.Threading.Tasks;
+
+namespace _Project.Scripts.Services.SceneLoader
+{
+    public interface ISceneLoader
+    {
+        UniTask SwitchTo(string sceneKey, Action onLoadComplete = null);
+        UniTask Preload(string sceneKey);
+    }
+}
