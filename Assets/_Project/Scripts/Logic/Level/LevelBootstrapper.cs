@@ -23,7 +23,7 @@ namespace _Project.Scripts.Logic.Level
         private CastleTower _castle;
         private UIFactory _uiFactory;
         private IWaveManager _waveManager;
-        private GameConfigDatabase _gameConfigDatabase;
+        private GameDatabase _gameDatabase;
         private TowerPlacement _towerPlacement;
         private CreateTowerPanelView _createTowerPanelView;
         private ICastleInitializer _castleInitializer;
@@ -38,7 +38,7 @@ namespace _Project.Scripts.Logic.Level
         [Inject]
         private void Construct(
             ISaveLoad saveLoad,
-            GameConfigDatabase gameConfigDatabase,
+            GameDatabase gameDatabase,
             UIFactory uiFactory,
             TowerPlacement towerPlacement,
             IWaveManager waveManager,
@@ -53,7 +53,7 @@ namespace _Project.Scripts.Logic.Level
             _saveLoad = saveLoad;
             _castleInitializer = castleInitializer;
             _towerPlacement = towerPlacement;
-            _gameConfigDatabase = gameConfigDatabase;
+            _gameDatabase = gameDatabase;
             _uiFactory = uiFactory;
             _waveManager = waveManager;
             _towerUpgradeService = towerUpgradeService;
@@ -93,7 +93,7 @@ namespace _Project.Scripts.Logic.Level
         private void CreateCastle()
         {
             _castle = _castleInitializer.CreateCastle(
-                _gameConfigDatabase.GameConfig.CastlePosition,
+                _gameDatabase.GetConfig().CastlePosition,
                 _towerUpgradeService.GetUpgradeMultiplier(TowerUpgradeIdMatcher.CASTLE_DAMAGE_ID),
                 _towerUpgradeService.GetUpgradeMultiplier(TowerUpgradeIdMatcher.CASTLE_ATTACK_SPEED_ID)
                 );

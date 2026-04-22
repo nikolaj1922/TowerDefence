@@ -13,7 +13,7 @@ namespace _Project.Scripts.Enemies
     {
         private readonly EnemyPool _orksPool;
         private readonly IEnemySpawner _enemySpawner;
-        private readonly EnemyConfigsDatabase _configsDatabase;
+        private readonly EnemyDatabase _enemyDatabase;
 
         private Action _onDeathCached;
         private Action _addCoinsCached;
@@ -21,12 +21,12 @@ namespace _Project.Scripts.Enemies
         public EnemyFactory(
             EnemyPool orksPool,
             IEnemySpawner enemySpawner,
-            EnemyConfigsDatabase configsDatabase
+            EnemyDatabase enemyDatabase
         )
         {
             _orksPool = orksPool;
             _enemySpawner = enemySpawner;
-            _configsDatabase = configsDatabase;
+            _enemyDatabase = enemyDatabase;
         }
 
         public void CreateEnemy(EnemyType type, Action onDeath)
@@ -96,7 +96,7 @@ namespace _Project.Scripts.Enemies
         {
             return type switch
             {
-                EnemyType.Ork => _configsDatabase.Get(EnemyType.Ork),
+                EnemyType.Ork => _enemyDatabase.GetConfig(EnemyType.Ork),
                 _ => throw new ArgumentOutOfRangeException(nameof(type), type, "Unknown enemy type")
             };
         }

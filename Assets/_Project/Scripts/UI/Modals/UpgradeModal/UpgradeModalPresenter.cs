@@ -2,7 +2,6 @@
 using Zenject;
 using System.Collections.Generic;
 using _Project.Scripts.Configs;
-using _Project.Scripts.Database;
 using _Project.Scripts.Database.Modals;
 using _Project.Scripts.Database.Upgrades;
 using _Project.Scripts.Services.SaveLoad;
@@ -20,8 +19,8 @@ namespace _Project.Scripts.UI.Modals.UpgradeModal
         private readonly ISaveLoad _saveLoad;
         private readonly IInstantiator _instantiator;
         private readonly ITowerUpgradeService _towerUpgradeService;
-        private readonly UpgradeConfigsDatabase _upgradeConfigDatabase;
         private readonly IModalCreatorService _modalCreatorService;
+        private readonly UpgradeDatabase _upgradeDatabase;
 
         private List<UpgradeButtonPresenter> _upgradeButtons;
         private List<UpgradeButtonView> _upgradeViews;
@@ -33,14 +32,14 @@ namespace _Project.Scripts.UI.Modals.UpgradeModal
             ISaveLoad saveLoad, 
             IModalCreatorService modalCreatorService, 
             ITowerUpgradeService towerUpgradeService, 
-            UpgradeConfigsDatabase upgradeConfigDatabase)
+            UpgradeDatabase upgradeDatabase)
         {
             _view = view;
             _instantiator = instantiator;
 
             _saveLoad = saveLoad;
             _towerUpgradeService = towerUpgradeService;
-            _upgradeConfigDatabase = upgradeConfigDatabase;
+            _upgradeDatabase = upgradeDatabase;
             _modalCreatorService = modalCreatorService;
             _upgradeButtonView = upgradeButtonView;
         }
@@ -52,7 +51,7 @@ namespace _Project.Scripts.UI.Modals.UpgradeModal
             _upgradeButtons = new  List<UpgradeButtonPresenter>();
             _upgradeViews = new  List<UpgradeButtonView>();
             
-            foreach (var upgrade in _upgradeConfigDatabase.Upgrades.Values)
+            foreach (var upgrade in _upgradeDatabase.GetUpgrades())
                 CreateUpgradeButton(upgrade);
         }
         

@@ -11,6 +11,7 @@ namespace _Project.Scripts.Services.SceneLoader
     public class SceneLoader : ISceneLoader
     {
         private readonly Dictionary<string, AsyncOperationHandle<SceneInstance>> _loadedScenes = new();
+        private string _currentSceneKey;
         
         public async UniTask SwitchTo(string sceneKey, Action onLoadComplete = null)
         {
@@ -19,12 +20,25 @@ namespace _Project.Scripts.Services.SceneLoader
             
             var handle = _loadedScenes[sceneKey];
             await handle.Result.ActivateAsync().ToUniTask();
-
+            
             SceneManager.SetActiveScene(handle.Result.Scene);
             
             onLoadComplete?.Invoke();
             
+            _currentSceneKey = sceneKey;
+            
             await UnloadAllExcept(sceneKey);
+        }
+
+        public async UniTask Reload(Action onLoadComplete = null)
+        {
+            if (_loadedScenes.TryGetValue(_currentSceneKey, out var handle))
+            {
+                await Addressables.UnloadSceneAsync(handle).ToUniTask();
+                _loadedScenes.Remove(_currentSceneKey);
+            }
+
+            await SwitchTo(_currentSceneKey, onLoadComplete);
         }
 
         public async UniTask Preload(string sceneKey)
@@ -37,6 +51,7 @@ namespace _Project.Scripts.Services.SceneLoader
                 LoadSceneMode.Additive,
                 activateOnLoad: false
             );
+            
             await handle.ToUniTask();
 
             _loadedScenes[sceneKey] = handle;
@@ -54,8 +69,6 @@ namespace _Project.Scripts.Services.SceneLoader
                 var handle = _loadedScenes[key];
 
                 await Addressables.UnloadSceneAsync(handle).ToUniTask();
-                Addressables.Release(handle);
-
                 _loadedScenes.Remove(key);
             }
         }

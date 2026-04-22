@@ -19,14 +19,14 @@ namespace _Project.Scripts.DI.GameObjectInstaller
         [SerializeField] private CFXR_Effect _onAttackEffect;
         [SerializeField] private WeaponProjectile _projectile;
 
-        private WeaponConfigsDatabase _configDatabase;
+        private WeaponDatabase _weaponDatabase;
         
         [Inject]
-        private void Construct(WeaponConfigsDatabase configDatabase) => _configDatabase = configDatabase;
+        private void Construct(WeaponDatabase weaponDatabase) => _weaponDatabase = weaponDatabase;
         
         public override void InstallBindings()
         {
-            WeaponConfig config = _configDatabase.Get(_weaponType);
+            WeaponConfig config = _weaponDatabase.GetConfig(_weaponType);
             Container.Bind<WeaponConfig>().FromInstance(config).AsSingle();
 
             Container.Bind<Transform>().WithId(GameConstants.WEAPON_BASE_INJECT_ID).FromInstance(_weaponBase);

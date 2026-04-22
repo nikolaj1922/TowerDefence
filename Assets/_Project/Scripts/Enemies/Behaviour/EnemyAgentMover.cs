@@ -19,11 +19,11 @@ namespace _Project.Scripts.Enemies.Behaviour
         public bool IsTargetReached { get; private set; }
 
         [Inject]
-        public void Construct(EnemyConfig config, GameConfigDatabase configDatabase)
+        public void Construct(EnemyConfig config, GameDatabase database)
         {
             _speed = config.Speed;
             _attackRange = config.AttackRange;
-            _destination = configDatabase.GameConfig.CastlePosition;
+            _destination = database.GetConfig().CastlePosition;
         }
 
         private void Awake() => _navMeshAgent = GetComponent<NavMeshAgent>();

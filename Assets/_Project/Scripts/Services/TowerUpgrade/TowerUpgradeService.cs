@@ -9,20 +9,20 @@ namespace _Project.Scripts.Services.TowerUpgrade
     public class TowerUpgradeService: ITowerUpgradeService
     {
         private readonly ISaveLoad _saveLoad;
-        private readonly UpgradeConfigsDatabase _upgradeConfigsDatabase;
+        private readonly UpgradeDatabase _upgradeDatabase;
 
         private PlayerUpgrades Upgrades => _saveLoad.PlayerProgress.upgrades;
 
-        public TowerUpgradeService(ISaveLoad saveLoad, UpgradeConfigsDatabase upgradeConfigsDatabase)
+        public TowerUpgradeService(ISaveLoad saveLoad, UpgradeDatabase upgradeDatabase)
         {
             _saveLoad = saveLoad;
-            _upgradeConfigsDatabase = upgradeConfigsDatabase;
+            _upgradeDatabase = upgradeDatabase;
         }
         
         public float GetUpgradeMultiplier(string upgradeId)
         {
             float upgradeLevel = GetUpgradeLevel(upgradeId);
-            UpgradeConfig upgradeConfig = _upgradeConfigsDatabase.GetUpgradeConfig(upgradeId);
+            UpgradeConfig upgradeConfig = _upgradeDatabase.GetConfig(upgradeId);
 
             return 1 + upgradeConfig.statMultiplierByLevel * (upgradeLevel - 1);
         }

@@ -19,7 +19,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &8651775911648686476
 RectTransform:
   m_ObjectHideFlags: 0
@@ -185,7 +185,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 
+  m_text: Load scene
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: f866e009ed08dc84fb29179455eb2928, type: 2}
   m_sharedMaterial: {fileID: -7779513028491314694, guid: f866e009ed08dc84fb29179455eb2928, type: 2}
@@ -452,7 +452,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Image
   m_Material: {fileID: 0}
-  m_Color: {r: 0.47873974, g: 0.6239935, b: 0.90943396, a: 1}
+  m_Color: {r: 0.19215687, g: 0.3019608, b: 0.46666667, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -479,7 +479,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 1016664916990346920, guid: 32c4fdc1a1d378a4d9212c37f4b091e5, type: 3}
       propertyPath: m_Value
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 1016664916990346921, guid: 32c4fdc1a1d378a4d9212c37f4b091e5, type: 3}
       propertyPath: m_Pivot.x
@@ -583,11 +583,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1016664918201218252, guid: 32c4fdc1a1d378a4d9212c37f4b091e5, type: 3}
       propertyPath: m_AnchorMax.x
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 1016664918201218252, guid: 32c4fdc1a1d378a4d9212c37f4b091e5, type: 3}
       propertyPath: m_AnchorMax.y
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 1016664918368249767, guid: 32c4fdc1a1d378a4d9212c37f4b091e5, type: 3}
       propertyPath: m_Type

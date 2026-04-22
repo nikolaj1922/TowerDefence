@@ -9,27 +9,20 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fdb9be0d2c4b4988917535fe9634f2dc, type: 3}
-  m_Name: ModalPrefabsDatabase
-  m_EditorClassIdentifier: Assembly-CSharp::_Project.Scripts.Database.ModalsPrefabDatabase.ModalsPrefabDatabase
-  _modals:
+  m_Script: {fileID: 11500000, guid: c3a909fd610344e080420382a79c077f, type: 3}
+  m_Name: WeaponDatabase
+  m_EditorClassIdentifier: Assembly-CSharp::_Project.Scripts.Database.WeaponDatabase.WeaponPrefabsDatabase
+  _weaponAssets:
   - type: 0
     prefab:
-      m_AssetGUID: f3aaba9f92d50f947811905c21551e0b
-      m_SubObjectName: 
-      m_SubObjectType: 
-      m_SubObjectGUID: 
-      m_EditorAssetChanged: 0
-  - type: 2
-    prefab:
-      m_AssetGUID: 588f0bdaf21b93c4fb9d4a139efd3704
+      m_AssetGUID: b5ff6bac1833f49478bdf466c2ba62b1
       m_SubObjectName: 
       m_SubObjectType: 
       m_SubObjectGUID: 
       m_EditorAssetChanged: 0
   - type: 1
     prefab:
-      m_AssetGUID: f55be2792245e0247b3bd1f3941c717a
+      m_AssetGUID: 07194f17402630d43a1e2db8f9ade54c
       m_SubObjectName: 
       m_SubObjectType: 
       m_SubObjectGUID: 

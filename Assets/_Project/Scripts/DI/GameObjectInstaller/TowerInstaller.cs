@@ -10,14 +10,14 @@ namespace _Project.Scripts.DI.GameObjectInstaller
     {
         [SerializeField] private TowerType _towerType;
         
-        private TowerConfigsDatabase _configsDatabase;
+        private TowerDatabase _towerDatabase;
         
         [Inject]
-        public void Construct(TowerConfigsDatabase database) => _configsDatabase = database;
+        public void Construct(TowerDatabase towerDatabase) => _towerDatabase = towerDatabase;
         
         public override void InstallBindings()
         {
-            TowerConfig config = _configsDatabase.Get(_towerType);
+            TowerConfig config = _towerDatabase.GetConfig(_towerType);
             Container.Bind<TowerConfig>().FromInstance(config).AsSingle();
         }
     }

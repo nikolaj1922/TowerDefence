@@ -3,8 +3,10 @@ using _Project.Scripts.Database.Modals;
 using Zenject;
 using _Project.Scripts.Services.ModalCreator;
 using _Project.Scripts.Infrastructure.LoadingCurtain;
+using _Project.Scripts.Infrastructure.LoadingCurtain.PipelineFactory;
 using _Project.Scripts.Services.Analytics;
 using _Project.Scripts.Services.SaveLoad;
+using Cysharp.Threading.Tasks;
 
 namespace _Project.Scripts.UI.Modals.MenuModal
 {
@@ -15,7 +17,7 @@ namespace _Project.Scripts.UI.Modals.MenuModal
         private readonly IAnalyticsService _analyticsService;
         private readonly ISaveLoad _saveLoad;
         private readonly ILoadingPipelineFactory _loadingPipelineFactory;
-        private readonly ILoadingCurtainFactory _loadingCurtainFactory;
+        private readonly LoadingCurtainPresenter _loadingCurtainPresenter;
         
         public MenuModalPresenter(
             MenuModalView menuModalView,
@@ -23,11 +25,11 @@ namespace _Project.Scripts.UI.Modals.MenuModal
             IModalCreatorService modalCreatorService,
             ISaveLoad saveLoad,
             ILoadingPipelineFactory loadingPipelineFactory,
-            ILoadingCurtainFactory loadingCurtainFactory
+            LoadingCurtainPresenter loadingCurtainPresenter
         )
         {
+            _loadingCurtainPresenter = loadingCurtainPresenter;
             _loadingPipelineFactory = loadingPipelineFactory;
-            _loadingCurtainFactory = loadingCurtainFactory;
             _saveLoad = saveLoad;
             _analyticsService = analyticsService;
             _menuModalView = menuModalView;
@@ -49,7 +51,7 @@ namespace _Project.Scripts.UI.Modals.MenuModal
         private void OnStartClick()
         {
             _analyticsService.GameStarted(_saveLoad.PlayerProgress.MetaCoinsCount);
-            _loadingCurtainFactory.Create(_loadingPipelineFactory.LevelPipeline()).Forget();
+            _loadingCurtainPresenter.StartLoadingOperations(_loadingPipelineFactory.LevelPipeline()).Forget();
         }
         
         private void OnOpenUpgradesClick() => _modalCreatorService.OpenModal(ModalType.Upgrades);

@@ -65,6 +65,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: bd9bde19421cc46439bdf3056c36e5f8, type: 2}
   - {fileID: 11400000, guid: 0085ef216d8ac2e419977b6668f734ae, type: 2}
   - {fileID: 11400000, guid: 25cc9cfc53ce374458da7408985082b0, type: 2}
+  - {fileID: 11400000, guid: 959aa380ebd2cbb40967a77deef57bdf, type: 2}
   - {fileID: 11400000, guid: 71c70de32bf18714ba51ceea073b3568, type: 2}
   - {fileID: 11400000, guid: b124dda0c8355354a985c073f72ef04d, type: 2}
   m_BuildSettings:
@@ -110,6 +111,7 @@ MonoBehaviour:
     - GameConfig
     - TowerConfig
     - WeaponConfig
+    - UpgradeConfig
   m_SchemaTemplates: []
   m_GroupTemplateObjects:
   - {fileID: 11400000, guid: 2daf0844054671f4ab200b5acb386795, type: 2}

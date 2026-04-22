@@ -63,10 +63,7 @@ namespace _Project.Scripts.Services.AssetProvider
             }
         }
 
-        public void ReleaseInstance(GameObject reference)
-        {
-            Addressables.ReleaseInstance(reference);
-        }
+        public void ReleaseInstance(GameObject reference) => Addressables.ReleaseInstance(reference);
 
         public void Clear()
         {

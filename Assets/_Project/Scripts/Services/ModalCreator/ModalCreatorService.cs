@@ -3,22 +3,24 @@ using _Project.Scripts.Services.AssetProvider;
 using UnityEngine;
 using Zenject;
 using Cysharp.Threading.Tasks;
+using UnityEngine.AddressableAssets;
 
 namespace _Project.Scripts.Services.ModalCreator
 {
     public class ModalCreatorService : IModalCreatorService
     {
         private readonly IInstantiator _instantiator;
-        private readonly ModalsPrefabsDatabase _modalPrefabsDatabase;
+        private readonly ModalsDatabase _modalDatabase;
         private readonly IAssetProvider _assetProvider;
 
         private GameObject _currentOpenedModal;
+        private AssetReferenceGameObject _currentAssetReferenceGameObject;
 
-        public ModalCreatorService(ModalsPrefabsDatabase modalPrefabsDatabase, IAssetProvider assetProvider, IInstantiator instantiator)
+        public ModalCreatorService(ModalsDatabase modalDatabase, IAssetProvider assetProvider, IInstantiator instantiator)
         {
             _assetProvider = assetProvider;
             _instantiator = instantiator;
-            _modalPrefabsDatabase =  modalPrefabsDatabase;
+            _modalDatabase =  modalDatabase;
         }
 
 
@@ -26,12 +28,20 @@ namespace _Project.Scripts.Services.ModalCreator
         {
             if (_currentOpenedModal != null)
                 CloseModal();
-
-            GameObject modalObject = await _assetProvider.Load<GameObject>(_modalPrefabsDatabase.Get(modalType));
+            
+            _currentAssetReferenceGameObject = _modalDatabase.Get(modalType);
+            GameObject modalObject = await _assetProvider.Load<GameObject>(_currentAssetReferenceGameObject);
             _currentOpenedModal = _instantiator.InstantiatePrefab(modalObject);
             return _currentOpenedModal;
         }
 
-        public void CloseModal() => Object.Destroy(_currentOpenedModal);
+        public void CloseModal()
+        {
+            Object.Destroy(_currentOpenedModal);
+            _assetProvider.Release(_currentAssetReferenceGameObject);
+
+            _currentOpenedModal = null;
+            _currentAssetReferenceGameObject = null;
+        }
     }
 }

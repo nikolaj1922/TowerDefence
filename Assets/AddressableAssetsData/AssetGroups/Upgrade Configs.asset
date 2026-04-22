@@ -18,27 +18,32 @@ MonoBehaviour:
   - m_GUID: 3ec0379bb201ebb438715fa72a077e85
     m_Address: CastleAttackSpeedUpgrade
     m_ReadOnly: 0
-    m_SerializedLabels: []
+    m_SerializedLabels:
+    - UpgradeConfig
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 4e7bafcfc5f619b4092d0bd08acfbf6a
     m_Address: CastleHpUpgrade
     m_ReadOnly: 0
-    m_SerializedLabels: []
+    m_SerializedLabels:
+    - UpgradeConfig
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 936bf3a273d9f5d4d8657bbe81866ed3
     m_Address: CastleDamageUpgrade
     m_ReadOnly: 0
-    m_SerializedLabels: []
+    m_SerializedLabels:
+    - UpgradeConfig
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: dc53d4f2b0b4e6245b63229a0f744354
     m_Address: TowerDamageUpgrade
     m_ReadOnly: 0
-    m_SerializedLabels: []
+    m_SerializedLabels:
+    - UpgradeConfig
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: ef186a7eeacc2574e89adb63741f2484
     m_Address: TowerAttackSpeedUpgrade
     m_ReadOnly: 0
-    m_SerializedLabels: []
+    m_SerializedLabels:
+    - UpgradeConfig
     FlaggedDuringContentUpdateRestriction: 0
   m_ReadOnly: 0
   m_Settings: {fileID: 11400000, guid: 5754b7312235aa5459e4d93ba5f57e4c, type: 2}

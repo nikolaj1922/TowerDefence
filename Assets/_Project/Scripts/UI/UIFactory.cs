@@ -28,7 +28,7 @@ namespace _Project.Scripts.UI
         private IAnalyticsService _analyticsService;
         private CreateTowerPanelView _createTowerPanelView;
         private CreateTowerButtonView _createTowerButtonView;
-        private TowerConfigsDatabase _towerConfigsDatabase;
+        private TowerDatabase _towerDatabase;
 
         [Inject]
         public void Construct(
@@ -38,7 +38,7 @@ namespace _Project.Scripts.UI
             IWaveManager waveManager,
             CreateTowerPanelView createTowerPanelView,
             CreateTowerButtonView createTowerButtonView,
-            TowerConfigsDatabase towerConfigsDatabase,
+            TowerDatabase towerDatabase,
             CoinCounterView coinCounterView,
             WaveCounterView waveCounterView,
             CoinCounterModel coinCounterModel,
@@ -52,7 +52,7 @@ namespace _Project.Scripts.UI
             _waveManager = waveManager;
             _createTowerPanelView = createTowerPanelView;
             _createTowerButtonView = createTowerButtonView;
-            _towerConfigsDatabase = towerConfigsDatabase;
+            _towerDatabase = towerDatabase;
             _coinCounterView = coinCounterView;
             _waveCounterView = waveCounterView;
             _instantiator = instantiator;
@@ -68,7 +68,7 @@ namespace _Project.Scripts.UI
             towerPanelView.Initialize(onCreateTower);
             towerPanelView.HidePanel();
             
-            foreach (TowerConfig towerConfig in _towerConfigsDatabase.GetBuildable())
+            foreach (TowerConfig towerConfig in _towerDatabase.GetBuildable())
             {
                 CreateTowerButtonView towerButtonView =
                     _instantiator.InstantiatePrefabForComponent<CreateTowerButtonView>(

@@ -10,23 +10,23 @@ namespace _Project.Scripts.DI.GameObjectInstaller
     {
         [SerializeField] private HealthBarView _healthBarView;
         
-        private GameConfigDatabase _gameConfigDatabase;
+        private GameDatabase _gameDatabase;
         private ITowerUpgradeService _towerUpgradeService;
 
         [Inject]
         public void Construct(
-            GameConfigDatabase gameConfigDatabase,
+            GameDatabase gameDatabase,
             ITowerUpgradeService towerUpgradeService
         )
         {
             _towerUpgradeService = towerUpgradeService;
-            _gameConfigDatabase = gameConfigDatabase;
+            _gameDatabase = gameDatabase;
         }
         
         public override void InstallBindings()
         {
             float castleHp = 
-                _gameConfigDatabase.GameConfig.CastleHealth *
+                _gameDatabase.GetConfig().CastleHealth *
                 _towerUpgradeService.GetUpgradeMultiplier(TowerUpgradeIdMatcher.CASTLE_HP_ID);
             
             Container

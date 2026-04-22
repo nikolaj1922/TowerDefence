@@ -7,12 +7,12 @@ namespace _Project.Scripts.Weapons
     public class WeaponFactory : IWeaponFactory
     {
         private readonly IInstantiator _instantiator;
-        private readonly WeaponPrefabsDatabase _weaponPrefabsDatabase;
+        private readonly WeaponDatabase _weaponDatabase;
         
-        public WeaponFactory(WeaponPrefabsDatabase weaponPrefabsDatabase, IInstantiator instantiator)
+        public WeaponFactory(WeaponDatabase weaponDatabase, IInstantiator instantiator)
         {
             _instantiator = instantiator;
-            _weaponPrefabsDatabase = weaponPrefabsDatabase;
+            _weaponDatabase = weaponDatabase;
         }
 
         public Weapon CreateWeapon(
@@ -24,7 +24,7 @@ namespace _Project.Scripts.Weapons
 
         {
             GameObject weaponObject = _instantiator.InstantiatePrefab(
-                _weaponPrefabsDatabase.Get(type),
+                _weaponDatabase.Get(type),
                 position,
                 Quaternion.identity,
                 parent);

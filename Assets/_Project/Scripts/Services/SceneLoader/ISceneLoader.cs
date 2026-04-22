@@ -7,5 +7,6 @@ namespace _Project.Scripts.Services.SceneLoader
     {
         UniTask SwitchTo(string sceneKey, Action onLoadComplete = null);
         UniTask Preload(string sceneKey);
+        UniTask Reload(Action onLoadComplete = null);
     }
 }

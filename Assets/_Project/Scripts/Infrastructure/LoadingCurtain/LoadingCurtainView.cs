@@ -1,9 +1,6 @@
 ﻿using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
-using Cysharp.Threading.Tasks;
-using System.Collections.Generic;
-using _Project.Scripts.Infrastructure.LoadingCurtain.Operations;
 
 namespace _Project.Scripts.Infrastructure.LoadingCurtain
 {
@@ -12,38 +9,18 @@ namespace _Project.Scripts.Infrastructure.LoadingCurtain
         [SerializeField] private Slider _loadingSlider;
         [SerializeField] private TextMeshProUGUI _description;
         
-        public async UniTask StartLoadingOperations(Queue<ILoadingOperation> loadingOperations)
-        {
-            gameObject.SetActive(true);
-            
-            ResetLoadingProgress();
-            await Run(loadingOperations);
-            
-            gameObject.SetActive(false);
-        }
+        public void Show() => gameObject.SetActive(true);
         
-        private async UniTask Run(Queue<ILoadingOperation> loadingOperations)
-        {
-            int operationCount = loadingOperations.Count;
-            float operationCompleted = 0f;
-            
-            while (loadingOperations.Count > 0)
-            {
-                ILoadingOperation operation = loadingOperations.Dequeue();
-                
-                SetDescription(operation.Description);
-                
-                await operation.Load();
-                
-                operationCompleted++;
-                SetLoadingProgress(operationCompleted / operationCount);
-            }
-        }
+        public void Hide() => gameObject.SetActive(false);
         
-        private void SetDescription(string description) => _description.text = description;
+        public void SetDescription(string description) => _description.text = description;
 
-        private void SetLoadingProgress(float progress) => _loadingSlider.value = progress;
-        
-        private void ResetLoadingProgress() => _loadingSlider.value = 0;
+        public void Reset()
+        {
+            _loadingSlider.value = 0;
+            _description.text = "";
+        }
+
+        public void DrawProgress(LoadingCurtainModel model) => _loadingSlider.value = model.CompletedOperations / model.OperationCount;
     }
 }

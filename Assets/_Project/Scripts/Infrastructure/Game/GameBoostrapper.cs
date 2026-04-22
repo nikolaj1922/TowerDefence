@@ -1,25 +1,25 @@
 ﻿using Zenject;
 using _Project.Scripts.Infrastructure.LoadingCurtain;
+using _Project.Scripts.Infrastructure.LoadingCurtain.PipelineFactory;
+using Cysharp.Threading.Tasks;
 
 namespace _Project.Scripts.Infrastructure.Game
 {
     public class GameBoostrapper : IInitializable
     {
+        private LoadingCurtainPresenter _loadingCurtainPresenter;
         private ILoadingPipelineFactory _loadingPipelineFactory;
-        private ILoadingCurtainFactory _loadingCurtainFactory;
-        
+
         [Inject]
         public void Construct(
-            ILoadingCurtainFactory loadingCurtainFactory,
-            ILoadingPipelineFactory loadingPipelineFactory)
+            LoadingCurtainPresenter loadingCurtainPresenter, ILoadingPipelineFactory loadingPipelineFactory)
         {
             _loadingPipelineFactory = loadingPipelineFactory;
-            _loadingCurtainFactory = loadingCurtainFactory;
+            _loadingCurtainPresenter = loadingCurtainPresenter;
         }
 
-        public void Initialize() => 
-            _loadingCurtainFactory
-                .Create(_loadingPipelineFactory.StartGamePipeline())
-                .Forget();
+        public void Initialize() =>
+            _loadingCurtainPresenter.StartLoadingOperations(_loadingPipelineFactory.StartGamePipeline()).Forget();
+
     }
 }

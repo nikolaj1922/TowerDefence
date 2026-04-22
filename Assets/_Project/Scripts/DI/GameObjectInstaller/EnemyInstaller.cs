@@ -12,14 +12,14 @@ namespace _Project.Scripts.DI.GameObjectInstaller
         [SerializeField] private EnemyType _enemyType;
         [SerializeField] private HealthBarView _healthBarView;
         
-        private EnemyConfigsDatabase _enemyDatabase;
+        private EnemyDatabase _enemyDatabase;
         
         [Inject]
-        public void Construct(EnemyConfigsDatabase enemyDatabase) => _enemyDatabase = enemyDatabase;
+        public void Construct(EnemyDatabase enemyDatabase) => _enemyDatabase = enemyDatabase;
         
         public override void InstallBindings()
         {
-            EnemyConfig config = _enemyDatabase.Get(_enemyType);
+            EnemyConfig config = _enemyDatabase.GetConfig(_enemyType);
             Container.Bind<EnemyConfig>().FromInstance(config).AsSingle();
             Container.Bind<HealthModel>().FromMethod(_ => new HealthModel(config.Health)).AsSingle();
             Container.Bind<HealthBarView>().FromInstance(_healthBarView).AsSingle();

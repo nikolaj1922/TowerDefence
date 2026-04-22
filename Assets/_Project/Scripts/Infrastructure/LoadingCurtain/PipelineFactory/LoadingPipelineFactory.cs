@@ -14,23 +14,19 @@ using Cysharp.Threading.Tasks;
 using UnityEngine.AddressableAssets;
 using Zenject;
 
-namespace _Project.Scripts.Infrastructure.LoadingCurtain
+namespace _Project.Scripts.Infrastructure.LoadingCurtain.PipelineFactory
 {
     public class LoadingPipelineFactory : ILoadingPipelineFactory
     {
         private readonly ISaveLoad _saveLoad;
         private readonly ISceneLoader _sceneSceneLoader;
         private readonly IModalCreatorService _modalCreatorService;
-
-        private readonly UpgradeConfigsDatabase _upgradeConfigDatabase;
-        private readonly TowerPrefabsDatabase _towerPrefabsDatabase;
-        private readonly EnemyPrefabsDatabase _enemyPrefabsDatabase;
-        private readonly WeaponPrefabsDatabase _weaponPrefabsDatabase;
         
-        private readonly GameConfigDatabase _gameConfigDatabase;
-        private readonly EnemyConfigsDatabase _enemyConfigsDatabase;
-        private readonly TowerConfigsDatabase _towerConfigsDatabase;
-        private readonly WeaponConfigsDatabase _weaponConfigsDatabase;
+        private readonly EnemyDatabase _enemyDatabase;
+        private readonly TowerDatabase _towerDatabase;
+        private readonly WeaponDatabase _weaponDatabase;
+        private readonly UpgradeDatabase _upgradeDatabase;
+        private readonly GameDatabase _gameDatabase;
         
         private readonly AssetReference _menuSceneReference;
         private readonly AssetReference _levelSceneReference;
@@ -39,14 +35,13 @@ namespace _Project.Scripts.Infrastructure.LoadingCurtain
             IModalCreatorService modalCreatorService,
             ISaveLoad saveLoad,
             ISceneLoader sceneSceneLoader,
-            GameConfigDatabase gameConfigDatabase,
-            TowerConfigsDatabase towerConfigsDatabase,
-            EnemyConfigsDatabase enemyConfigsDatabase,
-            WeaponConfigsDatabase weaponConfigsDatabase,
-            UpgradeConfigsDatabase upgradeConfigDatabase,
-            TowerPrefabsDatabase towerPrefabsDatabase,
-            WeaponPrefabsDatabase weaponPrefabsDatabase,
-            EnemyPrefabsDatabase enemyPrefabsDatabase,
+            
+            GameDatabase gameDatabase,
+            EnemyDatabase enemyDatabase,
+            UpgradeDatabase upgradeDatabase,
+            TowerDatabase towerDatabase,
+            WeaponDatabase weaponDatabase,
+            
             [Inject(Id = GameConstants.MENU_SCENE)]
             AssetReference menuSceneReference,
             [Inject(Id = GameConstants.LEVEL_SCENE)]
@@ -57,16 +52,12 @@ namespace _Project.Scripts.Infrastructure.LoadingCurtain
             _saveLoad = saveLoad;
             _sceneSceneLoader = sceneSceneLoader;
 
-            _towerConfigsDatabase = towerConfigsDatabase;
-            _gameConfigDatabase = gameConfigDatabase;
-            _enemyConfigsDatabase = enemyConfigsDatabase;
-            _weaponConfigsDatabase = weaponConfigsDatabase;
-
-            _upgradeConfigDatabase = upgradeConfigDatabase;
-            _towerPrefabsDatabase = towerPrefabsDatabase;
-            _weaponPrefabsDatabase = weaponPrefabsDatabase;
-            _enemyPrefabsDatabase = enemyPrefabsDatabase;
-
+            _gameDatabase = gameDatabase;
+            _upgradeDatabase = upgradeDatabase;
+            _weaponDatabase = weaponDatabase;
+            _enemyDatabase = enemyDatabase;
+            _towerDatabase = towerDatabase;
+            
             _menuSceneReference = menuSceneReference;
             _levelSceneReference = levelSceneReference;
         }
@@ -76,7 +67,7 @@ namespace _Project.Scripts.Infrastructure.LoadingCurtain
             return new Queue<ILoadingOperation>(new ILoadingOperation[]
             {
                 new LoadPlayerProgressOperation(_saveLoad),
-                new LoadDatabaseOperation(new List<UniTask> { _upgradeConfigDatabase.Load() }, "Load upgrades"),
+                new LoadDatabaseOperation(new List<UniTask> { _upgradeDatabase.LoadConfigs() }, "Load upgrades"),
                 new LoadSceneOperation(
                     _sceneSceneLoader, 
                     _menuSceneReference.RuntimeKey.ToString(),
@@ -90,20 +81,21 @@ namespace _Project.Scripts.Infrastructure.LoadingCurtain
             {
                 new LoadDatabaseOperation(new List<UniTask>
                 {
-                    _enemyConfigsDatabase.Load(),
-                    _weaponConfigsDatabase.Load(),
-                    _towerConfigsDatabase.Load(),
-                    _gameConfigDatabase.Load(),
+                    _enemyDatabase.LoadConfigs(),
+                    _weaponDatabase.LoadConfigs(),
+                    _towerDatabase.LoadConfigs(),
+                    _gameDatabase.LoadConfigs(),
                 }, "Load configs"),
                 new LoadDatabaseOperation(new List<UniTask>
                 {
-                    _towerPrefabsDatabase.Load(),
-                    _weaponPrefabsDatabase.Load(),
-                    _enemyPrefabsDatabase.Load()
+                    _towerDatabase.LoadPrefabs(),
+                    _weaponDatabase.LoadPrefabs(),
+                    _enemyDatabase.LoadPrefabs()
                 }, "Load prefabs"),
                 new LoadSceneOperation(
                     _sceneSceneLoader, 
-                    _levelSceneReference.RuntimeKey.ToString())
+                    _levelSceneReference.RuntimeKey.ToString(), 
+                    _modalCreatorService.CloseModal)
             });
         }
         
@@ -111,9 +103,31 @@ namespace _Project.Scripts.Infrastructure.LoadingCurtain
         {
             return new Queue<ILoadingOperation>(new ILoadingOperation[]
             {
+                new ReloadSceneOperation(_sceneSceneLoader, _modalCreatorService.CloseModal)
+            });
+        }
+
+        public Queue<ILoadingOperation> BackToMenuFromLevelPipeline()
+        {
+            return new Queue<ILoadingOperation>(new ILoadingOperation[]
+            {
+                new LoadDatabaseOperation(new List<UniTask>
+                {
+                    _enemyDatabase.UnloadConfigs(),
+                    _weaponDatabase.UnloadConfigs(),
+                    _towerDatabase.UnloadConfigs(),
+                    _gameDatabase.UnloadConfigs(),
+                }, "Unload configs"),
+                new LoadDatabaseOperation(new List<UniTask>
+                {
+                    _towerDatabase.UnloadPrefabs(),
+                    _weaponDatabase.UnloadPrefabs(),
+                    _enemyDatabase.UnloadPrefabs()
+                }, "Unload prefabs"),
                 new LoadSceneOperation(
                     _sceneSceneLoader, 
-                    _levelSceneReference.RuntimeKey.ToString())
+                    _menuSceneReference.RuntimeKey.ToString(), 
+                    () => _modalCreatorService.OpenModal(ModalType.Menu).Forget())
             });
         }
     }

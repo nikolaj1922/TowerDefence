@@ -5,7 +5,7 @@ using UnityEngine.AddressableAssets;
 namespace _Project.Scripts.Database.Modals
 {
     [CreateAssetMenu(menuName = "Game/Modals Database")]
-    public class ModalsPrefabsDatabase : ScriptableObject
+    public class ModalsDatabase : ScriptableObject
     {
         [SerializeField] private List<ModalEntry> _modals;
         
@@ -29,12 +29,5 @@ namespace _Project.Scripts.Database.Modals
 
             return prefab;
         }
-    }
-
-    public enum ModalType
-    {
-        Menu,
-        Upgrades,
-        EndGame
     }
 }

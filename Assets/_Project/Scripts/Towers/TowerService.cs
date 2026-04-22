@@ -9,19 +9,19 @@ namespace _Project.Scripts.Towers
     {
         private readonly ITowerFactory _towerFactory;
         private readonly IWeaponFactory _weaponFactory;
-        private readonly TowerConfigsDatabase _towerConfigsDatabase;
+        private readonly TowerDatabase _towerDatabase;
         private readonly CoinCounterModel _coinCounterModel;
         
         public TowerService(
             ITowerFactory towerFactory, 
             IWeaponFactory weaponFactory,
-            TowerConfigsDatabase towerConfigsDatabase,
+            TowerDatabase towerDatabase,
             CoinCounterModel coinCounterModel
             )
         {
             _coinCounterModel = coinCounterModel;
             _towerFactory = towerFactory;
-            _towerConfigsDatabase = towerConfigsDatabase;
+            _towerDatabase = towerDatabase;
             _weaponFactory = weaponFactory;
         }
         
@@ -30,7 +30,7 @@ namespace _Project.Scripts.Towers
             Tower tower = _towerFactory.CreateTower(towerType, position);
             Weapon weapon = 
                 _weaponFactory.CreateWeapon(
-                    _towerConfigsDatabase.Get(towerType).WeaponType, 
+                    _towerDatabase.GetConfig(towerType).WeaponType, 
                     tower.WeaponPoint.transform.position, 
                     tower.WeaponPoint.transform, 
                     damageMultiplier, 

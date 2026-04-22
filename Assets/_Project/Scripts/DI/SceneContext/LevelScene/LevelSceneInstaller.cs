@@ -18,7 +18,6 @@ namespace _Project.Scripts.DI.SceneContext.LevelScene
 {
     public class LevelSceneInstaller : MonoInstaller
     {
-        [SerializeField] private Camera _camera;
         [SerializeField] private LayerMask _towerOccupiedLayerMask;
         [SerializeField] private LayerMask _groundLayerMask;
         [SerializeField] private CoinCounterView _coinCounterView;
@@ -26,11 +25,15 @@ namespace _Project.Scripts.DI.SceneContext.LevelScene
         [SerializeField] private CreateTowerPanelView _createTowerPanelView;
         [SerializeField] private CreateTowerButtonView _createTowerButtonView;
         
-        private EnemyPrefabsDatabase _enemyPrefabsDatabase;
-        
+        private EnemyDatabase _enemyDatabase;
+        private Camera _camera;
+
         [Inject]
-        public void Construct(EnemyPrefabsDatabase enemyPrefabsDatabase) =>
-            _enemyPrefabsDatabase = enemyPrefabsDatabase;
+        public void Construct(EnemyDatabase enemyDatabase, Camera gameCamera)
+        {
+            _enemyDatabase = enemyDatabase;
+            _camera = gameCamera;
+        }
 
         public override void InstallBindings()
         {
@@ -74,7 +77,7 @@ namespace _Project.Scripts.DI.SceneContext.LevelScene
         private void BindEnemyPools()
         {
             Container.BindMemoryPool<Enemy, EnemyPool>()
-                .FromComponentInNewPrefab(_enemyPrefabsDatabase.Get(EnemyType.Ork))
+                .FromComponentInNewPrefab(_enemyDatabase.GetPrefab(EnemyType.Ork))
                 .UnderTransformGroup("Enemies");
         }
     }

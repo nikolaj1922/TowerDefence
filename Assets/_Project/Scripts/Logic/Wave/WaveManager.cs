@@ -16,7 +16,7 @@ namespace _Project.Scripts.Logic.Wave
         public event Action<int> OnCompleteWave;
 
         private IEnemyFactory _enemyFactory;
-        private GameConfigDatabase _gameConfigDatabase;
+        private GameDatabase _gameDatabase;
         private IAnalyticsService _analyticsService;
         private int _waveIndex;
         private int _enemyKilledOnWave;
@@ -30,11 +30,11 @@ namespace _Project.Scripts.Logic.Wave
         [Inject]
         private void Construct(
             IEnemyFactory enemyFactory,
-            GameConfigDatabase gameConfigDatabase,
+            GameDatabase gameDatabase,
             IAnalyticsService analyticsService
         )
         {
-            _gameConfigDatabase = gameConfigDatabase;
+            _gameDatabase = gameDatabase;
             _analyticsService = analyticsService;
             _enemyFactory = enemyFactory;
         }
@@ -53,8 +53,8 @@ namespace _Project.Scripts.Logic.Wave
         }
         
         public int GetRewardForWaves() =>
-            (CurrentWave) * _gameConfigDatabase.GameConfig.CoinsPerWave
-            + TotalEnemyKilled * _gameConfigDatabase.GameConfig.CoinsPerKill;
+            (CurrentWave) * _gameDatabase.GetConfig().CoinsPerWave
+            + TotalEnemyKilled * _gameDatabase.GetConfig().CoinsPerKill;
         
         public void StopWave()
         {
@@ -63,8 +63,8 @@ namespace _Project.Scripts.Logic.Wave
         }
         
         private Configs.Wave GetNextWave() => 
-            _waveIndex < _gameConfigDatabase.GameConfig.Waves.Length 
-                ? _gameConfigDatabase.GameConfig.Waves[_waveIndex]
+            _waveIndex < _gameDatabase.GetConfig().Waves.Length 
+                ? _gameDatabase.GetConfig().Waves[_waveIndex]
                 : null;
 
         private async UniTaskVoid StartWave(Configs.Wave wave, CancellationToken token)

@@ -1,0 +1,88 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bbb281ee3bf0b054c82ac2347e9e782c, type: 3}
+  m_Name: Duplicate Asset Isolation
+  m_EditorClassIdentifier: Unity.Addressables.Editor::UnityEditor.AddressableAssets.Settings.AddressableAssetGroup
+  m_GroupName: Duplicate Asset Isolation
+  m_GUID: 8616864e6c29ef64e91ea0d8ebbf6cf5
+  m_SerializeEntries:
+  - m_GUID: 01e85ebe2d3acb74fb059b2282596e90
+    m_Address: panel_brown
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 1e16194f4e3a25c4092319b28f54fa3d
+    m_Address: button_brown
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 36e335017ad71d54fbb10842863188ae
+    m_Address: FallbackShader
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 5e2f9957f07d0d44ca6e54be7990fd49
+    m_Address: progress_blue_small
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 7f6ccb69fb44fc4418f2bd15d4ac5998
+    m_Address: colormap
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 933532a4fcc9baf4fa0491de14d08ed7
+    m_Address: Lit
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 967adfcf514df7c44917982ac002fc48
+    m_Address: banner_classic_curtain
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: b78b41961dd08b946abb92ab102d567e
+    m_Address: panel_brown_dark_corners_a
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: e3265ab4bf004d28a9537516768c1c75
+    m_Address: LiberationSans
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: e6e9a19c3678ded42a3bc431ebef7dbd
+    m_Address: FallbackError
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: f04bedef415537c40b906e3436b5b7e4
+    m_Address: panel_brown_dark
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: f8d488a4785bd574fb17e16424915b00
+    m_Address: weapon-turret
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: fe393ace9b354375a9cb14cdbbc28be4
+    m_Address: TMP_SDF-Mobile
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  m_ReadOnly: 0
+  m_Settings: {fileID: 11400000, guid: 5754b7312235aa5459e4d93ba5f57e4c, type: 2}
+  m_SchemaSet:
+    m_Schemas:
+    - {fileID: 11400000, guid: ae7aadaacb29d384a9dbce2b33ee9e89, type: 2}
+    - {fileID: 11400000, guid: d3879bc26a2938f4cbc3d16167c83e2d, type: 2}
