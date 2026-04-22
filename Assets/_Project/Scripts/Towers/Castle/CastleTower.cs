@@ -32,7 +32,7 @@ namespace _Project.Scripts.Towers.Castle
         
         public void TakeDamage(float damage)
         {
-            HealthModel.ChangeHealth(-damage);
+            HealthModel.TakeDamage(damage);
 
             if (HealthModel.CurrentHealth > 0)
             {

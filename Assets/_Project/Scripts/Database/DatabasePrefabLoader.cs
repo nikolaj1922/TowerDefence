@@ -46,7 +46,8 @@ namespace _Project.Scripts.Database
             {
                 if (handle.IsValid())
                     Addressables.Release(handle);
-            }
+            }       
+            
             
             _handles?.Clear();
             Prefabs?.Clear();

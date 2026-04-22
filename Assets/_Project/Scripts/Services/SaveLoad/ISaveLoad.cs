@@ -6,7 +6,6 @@ namespace _Project.Scripts.Services.SaveLoad
     {
         PlayerProgress PlayerProgress { get; }
         
-        void AddMetaCoins(int coins);
         void SaveProgress();
         UniTask LoadProgress();
     }

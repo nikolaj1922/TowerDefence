@@ -9,6 +9,7 @@ using _Project.Scripts.Logic.Level;
 using _Project.Scripts.Towers.Castle;
 using _Project.Scripts.UI.CoinCounter;
 using _Project.Scripts.Enemies.Behaviour;
+using _Project.Scripts.Logic.Level.Services;
 using _Project.Scripts.UI;
 using _Project.Scripts.UI.TowerCreation;
 using _Project.Scripts.UI.TowerCreation.CreateTowerButton;
@@ -47,24 +48,33 @@ namespace _Project.Scripts.DI.SceneContext.LevelScene
         {
             float viewHeight = _camera.orthographicSize * 2;
             float viewWidth = viewHeight * _camera.aspect;
+            
             Container.Bind<IEnemySpawner>().To<EnemySpawner>().AsSingle().WithArguments(viewHeight, viewWidth);
         } 
 
         private void BindLevel()
         {
-            Container.BindInterfacesAndSelfTo<TowerPlacement>().AsSingle().WithArguments(_camera, _towerOccupiedLayerMask, _groundLayerMask);
+            Container
+                .BindInterfacesAndSelfTo<TowerPlacement>()
+                .AsSingle()
+                .WithArguments(_camera, _towerOccupiedLayerMask, _groundLayerMask);
 
             Container.Bind<CoinCounterModel>().AsSingle();
             Container.Bind<IWaveManager>().To<WaveManager>().AsSingle();
             Container.Bind<ITowerService>().To<TowerService>().AsSingle();
             Container.Bind<ICastleInitializer>().To<CastleInitializer>().AsSingle();
-            Container.BindInterfacesAndSelfTo<LevelBootstrapper>().AsSingle();
             
             Container.BindInterfacesAndSelfTo<UIFactory>().AsSingle().WithArguments(
                 _createTowerPanelView, 
                 _createTowerButtonView, 
                 _coinCounterView,
                 _waveCounterView);
+            
+            Container.BindInterfacesAndSelfTo<CastleService>().AsSingle();
+            Container.BindInterfacesAndSelfTo<LevelAnalyticsService>().AsSingle();
+            Container.BindInterfacesAndSelfTo<LevelUIService>().AsSingle();
+            Container.BindInterfacesAndSelfTo<GameFlowService>().AsSingle();
+            Container.BindInterfacesAndSelfTo<LevelBootstrapper>().AsSingle();
         }
 
         private void BindFactories()

@@ -15,6 +15,9 @@ namespace _Project.Scripts.UI.HealthBar
             get => _currentHealth;
             private set
             {
+                if (Mathf.Approximately(_currentHealth, value))
+                    return;
+                
                 _currentHealth = value;
                 OnHealthChanged?.Invoke(_currentHealth);
             }
@@ -26,7 +29,13 @@ namespace _Project.Scripts.UI.HealthBar
             _currentHealth = maxHealth;
         }
 
-        public void ChangeHealth(float value) => CurrentHealth = Mathf.Clamp(_currentHealth + value, 0f, MaxHealth);
+        public void TakeDamage(float value)
+        {
+            if(value <= 0) 
+                return;
+            
+            CurrentHealth = Mathf.Clamp(_currentHealth - value, 0f, MaxHealth);
+        }
 
         public void Reset() =>  CurrentHealth = MaxHealth;
     }

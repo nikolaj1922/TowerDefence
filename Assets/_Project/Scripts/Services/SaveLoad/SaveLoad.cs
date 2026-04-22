@@ -8,12 +8,6 @@ namespace _Project.Scripts.Services.SaveLoad
     {
         public PlayerProgress PlayerProgress { get; private set; }
         
-        public void AddMetaCoins(int amount)
-        {
-            PlayerProgress.MetaCoinsCount += amount;
-            SaveProgress();
-        }
-        
         public void SaveProgress()
         {
             string json = JsonUtility.ToJson(PlayerProgress);
@@ -40,7 +34,6 @@ namespace _Project.Scripts.Services.SaveLoad
         {
             PlayerProgress = new PlayerProgress
             {
-                MetaCoinsCount = 1000,
                 upgrades = new PlayerUpgrades()
             };
         }

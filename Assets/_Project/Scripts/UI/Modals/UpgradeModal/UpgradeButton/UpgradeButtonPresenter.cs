@@ -55,7 +55,7 @@ namespace _Project.Scripts.UI.Modals.UpgradeModal.UpgradeButton
         private void OnBuyClicked()
         {
             _towerUpgradeService.SetUpgradeLevel(_upgradeConfig.id, _upgradeLevel + 1);
-            _progress.MetaCoinsCount -= _price;
+            _progress.SpendMetaCoins(_price);
             _saveLoad.SaveProgress();
         }
         

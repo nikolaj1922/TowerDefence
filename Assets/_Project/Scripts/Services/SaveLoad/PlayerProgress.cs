@@ -8,28 +8,26 @@ namespace _Project.Scripts.Services.SaveLoad
     [Serializable]
     public class PlayerProgress
     {
-        public int MetaCoinsCount
+        public PlayerUpgrades upgrades;
+        [SerializeField] private int _metaCoinsCount;
+
+        public int MetaCoinsCount => _metaCoinsCount;
+
+        public void AddMetaCoins(int amount)
         {
-            get => _metaCoinsCount;
-            set
-            {
-                switch (value)
-                {
-                    case < 0:
-                        _metaCoinsCount = 0;
-                        return;
-                    case > GameConstants.MAX_META_COIN_COUNT:
-                        _metaCoinsCount = GameConstants.MAX_META_COIN_COUNT;
-                        return;
-                    default:
-                        _metaCoinsCount = value;
-                        break;
-                }
-            }
+            if (amount <= 0)
+                return;
+            
+            _metaCoinsCount = Mathf.Min(_metaCoinsCount + amount, GameConstants.MAX_META_COIN_COUNT);
         }
 
-        [SerializeField] private int _metaCoinsCount;
-        public PlayerUpgrades upgrades;
+        public void SpendMetaCoins(int amount)
+        {
+            if (amount <= 0 || _metaCoinsCount < amount)
+                return;
+            
+            _metaCoinsCount = Mathf.Max(0,  _metaCoinsCount - amount);
+        }
     }
 
     [Serializable]

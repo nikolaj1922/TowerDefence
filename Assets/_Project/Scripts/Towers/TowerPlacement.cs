@@ -9,7 +9,7 @@ using _Project.Scripts.Infrastructure.Constants;
 
 namespace _Project.Scripts.Towers
 {
-    public class TowerPlacement : ITickable
+    public class TowerPlacement : ITickable, ITowerPlacement
     {
         public event Action<Vector3> OnPlaceClicked;
         
@@ -18,6 +18,9 @@ namespace _Project.Scripts.Towers
         private readonly LayerMask _groundLayer;
         private readonly LayerMask _towerOccupiedLayer;
         private readonly IAnalyticsService _analyticsService;
+        
+        private PointerEventData _eventData;
+        private readonly List<RaycastResult> _uiRaycastResults = new();
 
         public TowerPlacement(
             Camera camera,
@@ -60,15 +63,14 @@ namespace _Project.Scripts.Towers
         
         private bool IsPointerOverUIElement(Vector2 screenPosition)
         {
-            var eventData = new PointerEventData(EventSystem.current)
-            {
-                position = screenPosition
-            };
+            if (_eventData == null)
+                _eventData = new PointerEventData(EventSystem.current);
+                    
+            _eventData.position = screenPosition;       
+            _uiRaycastResults.Clear();
+            EventSystem.current.RaycastAll(_eventData, _uiRaycastResults);
 
-            var results = new List<RaycastResult>();
-            EventSystem.current.RaycastAll(eventData, results);
-
-            return results.Count > 0;
+            return _uiRaycastResults.Count > 0;
         }
 
         private void TryPlaceTower(Vector3 position)

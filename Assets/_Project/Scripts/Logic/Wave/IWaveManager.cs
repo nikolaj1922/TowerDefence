@@ -11,7 +11,7 @@ namespace _Project.Scripts.Logic.Wave
         int TotalEnemyKilled { get; }
         void StartTimer(int waveCount);
         void StartNextWave();
-        int GetRewardForWaves();
+        int GetReward();
         void StopWave();
     }
 }

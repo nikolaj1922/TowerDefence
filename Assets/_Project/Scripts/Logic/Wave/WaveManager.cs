@@ -52,7 +52,7 @@ namespace _Project.Scripts.Logic.Wave
             StartWave(wave, _waveCancelToken.Token).Forget();
         }
         
-        public int GetRewardForWaves() =>
+        public int GetReward() =>
             (CurrentWave) * _gameDatabase.GetConfig().CoinsPerWave
             + TotalEnemyKilled * _gameDatabase.GetConfig().CoinsPerKill;
         

@@ -70,7 +70,7 @@ namespace _Project.Scripts.Enemies.Behaviour
 
         public void TakeDamage(float damage)
         {
-            HealthModel.ChangeHealth(-damage);
+            HealthModel.TakeDamage(damage);
 
             if (HealthModel.CurrentHealth > 0)
                 return;
