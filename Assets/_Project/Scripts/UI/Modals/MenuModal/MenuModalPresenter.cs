@@ -50,6 +50,7 @@ namespace _Project.Scripts.UI.Modals.MenuModal
         
         private void OnStartClick()
         {
+            _modalCreatorService.CloseModal();
             _analyticsService.GameStarted(_saveLoad.PlayerProgress.MetaCoinsCount);
             _loadingCurtainPresenter.StartLoadingOperations(_loadingPipelineFactory.LevelPipeline()).Forget();
         }

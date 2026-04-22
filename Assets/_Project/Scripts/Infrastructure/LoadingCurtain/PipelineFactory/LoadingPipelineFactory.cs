@@ -94,8 +94,7 @@ namespace _Project.Scripts.Infrastructure.LoadingCurtain.PipelineFactory
                 }, "Load prefabs"),
                 new LoadSceneOperation(
                     _sceneSceneLoader, 
-                    _levelSceneReference.RuntimeKey.ToString(), 
-                    _modalCreatorService.CloseModal)
+                    _levelSceneReference.RuntimeKey.ToString())
             });
         }
         
@@ -103,7 +102,7 @@ namespace _Project.Scripts.Infrastructure.LoadingCurtain.PipelineFactory
         {
             return new Queue<ILoadingOperation>(new ILoadingOperation[]
             {
-                new ReloadSceneOperation(_sceneSceneLoader, _modalCreatorService.CloseModal)
+                new ReloadSceneOperation(_sceneSceneLoader)
             });
         }
 

@@ -9,6 +9,7 @@ using _Project.Scripts.Logic.Level;
 using _Project.Scripts.Towers.Castle;
 using _Project.Scripts.UI.CoinCounter;
 using _Project.Scripts.Enemies.Behaviour;
+using _Project.Scripts.Infrastructure.Constants;
 using _Project.Scripts.Logic.Level.Services;
 using _Project.Scripts.UI;
 using _Project.Scripts.UI.TowerCreation;
@@ -47,7 +48,7 @@ namespace _Project.Scripts.DI.SceneContext.LevelScene
         private void BindEnemySpawner()
         {
             float viewHeight = _camera.orthographicSize * 2;
-            float viewWidth = viewHeight * _camera.aspect;
+            float viewWidth = viewHeight * GameConstants.CAMERA_ASPECT_RATIO;
             
             Container.Bind<IEnemySpawner>().To<EnemySpawner>().AsSingle().WithArguments(viewHeight, viewWidth);
         } 

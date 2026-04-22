@@ -11,7 +11,7 @@ namespace _Project.Scripts.Infrastructure.LoadingCurtain.Operations
         
         public string Description => "Load scene";
 
-        public ReloadSceneOperation(ISceneLoader sceneLoader, Action onLoadComplete)
+        public ReloadSceneOperation(ISceneLoader sceneLoader, Action onLoadComplete = null)
         {
             _onLoadComplete = onLoadComplete;
             _sceneLoader = sceneLoader;

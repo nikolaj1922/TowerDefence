@@ -4,6 +4,7 @@ using _Project.Scripts.Services.SaveLoad;
 using _Project.Scripts.Services.Analytics;
 using _Project.Scripts.Infrastructure.LoadingCurtain;
 using _Project.Scripts.Infrastructure.LoadingCurtain.PipelineFactory;
+using _Project.Scripts.Services.ModalCreator;
 using Cysharp.Threading.Tasks;
 
 
@@ -13,6 +14,7 @@ namespace _Project.Scripts.UI.Modals.EndGameModal
     {
         private ISaveLoad _saveLoad;
         private IAnalyticsService _analyticsService;
+        private IModalCreatorService  _modalCreatorService;
         private EndGameModalView _view;
         private LoadingCurtainPresenter _loadingCurtainPresenter;
         private ILoadingPipelineFactory _loadingPipelineFactory;
@@ -20,12 +22,14 @@ namespace _Project.Scripts.UI.Modals.EndGameModal
         [Inject]
         public void Construct(
             EndGameModalView view,
+            IModalCreatorService modalCreatorService,
             IAnalyticsService analyticsService,
             ISaveLoad saveLoad,
             LoadingCurtainPresenter loadingCurtainPresenter,
             ILoadingPipelineFactory loadingPipelineFactory
         )
         {
+            _modalCreatorService = modalCreatorService;
             _loadingCurtainPresenter = loadingCurtainPresenter;
             _loadingPipelineFactory = loadingPipelineFactory;
             _view = view;
@@ -49,6 +53,8 @@ namespace _Project.Scripts.UI.Modals.EndGameModal
         {
             _analyticsService.SessionRestarted(_view.CurrentWave);
             
+            _modalCreatorService.CloseModal();
+            
             _loadingCurtainPresenter
                 .StartLoadingOperations(_loadingPipelineFactory.RestartLevelPipeline())
                 .Forget();
@@ -59,6 +65,8 @@ namespace _Project.Scripts.UI.Modals.EndGameModal
             _analyticsService.ReturnedToMenu(
                 _view.CurrentWave,
                 _saveLoad.PlayerProgress.MetaCoinsCount);
+            
+            _modalCreatorService.CloseModal();
             
             _loadingCurtainPresenter
                 .StartLoadingOperations(_loadingPipelineFactory.BackToMenuFromLevelPipeline())

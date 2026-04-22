@@ -6,6 +6,7 @@
         public const string MENU_SCENE = "Menu";
         public const string LEVEL_SCENE = "Level";
         public const float ENEMY_SPAWN_OFFSET = 1f;
+        public const float CAMERA_ASPECT_RATIO = 0.75f;
         public const float TOWER_PLACEMENT_RAYCAST_DISTANCE = 100f;
         public const float MAX_ANGLE_TO_ATTACK = 10f;
         public const float ATTACK_RECOIL = 0.03f;

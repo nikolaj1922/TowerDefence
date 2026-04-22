@@ -1,10 +1,6 @@
 using System;
-using _Project.Scripts.Infrastructure.Constants;
-using _Project.Scripts.Services.SceneLoader;
 using UnityEngine;
-using UnityEngine.AddressableAssets;
 using UnityEngine.UI;
-using Zenject;
 
 namespace _Project.Scripts.UI.Modals.MenuModal
 {
@@ -17,25 +13,11 @@ namespace _Project.Scripts.UI.Modals.MenuModal
         [SerializeField] private Button _startButton;
         [SerializeField] private Button _upgradeButton;
         
-        private ISceneLoader _sceneLoader;
-        private AssetReference _levelAssetReference;
-
-        [Inject]
-        public void Construct(
-            ISceneLoader sceneLoader,
-            [Inject(Id = GameConstants.LEVEL_SCENE)] AssetReference levelAssetReference)
-        {
-            _levelAssetReference = levelAssetReference;
-            _sceneLoader = sceneLoader;
-        }
-        
         private void Awake()
         {
             _startButton.onClick.AddListener(OnStartButtonClicked);
             _upgradeButton.onClick.AddListener(OnUpgradeButtonClicked);
         }
-
-        private void Start() => _sceneLoader.Preload(_levelAssetReference.RuntimeKey.ToString());
 
         private void OnDestroy()
         {
