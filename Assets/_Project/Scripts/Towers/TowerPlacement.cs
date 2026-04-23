@@ -93,9 +93,9 @@ namespace _Project.Scripts.Towers
         private void PlaceTower(Vector3 position)
         {
             Ray ray = _camera.ScreenPointToRay(position);
-            
+
             if (Physics.Raycast(
-                    ray, 
+                    ray,
                     out RaycastHit groundHit,
                     GameConstants.TOWER_PLACEMENT_RAYCAST_DISTANCE,
                     _groundLayer))

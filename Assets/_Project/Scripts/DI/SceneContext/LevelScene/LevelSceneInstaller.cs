@@ -48,7 +48,7 @@ namespace _Project.Scripts.DI.SceneContext.LevelScene
         private void BindEnemySpawner()
         {
             float viewHeight = _camera.orthographicSize * 2;
-            float viewWidth = viewHeight * GameConstants.CAMERA_ASPECT_RATIO;
+            float viewWidth = viewHeight * _camera.aspect;
             
             Container.Bind<IEnemySpawner>().To<EnemySpawner>().AsSingle().WithArguments(viewHeight, viewWidth);
         } 
