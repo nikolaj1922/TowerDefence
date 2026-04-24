@@ -8,7 +8,7 @@ using _Project.Scripts.UI.HealthBar;
 namespace _Project.Scripts.Towers.Castle
 {
     [RequireComponent(typeof(Tower))]
-    public class CastleTower : MonoBehaviour, IDamagable
+    public class CastleTower : MonoBehaviour, IDamagable, ICastleTower
     {
         public event Action OnCastleDestroy;
         public event Action<float> OnCastleDamaged;
@@ -29,6 +29,8 @@ namespace _Project.Scripts.Towers.Castle
         private void Update() => _stateMachine?.Update();
         
         public void SetStateMachine(StateMachine stateMachine) => _stateMachine = stateMachine;
+
+        public void RestoreHp() => HealthModel.RestoreHp();
         
         public void TakeDamage(float damage)
         {
@@ -43,13 +45,20 @@ namespace _Project.Scripts.Towers.Castle
             OnCastleDestroy?.Invoke();
         }
 
-        public void Collapse()
+        public void BreakWeapon()
         {
             Instantiate(_onCollapseEffect, transform.position, Quaternion.identity);
             
             _castleDamagedModel.SetActive(true);
             _castleModel.SetActive(false);
             _tower.Weapon.gameObject.SetActive(false);
+        }
+
+        public void RestoreWeapon()
+        {
+            _castleDamagedModel.SetActive(false);
+            _castleModel.SetActive(true);
+            _tower.Weapon.gameObject.SetActive(true);
         }
     }
 }

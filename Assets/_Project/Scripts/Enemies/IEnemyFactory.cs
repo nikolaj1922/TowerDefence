@@ -6,5 +6,6 @@ namespace _Project.Scripts.Enemies
     {
         void CreateEnemy(EnemyType type, Action onDeath);
         void StopActiveEnemies();
+        void DespawnAllEnemies();
     }
 }

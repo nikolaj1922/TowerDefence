@@ -4,6 +4,7 @@
     {
         Menu,
         Upgrades,
-        EndGame
+        EndGame,
+        EndGameAds
     }
 }

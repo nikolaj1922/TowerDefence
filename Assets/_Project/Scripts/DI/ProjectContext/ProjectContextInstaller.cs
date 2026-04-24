@@ -16,6 +16,8 @@ using _Project.Scripts.Infrastructure.Constants;
 using _Project.Scripts.Services.SceneLoader;
 using _Project.Scripts.Infrastructure.LoadingCurtain;
 using _Project.Scripts.Infrastructure.LoadingCurtain.PipelineFactory;
+using _Project.Scripts.Services.Ads;
+using _Project.Scripts.Services.GameSession;
 using UnityEngine.AddressableAssets;
 
 namespace _Project.Scripts.DI.ProjectContext
@@ -42,12 +44,16 @@ namespace _Project.Scripts.DI.ProjectContext
             BindSceneAssets();
             BindAnalytics();
             BindLoadingCurtain();
+            BindAds();
         }
+
+        private void BindAds() => Container.BindInterfacesAndSelfTo<AdsService>().AsSingle();
 
         private void BindCamera() => Container.Bind<Camera>().FromInstance(_camera).AsSingle();
 
         private void BindServices()
         {
+            Container.Bind<IGameSession>().To<GameSession>().AsSingle();
             Container.Bind<IModalCreatorService>().To<ModalCreatorService>().AsSingle();
             Container.Bind<IAssetProvider>().To<AssetProvider>().AsSingle();
             Container.Bind<ISceneLoader>().To<SceneLoader>().AsSingle().NonLazy();

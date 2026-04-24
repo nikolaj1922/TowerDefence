@@ -55,7 +55,7 @@ namespace _Project.Scripts.UI.WaveCounter
         private void StartWave()
         {
             _view.HidePanel();
-            _waveManager.StartNextWave();
+            _waveManager.StartWave();
             
             _cancellationToken.Cancel();
             _cancellationToken.Dispose();
@@ -74,7 +74,7 @@ namespace _Project.Scripts.UI.WaveCounter
                     token);
             }
             
-            _waveManager.StartNextWave();
+            _waveManager.StartWave();
         }
     }
 }

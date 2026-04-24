@@ -38,5 +38,7 @@ namespace _Project.Scripts.UI.HealthBar
         }
 
         public void Reset() =>  CurrentHealth = MaxHealth;
+
+        public void RestoreHp() => CurrentHealth = MaxHealth;
     }
 }

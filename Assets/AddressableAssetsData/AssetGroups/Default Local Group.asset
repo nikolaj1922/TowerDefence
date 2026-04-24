@@ -40,6 +40,11 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: ea06f0481773bcb4f8155640327f6990
+    m_Address: ContinueForAdsModal
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: f3aaba9f92d50f947811905c21551e0b
     m_Address: MainMenuModal
     m_ReadOnly: 0

@@ -4,7 +4,7 @@ namespace _Project.Scripts.Towers.Castle
 {
     public interface ICastleInitializer
     {
-        CastleTower CreateCastle(
+        ICastleTower CreateCastle(
             Vector3 position, 
             float damageMultiplier, 
             float attackSpeedMultiplier);

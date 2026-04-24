@@ -1,17 +1,19 @@
 ﻿using UnityEngine;
+using Zenject;
 
 namespace _Project.Scripts.UI.HealthBar
 {
     public class LookToCamera : MonoBehaviour
     {
-        private Camera _mainCamera;
+        private Camera _camera;
 
-        private void Awake() => _mainCamera = Camera.main;
+        [Inject]
+        public void Construct(Camera mainCamera) => _camera = mainCamera;
 
         private void LateUpdate()
         {
-            transform.LookAt(transform.position + _mainCamera.transform.rotation * Vector3.forward,
-                _mainCamera.transform.rotation * Vector3.up);
+            transform.LookAt(transform.position + _camera.transform.rotation * Vector3.forward,
+                _camera.transform.rotation * Vector3.up);
         }
     }
 }

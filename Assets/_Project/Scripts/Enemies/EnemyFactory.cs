@@ -54,6 +54,12 @@ namespace _Project.Scripts.Enemies
             foreach (var enemy in _orksPool.ActiveEnemies)
                 enemy.ToIdle();   
         }
+
+        public void DespawnAllEnemies()
+        {
+            foreach (EnemyType enemyType in Enum.GetValues(typeof(EnemyType)))
+                GetEnemyPool(enemyType).DespawnAll();
+        }
         
         private StateMachine CreateStateMachine(Enemy enemy)
         {

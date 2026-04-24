@@ -1,20 +1,19 @@
 ﻿using System;
 using Zenject;
 using UnityEngine;
-using _Project.Scripts.Configs;
 using _Project.Scripts.UI.WaveCounter;
 using _Project.Scripts.UI.CoinCounter;
 using _Project.Scripts.UI.TowerCreation;
 using _Project.Scripts.Database.Towers;
 using _Project.Scripts.Logic.Wave;
 using _Project.Scripts.Services.Analytics;
+using _Project.Scripts.Services.GameSession;
 using _Project.Scripts.Services.TowerUpgrade;
 using _Project.Scripts.Towers;
-using _Project.Scripts.UI.TowerCreation.CreateTowerButton;
 
 namespace _Project.Scripts.UI
 {
-    public class UIFactory
+    public class UIFactory: IDisposable
     {
         private Vector3 _createTowerPosition;
         
@@ -22,22 +21,24 @@ namespace _Project.Scripts.UI
         private IWaveManager _waveManager;
         private ITowerService _towerService;
         private ITowerUpgradeService _towerUpgradeService;
+        private IGameSession _gameSession;
         private CoinCounterView _coinCounterView;
         private WaveCounterView _waveCounterView;
         private CoinCounterModel _coinCounterModel;
         private IAnalyticsService _analyticsService;
         private CreateTowerPanelView _createTowerPanelView;
-        private CreateTowerButtonView _createTowerButtonView;
         private TowerDatabase _towerDatabase;
+
+        private CreateTowerPanelPresenter _towerPanelPresenter;
 
         [Inject]
         public void Construct(
+            IGameSession gameSession,
             IAnalyticsService analyticsService,
             ITowerUpgradeService towerUpgradeService,
             ITowerService towerService,
             IWaveManager waveManager,
             CreateTowerPanelView createTowerPanelView,
-            CreateTowerButtonView createTowerButtonView,
             TowerDatabase towerDatabase,
             CoinCounterView coinCounterView,
             WaveCounterView waveCounterView,
@@ -45,52 +46,48 @@ namespace _Project.Scripts.UI
             IInstantiator instantiator
         )
         {
+            _gameSession = gameSession;
             _coinCounterModel = coinCounterModel;
             _analyticsService =  analyticsService;
             _towerUpgradeService = towerUpgradeService;
             _towerService = towerService;
             _waveManager = waveManager;
             _createTowerPanelView = createTowerPanelView;
-            _createTowerButtonView = createTowerButtonView;
             _towerDatabase = towerDatabase;
             _coinCounterView = coinCounterView;
             _waveCounterView = waveCounterView;
             _instantiator = instantiator;
         }
 
+        public void Dispose()
+        {
+            if (_towerPanelPresenter != null)
+                _towerPanelPresenter.Dispose();
+        }
+
         public void CreateCoinCounterPanel() => _instantiator.InstantiatePrefab(_coinCounterView);
 
         public void CreateWaveCounterPanel() => _instantiator.InstantiatePrefab(_waveCounterView);
         
-        public CreateTowerPanelView CreateTowerPanel(Action<int> onCreateTower)
+        public CreateTowerPanelPresenter CreateTowerPanel()
         {
+            CreateTowerPanelModel towerPanelModel = new CreateTowerPanelModel(_towerDatabase.GetBuildable());
             CreateTowerPanelView towerPanelView = _instantiator.InstantiatePrefabForComponent<CreateTowerPanelView>(_createTowerPanelView);
-            towerPanelView.Initialize(onCreateTower);
-            towerPanelView.HidePanel();
+            _towerPanelPresenter = new CreateTowerPanelPresenter(
+                _instantiator,
+                _coinCounterModel, 
+                _analyticsService, 
+                _towerService, 
+                _waveManager, 
+                _towerUpgradeService,
+                _gameSession,
+                towerPanelView,
+                towerPanelModel);
+
+            _towerPanelPresenter.Initialize();
+            _towerPanelPresenter.HidePanel();
             
-            foreach (TowerConfig towerConfig in _towerDatabase.GetBuildable())
-            {
-                CreateTowerButtonView towerButtonView =
-                    _instantiator.InstantiatePrefabForComponent<CreateTowerButtonView>(
-                        _createTowerButtonView, 
-                        towerPanelView.PanelRectTransform
-                        );
-                towerButtonView.Initialize(towerConfig.Icon, towerConfig.CoinPrice);
-                
-                CreateTowerButtonPresenter createTowerButtonPresenter = new CreateTowerButtonPresenter(
-                    _waveManager,
-                    _towerService,
-                    _towerUpgradeService,
-                    _analyticsService,
-                    _coinCounterModel,
-                    towerPanelView.GetCreateTowerPosition,
-                    towerButtonView);
-            
-                createTowerButtonPresenter.Initialize(towerConfig.TowerType, towerConfig.CoinPrice);
-                towerPanelView.RegisterButton(towerButtonView, createTowerButtonPresenter);
-            }
-            
-            return towerPanelView;
+            return _towerPanelPresenter;
         }
     }
 }

@@ -24,14 +24,16 @@ namespace _Project.Scripts.Services.ModalCreator
         }
 
 
-        public async UniTask<GameObject> OpenModal(ModalType modalType)
+        public async UniTask<GameObject> OpenModal(ModalType modalType, IInstantiator inPlaceInstantiator)
         {
             if (_currentOpenedModal != null)
                 CloseModal();
             
+            IInstantiator instantiatorInstance = inPlaceInstantiator ?? _instantiator;
+            
             _currentAssetReferenceGameObject = _modalDatabase.Get(modalType);
             GameObject modalObject = await _assetProvider.Load<GameObject>(_currentAssetReferenceGameObject);
-            _currentOpenedModal = _instantiator.InstantiatePrefab(modalObject);
+            _currentOpenedModal = instantiatorInstance.InstantiatePrefab(modalObject);
             return _currentOpenedModal;
         }
 
