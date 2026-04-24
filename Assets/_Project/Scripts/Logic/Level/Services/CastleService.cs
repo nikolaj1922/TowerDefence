@@ -16,7 +16,7 @@ namespace _Project.Scripts.Logic.Level.Services
         private readonly ITowerUpgradeService _upgradeService;
         private readonly GameDatabase _db;
 
-        private CastleTower _castle;
+        private ICastleTower _castle;
 
         public CastleService(
             ICastleInitializer initializer,
@@ -45,6 +45,8 @@ namespace _Project.Scripts.Logic.Level.Services
             _castle.OnCastleDamaged -= OnCastleDamaged;
             _castle.OnCastleDestroy -= OnCastleDestroyed;
         }
+
+        public void Restore() => _castle.RestoreHp();
 
         private void OnCastleDamaged(float damage) => OnDamaged?.Invoke(damage);
         

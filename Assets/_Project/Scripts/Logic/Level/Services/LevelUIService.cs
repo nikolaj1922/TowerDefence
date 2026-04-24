@@ -16,6 +16,7 @@ namespace _Project.Scripts.Logic.Level.Services
     {
         public event Action<int> OnCreateTower;
         
+        private readonly IInstantiator _instantiator;
         private readonly UIFactory _uiFactory;
         private readonly IModalCreatorService _modalCreatorService;
         private readonly IWaveManager _waveManager;
@@ -23,10 +24,12 @@ namespace _Project.Scripts.Logic.Level.Services
         private CreateTowerPanelView _towerPanel;
         
         public LevelUIService(
+            IInstantiator instantiator,
             UIFactory uiFactory, 
             IModalCreatorService modalCreatorService,
             IWaveManager waveManager)
         {
+            _instantiator = instantiator;
             _waveManager = waveManager;
             _uiFactory = uiFactory;
             _modalCreatorService = modalCreatorService;
@@ -44,12 +47,14 @@ namespace _Project.Scripts.Logic.Level.Services
         
         public async UniTask ShowEndModal(string title)
         {
-            var modal = await _modalCreatorService.OpenModal(ModalType.EndGame);
+            var modal = await _modalCreatorService.OpenModal(ModalType.EndGame, _instantiator);
             var view = modal.GetComponent<EndGameModalView>();
 
             view.SetCurrentWave(_waveManager.CurrentWave);
             view.Draw(title, _waveManager.GetReward());
         }
+        
+        public void ShowContinueForAdsModal() => _modalCreatorService.OpenModal(ModalType.EndGameAds, _instantiator).Forget();
 
         private void OnCreateTowerInternal(int price) => OnCreateTower?.Invoke(price);
     }

@@ -13,7 +13,7 @@ namespace _Project.Scripts.Towers.Castle
         [Inject]
         public CastleInitializer(ITowerService towerService) => _towerService = towerService;
 
-        public CastleTower CreateCastle(
+        public ICastleTower CreateCastle(
             Vector3 position, 
             float damageMultiplier, 
             float attackSpeedMultiplier)
@@ -24,24 +24,28 @@ namespace _Project.Scripts.Towers.Castle
                 damageMultiplier,
                 attackSpeedMultiplier);
 
-            if (tower.TryGetComponent(out CastleTower castle))
+            if (tower.TryGetComponent(out ICastleTower castle))
                 castle.SetStateMachine(CreateCastleStateMachine(castle));
             
             return castle;
         }
 
-        private StateMachine CreateCastleStateMachine(CastleTower castle)
+        private StateMachine CreateCastleStateMachine(ICastleTower castle)
         {
             return new StateMachine(
                 new IState[]
                 {
-                    new EntireState(),
-                    new CollapseState(castle)
+                    new InitialState(castle),
+                    new BrokenWeaponState(castle)
                 },
                 new ITransition[]
                 {
-                    new Transition<EntireState, CollapseState>(
-                        () => castle.HealthModel.CurrentHealth / castle.HealthModel.MaxHealth < GameConstants.CASTLE_COLLAPSE_HEALTH_PERCENT)
+                    new Transition<InitialState, BrokenWeaponState>(
+                        () => castle.HealthModel.CurrentHealth / castle.HealthModel.MaxHealth 
+                              < GameConstants.CASTLE_COLLAPSE_HEALTH_PERCENT),
+                    new Transition<BrokenWeaponState, InitialState>(
+                        () => castle.HealthModel.CurrentHealth / castle.HealthModel.MaxHealth
+                              > GameConstants.CASTLE_COLLAPSE_HEALTH_PERCENT)
                 }
             );
         }

@@ -8,6 +8,12 @@ namespace _Project.Scripts.Enemies
     {
         public List<Enemy> ActiveEnemies { get; } = new();
 
+        public void DespawnAll()
+        {
+            for (int i = ActiveEnemies.Count - 1; i >= 0; i--)
+                OnDespawned(ActiveEnemies[i]);
+        }
+
         protected override void OnSpawned(Enemy enemy)
         {
             base.OnSpawned(enemy);

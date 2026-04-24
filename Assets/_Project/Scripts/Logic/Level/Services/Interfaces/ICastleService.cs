@@ -6,5 +6,6 @@ namespace _Project.Scripts.Logic.Level.Services.Interfaces
     {
         event Action<float> OnDamaged;
         event Action OnDestroyed;
+        void Restore();
     }
 }

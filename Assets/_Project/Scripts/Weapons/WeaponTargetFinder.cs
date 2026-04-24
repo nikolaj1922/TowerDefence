@@ -78,7 +78,7 @@ namespace _Project.Scripts.Weapons
         private bool IsTargetValid() =>
             Target != null
             && Target.CurrentHealth > 0
-            && IsTargetInRange();
+            && IsTargetInRange() && Target.isActiveAndEnabled;
         
         private bool IsTargetInRange() => (Target.transform.position - _position).sqrMagnitude <= _attackRange * _attackRange;
     }
