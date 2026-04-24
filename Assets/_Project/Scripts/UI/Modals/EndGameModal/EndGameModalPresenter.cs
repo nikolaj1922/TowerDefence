@@ -4,7 +4,7 @@ using _Project.Scripts.Services.SaveLoad;
 using _Project.Scripts.Services.Analytics;
 using _Project.Scripts.Infrastructure.LoadingCurtain;
 using _Project.Scripts.Infrastructure.LoadingCurtain.PipelineFactory;
-using _Project.Scripts.Logic.Wave;
+using _Project.Scripts.Logic.Level.Services.Interfaces;
 using _Project.Scripts.Services.Ads;
 using _Project.Scripts.Services.GameSession;
 using _Project.Scripts.Services.ModalCreator;
@@ -22,24 +22,24 @@ namespace _Project.Scripts.UI.Modals.EndGameModal
         private readonly EndGameModalView _view;
         private readonly LoadingCurtainPresenter _loadingCurtainPresenter;
         private readonly ILoadingPipelineFactory _loadingPipelineFactory;
-        private readonly IWaveManager _waveManager;
         private readonly IAdsService _adsService;
+        private readonly IRewardService _rewardService;
 
         public EndGameModalPresenter(
+            IRewardService rewardService,
             IAdsService adsService,
             IGameSession gameSession,
             EndGameModalView view,
             IModalCreatorService modalCreatorService,
             IAnalyticsService analyticsService,
-            IWaveManager waveManager,
             ISaveLoad saveLoad,
             LoadingCurtainPresenter loadingCurtainPresenter,
             ILoadingPipelineFactory loadingPipelineFactory
         )
         {
+            _rewardService = rewardService;
             _adsService = adsService;
             _gameSession = gameSession;
-            _waveManager = waveManager;
             _modalCreatorService = modalCreatorService;
             _loadingCurtainPresenter = loadingCurtainPresenter;
             _loadingPipelineFactory = loadingPipelineFactory;
@@ -100,7 +100,7 @@ namespace _Project.Scripts.UI.Modals.EndGameModal
         
         private void SaveReward()
         {
-            _saveLoad.PlayerProgress.AddMetaCoins(_waveManager.GetReward());
+            _saveLoad.PlayerProgress.AddMetaCoins(_rewardService.GetReward());
             _saveLoad.SaveProgress();
         }
     }

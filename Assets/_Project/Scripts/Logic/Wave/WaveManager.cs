@@ -5,7 +5,6 @@ using _Project.Scripts.Database.Game;
 using _Project.Scripts.Enemies;
 using _Project.Scripts.Services.Analytics;
 using Cysharp.Threading.Tasks;
-using Zenject;
 
 namespace _Project.Scripts.Logic.Wave
 {
@@ -15,9 +14,9 @@ namespace _Project.Scripts.Logic.Wave
         public event Action OnCompleteLevel;
         public event Action<int> OnCompleteWave;
 
-        private IEnemyFactory _enemyFactory;
-        private GameDatabase _gameDatabase;
-        private IAnalyticsService _analyticsService;
+        private readonly IEnemyFactory _enemyFactory;
+        private readonly GameDatabase _gameDatabase;
+        private readonly IAnalyticsService _analyticsService;
         private int _waveIndex;
         private int _enemyKilledOnWave;
         private int _totalEnemiesOnWave;
@@ -26,9 +25,8 @@ namespace _Project.Scripts.Logic.Wave
 
         public int CurrentWave => _waveIndex + 1;
         public int TotalEnemyKilled { get; private set; }
-
-        [Inject]
-        private void Construct(
+        
+        public WaveManager(
             IEnemyFactory enemyFactory,
             GameDatabase gameDatabase,
             IAnalyticsService analyticsService
@@ -40,10 +38,6 @@ namespace _Project.Scripts.Logic.Wave
         }
 
         public void StartTimer(int waveCount) => OnWaveTimerStart?.Invoke(waveCount);
-
-        public int GetReward() =>
-            (CurrentWave) * _gameDatabase.GetConfig().CoinsPerWave
-            + TotalEnemyKilled * _gameDatabase.GetConfig().CoinsPerKill;
         
         public void StopWave()
         {

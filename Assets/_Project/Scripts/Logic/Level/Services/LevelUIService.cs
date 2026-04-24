@@ -14,21 +14,22 @@ namespace _Project.Scripts.Logic.Level.Services
 {
     public class LevelUIService : ILevelUIService, IInitializable
     {
-        public event Action<int> OnCreateTower;
-        
         private readonly IInstantiator _instantiator;
         private readonly UIFactory _uiFactory;
         private readonly IModalCreatorService _modalCreatorService;
         private readonly IWaveManager _waveManager;
+        private readonly IRewardService _rewardService;
         
-        private CreateTowerPanelView _towerPanel;
+        private CreateTowerPanelPresenter _towerPanel;
         
         public LevelUIService(
             IInstantiator instantiator,
             UIFactory uiFactory, 
             IModalCreatorService modalCreatorService,
-            IWaveManager waveManager)
+            IWaveManager waveManager,
+            IRewardService rewardService)
         {
+            _rewardService = rewardService;
             _instantiator = instantiator;
             _waveManager = waveManager;
             _uiFactory = uiFactory;
@@ -40,10 +41,10 @@ namespace _Project.Scripts.Logic.Level.Services
             _uiFactory.CreateCoinCounterPanel();
             _uiFactory.CreateWaveCounterPanel();
 
-            _towerPanel = _uiFactory.CreateTowerPanel(OnCreateTowerInternal);
+            _towerPanel = _uiFactory.CreateTowerPanel();
         }
         
-        public void ShowTowerPanel(Vector3 pos) => _towerPanel.ShowPanel(pos);
+        public void ShowTowerPanel(Vector3 pos) => _towerPanel.ShowTowerPanel(pos);
         
         public async UniTask ShowEndModal(string title)
         {
@@ -51,11 +52,9 @@ namespace _Project.Scripts.Logic.Level.Services
             var view = modal.GetComponent<EndGameModalView>();
 
             view.SetCurrentWave(_waveManager.CurrentWave);
-            view.Draw(title, _waveManager.GetReward());
+            view.Draw(title, _rewardService.GetReward());
         }
         
         public void ShowContinueForAdsModal() => _modalCreatorService.OpenModal(ModalType.EndGameAds, _instantiator).Forget();
-
-        private void OnCreateTowerInternal(int price) => OnCreateTower?.Invoke(price);
     }
 }

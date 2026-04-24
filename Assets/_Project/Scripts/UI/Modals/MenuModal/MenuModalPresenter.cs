@@ -40,6 +40,8 @@ namespace _Project.Scripts.UI.Modals.MenuModal
         {
             _menuModalView.OnStartClicked += OnStartClick;
             _menuModalView.OnOpenUpgradesClicked += OnOpenUpgradesClick;
+            
+            _menuModalView.UpdateMetaCounter(_saveLoad.PlayerProgress.MetaCoinsCount.ToString());
         }
 
         public void Dispose()

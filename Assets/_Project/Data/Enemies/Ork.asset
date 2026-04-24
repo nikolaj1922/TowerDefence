@@ -13,9 +13,9 @@ MonoBehaviour:
   m_Name: Ork
   m_EditorClassIdentifier: Assembly-CSharp::_Project.Scripts.Configs.EnemyConfig
   <Type>k__BackingField: 0
-  <Speed>k__BackingField: 1
+  <Speed>k__BackingField: 0.3
   <Health>k__BackingField: 10
-  <Damage>k__BackingField: 100
+  <Damage>k__BackingField: 10
   <AttackRange>k__BackingField: 0.3
   <AttackCooldown>k__BackingField: 2
   <CoinsReward>k__BackingField: 3

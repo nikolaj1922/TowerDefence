@@ -2,6 +2,7 @@
 using _Project.Scripts.Logic.Level.Services.Interfaces;
 using _Project.Scripts.Logic.Wave;
 using _Project.Scripts.Services.Ads;
+using _Project.Scripts.Services.Analytics;
 using Cysharp.Threading.Tasks;
 using Zenject;
 
@@ -10,11 +11,12 @@ namespace _Project.Scripts.Logic.Level.Services
     public class GameFlowService : IInitializable, IDisposable, IGameFlowService
     {
         private readonly IWaveManager _waveManager;
-        private readonly ILevelAnalyticsService _levelAnalyticsService;
+        private readonly IAnalyticsService _analyticsService;
         private readonly ILevelUIService _levelUIService;
         private readonly IAdsService _adsService;
         private readonly ICastleService _castleService;
-
+        private readonly IRewardService _rewardService;
+        
         private bool _canShowAdsModalForSession = true;
 
         public GameFlowService(
@@ -22,14 +24,16 @@ namespace _Project.Scripts.Logic.Level.Services
             IAdsService adsService,
             ILevelUIService levelUIService,
             IWaveManager waveManager,
-            ILevelAnalyticsService levelAnalyticsService
+            IAnalyticsService analyticsService,
+            IRewardService rewardService
         )
         {
+            _rewardService = rewardService;
+            _analyticsService = analyticsService;
             _castleService = castleService;
             _adsService = adsService;
             _levelUIService = levelUIService;
             _waveManager = waveManager;
-            _levelAnalyticsService = levelAnalyticsService;
         }
         
         public void Initialize() => _adsService.OnRewardedAdWatched += RestartWaveOnRewardedAdsWatched;
@@ -42,7 +46,11 @@ namespace _Project.Scripts.Logic.Level.Services
 
         public void OnDefeat(int towersBuilt)
         {
-            _levelAnalyticsService.GameOver(towersBuilt);
+            _analyticsService.GameOver(
+                _waveManager.CurrentWave,
+                _waveManager.TotalEnemyKilled,
+                towersBuilt,
+                _rewardService.GetReward());
             _waveManager.StopWave();
 
             if (CanShowAdsModal())

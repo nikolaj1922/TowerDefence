@@ -1,5 +1,6 @@
 ﻿using System;
 using _Project.Scripts.Database.Modals;
+using _Project.Scripts.Logic.Level.Services.Interfaces;
 using _Project.Scripts.Logic.Wave;
 using _Project.Scripts.Services.Ads;
 using _Project.Scripts.Services.ModalCreator;
@@ -14,16 +15,19 @@ namespace _Project.Scripts.UI.Modals.ContinueForAdsModal
         private readonly IInstantiator _instantiator;
         private readonly ContinueForAdsModalView _view;
         private readonly IWaveManager _waveManager;
+        private readonly IRewardService _rewardService;
         private readonly IAdsService _adsService;
         private readonly IModalCreatorService _modalCreatorService;
 
         public ContinueForAdsModalPresenter(
+            IRewardService rewardService,
             IInstantiator instantiator,
             IWaveManager waveManager,
             IAdsService adsService, 
             IModalCreatorService modalCreatorService,
             ContinueForAdsModalView view)
         {
+            _rewardService = rewardService;
             _instantiator = instantiator;
             _waveManager = waveManager;
             _modalCreatorService = modalCreatorService;
@@ -57,7 +61,7 @@ namespace _Project.Scripts.UI.Modals.ContinueForAdsModal
             var view = modal.GetComponent<EndGameModalView>();
 
             view.SetCurrentWave(_waveManager.CurrentWave);
-            view.Draw("Defeat!",_waveManager.GetReward());
+            view.Draw("Defeat!",_rewardService.GetReward());
         }
     }
 }

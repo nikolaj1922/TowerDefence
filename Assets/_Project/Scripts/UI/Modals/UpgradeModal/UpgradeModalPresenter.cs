@@ -51,6 +51,8 @@ namespace _Project.Scripts.UI.Modals.UpgradeModal
             _upgradeButtons = new  List<UpgradeButtonPresenter>();
             _upgradeViews = new  List<UpgradeButtonView>();
             
+            _view.MetaCounterView.UpdateView(_saveLoad.PlayerProgress.MetaCoinsCount.ToString());
+            
             foreach (var upgrade in _upgradeDatabase.GetUpgrades())
                 CreateUpgradeButton(upgrade);
         }
@@ -90,7 +92,7 @@ namespace _Project.Scripts.UI.Modals.UpgradeModal
         
         private void RefreshListAfterBuy()
         {
-            _view.MetaCounterView.UpdateView();
+            _view.MetaCounterView.UpdateView(_saveLoad.PlayerProgress.MetaCoinsCount.ToString());
             
             foreach (UpgradeButtonPresenter upgradeButton in _upgradeButtons)
                 upgradeButton.Draw();

@@ -231,6 +231,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6aba277cc47c7444f9f792213a7a4f8d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::_Project.Scripts.UI.Modals.MenuModal.MenuModal
+  _metaCounterView: {fileID: 5861438952274876215}
   _startButton: {fileID: 5693177234705475395}
   _upgradeButton: {fileID: 7175080324268535187}
 --- !u!114 &-3438600185839729842
@@ -409,6 +410,17 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 1875b39bd2fa6504bb1231fa11b47e09, type: 3}
+--- !u!114 &5861438952274876215 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 6111977055441065539, guid: 1875b39bd2fa6504bb1231fa11b47e09, type: 3}
+  m_PrefabInstance: {fileID: 399159091439354228}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6a8cf48a43d543fbaea8b3cd99161c9c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::_Project.Scripts.UI.MetaCounter.MetaCounterPanel
 --- !u!224 &9164073145685098356 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 8838115176283504128, guid: 1875b39bd2fa6504bb1231fa11b47e09, type: 3}

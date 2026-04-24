@@ -1,7 +1,10 @@
 ﻿using System;
 using _Project.Scripts.Logic.Level.Services.Interfaces;
 using _Project.Scripts.Logic.Wave;
+using _Project.Scripts.Services.Analytics;
+using _Project.Scripts.Services.GameSession;
 using _Project.Scripts.Towers;
+using _Project.Scripts.UI.CoinCounter;
 using Zenject;
 
 namespace _Project.Scripts.Logic.Level
@@ -12,22 +15,26 @@ namespace _Project.Scripts.Logic.Level
         private readonly ILevelUIService _levelUiService;
         private readonly ICastleService _castleService;
         private readonly ITowerPlacement _towerPlacement;
-        private readonly ILevelAnalyticsService _levelAnalyticsService;
+        private readonly IAnalyticsService _analyticsService;
         private readonly IWaveManager _waveManager;
-
-        private int _totalTowersBuilt;
+        private readonly IGameSession _gameSession;
+        private readonly CoinCounterModel _coinCounter;
 
         public LevelBootstrapper(
-            ILevelAnalyticsService levelAnalyticsService,
+            CoinCounterModel coinCounter,
+            IAnalyticsService analyticsService,
             IGameFlowService gameFlowService,
             ILevelUIService levelUiService,
             ICastleService castleService,
             ITowerPlacement towerPlacement,
+            IGameSession gameSession,
             IWaveManager waveManager
             )
         {
+            _gameSession = gameSession;
+            _coinCounter = coinCounter;
             _waveManager = waveManager;
-            _levelAnalyticsService = levelAnalyticsService;
+            _analyticsService = analyticsService;
             _gameFlowService = gameFlowService;
             _levelUiService = levelUiService;
             _castleService = castleService;
@@ -36,10 +43,11 @@ namespace _Project.Scripts.Logic.Level
 
         public void Initialize()
         {
-            _levelUiService.OnCreateTower += OnTowerCreated;
+            _gameSession.ResetTowerOnLevel();
+            
             _towerPlacement.OnPlaceClicked += _levelUiService.ShowTowerPanel;
 
-            _castleService.OnDamaged += _levelAnalyticsService.OnCastleDamaged;
+            _castleService.OnDamaged += OnCastleDamaged;
             _castleService.OnDestroyed += OnDefeat;
             
             _waveManager.OnCompleteLevel += OnVictory;
@@ -50,26 +58,23 @@ namespace _Project.Scripts.Logic.Level
         
         public void Dispose()
         {
-            _levelUiService.OnCreateTower -= OnTowerCreated;
             _towerPlacement.OnPlaceClicked -= _levelUiService.ShowTowerPanel;
 
-            _castleService.OnDamaged -= _levelAnalyticsService.OnCastleDamaged;
+            _castleService.OnDamaged -= OnCastleDamaged;
             _castleService.OnDestroyed -= OnDefeat;
             
             _waveManager.OnCompleteLevel -= OnVictory;
             _waveManager.OnCompleteWave -= OnCompleteWave;
         }
 
-        private void OnTowerCreated(int price)
-        {
-            _totalTowersBuilt++;
-            _levelAnalyticsService.OnTowerBuilt(price, _totalTowersBuilt);
-        }
-
-        private void OnDefeat() => _gameFlowService.OnDefeat(_totalTowersBuilt);
+        private void OnDefeat() => _gameFlowService.OnDefeat(_gameSession.TowerBuiltOnLevel);
         
         private void OnVictory() => _gameFlowService.OnVictory();
         
-        private void OnCompleteWave(int wave) => _levelAnalyticsService.OnWaveCompleted(wave, _totalTowersBuilt);
+        private void OnCompleteWave(int wave) =>
+            _analyticsService.WaveCompleted(wave, _gameSession.TowerBuiltOnLevel, _coinCounter.Coins);
+
+        private void OnCastleDamaged(float hp) =>
+            _analyticsService.CastleDamaged(_waveManager.CurrentWave, hp);
     }
 }
