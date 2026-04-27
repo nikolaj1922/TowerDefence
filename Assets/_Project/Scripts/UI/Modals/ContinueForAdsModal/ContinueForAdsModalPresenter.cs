@@ -18,15 +18,18 @@ namespace _Project.Scripts.UI.Modals.ContinueForAdsModal
         private readonly IRewardService _rewardService;
         private readonly IAdsService _adsService;
         private readonly IModalCreatorService _modalCreatorService;
+        private readonly ICastleService _castleService;
 
         public ContinueForAdsModalPresenter(
             IRewardService rewardService,
             IInstantiator instantiator,
             IWaveManager waveManager,
             IAdsService adsService, 
+            ICastleService castleService,
             IModalCreatorService modalCreatorService,
             ContinueForAdsModalView view)
         {
+            _castleService = castleService;
             _rewardService = rewardService;
             _instantiator = instantiator;
             _waveManager = waveManager;
@@ -49,10 +52,16 @@ namespace _Project.Scripts.UI.Modals.ContinueForAdsModal
 
         private void OnWatchAdsClick()
         {
-            _adsService.ShowRewardedAd();
+            _adsService.ShowRewardedAd(ResetWaveOnWatchAds);
             _modalCreatorService.CloseModal();
         }
 
+        private void ResetWaveOnWatchAds()
+        {
+            _waveManager.StartWave();
+            _castleService.Restore();
+        }
+        
         private void OnEndGameClick() => CreateEndGameModal().Forget();
         
         private async UniTask CreateEndGameModal()

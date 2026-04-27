@@ -1,12 +1,10 @@
 ﻿using System;
-using _Project.Scripts.Configs;
 using _Project.Scripts.Logic.Wave;
 using _Project.Scripts.Services.Analytics;
 using _Project.Scripts.Services.GameSession;
 using _Project.Scripts.Services.TowerUpgrade;
 using _Project.Scripts.Towers;
 using _Project.Scripts.UI.CoinCounter;
-using _Project.Scripts.UI.TowerCreation.CreateTowerButton;
 using UnityEngine;
 using Zenject;
 
@@ -14,7 +12,6 @@ namespace _Project.Scripts.UI.TowerCreation
 {
     public class CreateTowerPanelPresenter: IDisposable
     {
-        private readonly IInstantiator _instantiator;
         private readonly CoinCounterModel _coinCounterModel;
         private readonly ITowerService _towerService;
         private readonly IWaveManager _waveManager;
@@ -26,7 +23,6 @@ namespace _Project.Scripts.UI.TowerCreation
         private readonly CreateTowerPanelModel _model;
 
         public CreateTowerPanelPresenter(
-            IInstantiator instantiator,
             CoinCounterModel coinCounterModel, 
             IAnalyticsService analyticsService, 
             ITowerService towerService, 
@@ -37,7 +33,6 @@ namespace _Project.Scripts.UI.TowerCreation
             CreateTowerPanelModel model
             )
         {
-            _instantiator =  instantiator;
             _model = model;
             _view = view;
             _gameSessionService = gameSessionService;
@@ -50,22 +45,13 @@ namespace _Project.Scripts.UI.TowerCreation
 
         public void Initialize()
         {
-            foreach (TowerDTO towerConfig in _model.BuildableTowerConfigs)
-                DrawTowerButtons(towerConfig);
+            _view.OnTowerButtonClick += CreateTower;
+            _view.DrawTowerButtons(_model.BuildableTowerConfigs);
             
             _coinCounterModel.UpdateSubscribers();
         }
 
-        public void Dispose()
-        {
-            foreach (CreateTowerButtonView towerButton in _model.TowerButtons)
-            {
-                towerButton.OnCreateTower -= CreateTower;
-                _coinCounterModel.OnCoinChanged -= towerButton.Draw;
-            }
-            
-            _model.ClearButtons();
-        }
+        public void Dispose() => _view.OnTowerButtonClick -= CreateTower;
 
         public void ShowTowerPanel(Vector3 pos)
         {
@@ -74,21 +60,6 @@ namespace _Project.Scripts.UI.TowerCreation
         }
 
         public void HidePanel() => _view.HidePanel();
-
-        private void DrawTowerButtons(TowerDTO towerDto)
-        {
-            CreateTowerButtonView towerButtonView =
-                _instantiator.InstantiatePrefabForComponent<CreateTowerButtonView>(
-                    _view.CreateTowerButtonView, 
-                    _view.PanelRectTransform
-                );
-            
-            towerButtonView.Initialize(towerDto.iconAddress, towerDto.coinPrice, towerDto.type);
-            towerButtonView.OnCreateTower += CreateTower;
-            _coinCounterModel.OnCoinChanged += towerButtonView.Draw;
-            
-            _model.RegisterButton(towerButtonView);
-        }
         
         private void CreateTower(int price, TowerType towerType)
         {

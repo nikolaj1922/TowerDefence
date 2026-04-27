@@ -74,7 +74,6 @@ namespace _Project.Scripts.UI
             CreateTowerPanelModel towerPanelModel = new CreateTowerPanelModel(_towerDatabase.GetBuildable());
             CreateTowerPanelView towerPanelView = _instantiator.InstantiatePrefabForComponent<CreateTowerPanelView>(_createTowerPanelView);
             _towerPanelPresenter = new CreateTowerPanelPresenter(
-                _instantiator,
                 _coinCounterModel, 
                 _analyticsService, 
                 _towerService, 

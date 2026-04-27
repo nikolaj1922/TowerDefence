@@ -2,7 +2,6 @@
 using System.Linq;
 using System.Threading;
 using _Project.Scripts.Configs;
-using _Project.Scripts.Database.Game;
 using _Project.Scripts.Database.Waves;
 using _Project.Scripts.Enemies;
 using _Project.Scripts.Services.Analytics;
@@ -95,7 +94,6 @@ namespace _Project.Scripts.Logic.Wave
                 return;
             
             OnCompleteWave?.Invoke(CurrentWave);
-            
             _waveIndex++;
 
             TryStartNewWave();

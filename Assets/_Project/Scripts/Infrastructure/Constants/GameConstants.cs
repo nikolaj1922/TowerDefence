@@ -19,7 +19,7 @@
         public const string PROJECTILE_POINT_INJECT_ID = "ProjectileSpawnPoint";
         public const string LOADING_CURTAIN_ASSET_INJECT_ID = "LoadingCurtain";
         
-        public const string REWARDED_ADS_ID = "cbnurzmrqzqb21hb";
+        public const string REWARDED_ADS_ID_RESTORE_CASTLE_HP = "cbnurzmrqzqb21hb";
         public const string INTERSTITIAL_ADS_ID = "w5vixbeaunmzmjq5";
         public const string LEVEL_PLAY_APP_ID = "261f1e15d";
         
