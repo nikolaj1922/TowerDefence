@@ -11,13 +11,16 @@ using _Project.Scripts.Services.AssetProvider;
 using _Project.Scripts.Services.Analytics.Firebase;
 using _Project.Scripts.Database.Towers;
 using _Project.Scripts.Database.Upgrades;
+using _Project.Scripts.Database.Waves;
 using _Project.Scripts.Database.Weapons;
 using _Project.Scripts.Infrastructure.Constants;
 using _Project.Scripts.Services.SceneLoader;
 using _Project.Scripts.Infrastructure.LoadingCurtain;
 using _Project.Scripts.Infrastructure.LoadingCurtain.PipelineFactory;
 using _Project.Scripts.Services.Ads;
+using _Project.Scripts.Services.Firebase;
 using _Project.Scripts.Services.GameSession;
+using _Project.Scripts.Services.RemoteConfigs;
 using UnityEngine.AddressableAssets;
 
 namespace _Project.Scripts.DI.ProjectContext
@@ -34,6 +37,7 @@ namespace _Project.Scripts.DI.ProjectContext
         [SerializeField] private TowerDatabase _towerDatabase;
         [SerializeField] private WeaponDatabase _weaponDatabase;
         [SerializeField] private ModalsDatabase _modalDatabase;
+        [SerializeField] private WavesDatabase _wavesDatabase;
         [SerializeField] private UpgradeDatabase _upgradeDatabase;
 
         public override void InstallBindings()
@@ -42,6 +46,7 @@ namespace _Project.Scripts.DI.ProjectContext
             BindDatabases();
             BindServices();
             BindSceneAssets();
+            BindFirebase();
             BindAnalytics();
             BindLoadingCurtain();
             BindAds();
@@ -53,10 +58,10 @@ namespace _Project.Scripts.DI.ProjectContext
 
         private void BindServices()
         {
-            Container.Bind<IGameSession>().To<GameSession>().AsSingle();
+            Container.Bind<IGameSessionService>().To<GameSessionService>().AsSingle();
             Container.Bind<IModalCreatorService>().To<ModalCreatorService>().AsSingle();
-            Container.Bind<IAssetProvider>().To<AssetProvider>().AsSingle();
-            Container.Bind<ISceneLoader>().To<SceneLoader>().AsSingle().NonLazy();
+            Container.Bind<IAssetProviderService>().To<AssetProviderService>().AsSingle();
+            Container.Bind<ISceneLoaderService>().To<SceneLoaderService>().AsSingle().NonLazy();
             Container.Bind<ISaveLoad>().To<SaveLoad>().AsSingle();
             Container.Bind<ITowerUpgradeService>().To<TowerUpgradeService>().AsSingle();
         }
@@ -67,9 +72,14 @@ namespace _Project.Scripts.DI.ProjectContext
             Container.Bind<AssetReference>().WithId(GameConstants.LEVEL_SCENE).FromInstance(_levelScene);
         }
 
-        private void BindAnalytics()
+        private void BindFirebase()
         {
             Container.BindInterfacesAndSelfTo<FirebaseInitializer>().AsSingle().NonLazy();
+            Container.BindInterfacesAndSelfTo<RemoteConfigService>().AsSingle().NonLazy();
+        } 
+
+        private void BindAnalytics()
+        {
             Container.Bind<IAnalyticsClient>().To<FirebaseAnalyticsClient>().AsSingle();
             Container.Bind<IAnalyticsService>().To<AnalyticsService>().AsSingle();
         }
@@ -82,6 +92,7 @@ namespace _Project.Scripts.DI.ProjectContext
             Container.Bind<EnemyDatabase>().FromInstance(_enemyDatabase).AsSingle();
             Container.Bind<WeaponDatabase>().FromInstance(_weaponDatabase).AsSingle();
             Container.Bind<UpgradeDatabase>().FromInstance(_upgradeDatabase).AsSingle();
+            Container.Bind<WavesDatabase>().FromInstance(_wavesDatabase).AsSingle();
             Container.Bind<GameDatabase>().FromInstance(_gameDatabase).AsSingle();
         }
 

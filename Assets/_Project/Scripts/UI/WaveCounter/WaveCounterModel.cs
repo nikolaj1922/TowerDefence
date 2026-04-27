@@ -23,7 +23,7 @@ namespace _Project.Scripts.UI.WaveCounter
             }
         }
 
-        public WaveCounterModel(GameDatabase gameDatabase) => _timeBetweenWaves = gameDatabase.GetConfig().TimeBetweenWaves;
+        public WaveCounterModel(GameDatabase gameDatabase) => _timeBetweenWaves = gameDatabase.GetConfig().timeBetweenWaves;
 
         public void TickTimer() => CurrentTimeBetweenWaves--;
 

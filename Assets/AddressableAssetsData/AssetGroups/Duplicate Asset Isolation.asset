@@ -30,6 +30,11 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 4b880e92d6514d041aa6539f6d3f0a7c
+    m_Address: weapon-cannon
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 5e2f9957f07d0d44ca6e54be7990fd49
     m_Address: progress_blue_small
     m_ReadOnly: 0

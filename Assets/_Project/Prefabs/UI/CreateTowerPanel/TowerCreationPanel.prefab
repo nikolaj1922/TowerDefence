@@ -342,8 +342,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::_Project.Scripts.UI.TowerCreation.CreateTowerPanel
   _closePanelButton: {fileID: 5825513176925467204}
-  <PanelRectTransform>k__BackingField: {fileID: 2036173445186178208}
-  <CreateTowerButtonView>k__BackingField: {fileID: 7214205501385807217, guid: a65f321222fb9a24898ac5f5be2eef78, type: 3}
+  _panelRectTransform: {fileID: 2036173445186178208}
+  _createTowerButtonView: {fileID: 7214205501385807217, guid: a65f321222fb9a24898ac5f5be2eef78, type: 3}
 --- !u!1001 &3553463794864028317
 PrefabInstance:
   m_ObjectHideFlags: 0

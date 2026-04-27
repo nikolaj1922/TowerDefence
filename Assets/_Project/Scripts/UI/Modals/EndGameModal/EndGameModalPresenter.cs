@@ -16,7 +16,7 @@ namespace _Project.Scripts.UI.Modals.EndGameModal
     public class EndGameModalPresenter: IInitializable, IDisposable
     {
         private readonly ISaveLoad _saveLoad;
-        private readonly IGameSession _gameSession;
+        private readonly IGameSessionService _gameSessionService;
         private readonly IAnalyticsService _analyticsService;
         private readonly IModalCreatorService  _modalCreatorService;
         private readonly EndGameModalView _view;
@@ -28,7 +28,7 @@ namespace _Project.Scripts.UI.Modals.EndGameModal
         public EndGameModalPresenter(
             IRewardService rewardService,
             IAdsService adsService,
-            IGameSession gameSession,
+            IGameSessionService gameSessionService,
             EndGameModalView view,
             IModalCreatorService modalCreatorService,
             IAnalyticsService analyticsService,
@@ -39,7 +39,7 @@ namespace _Project.Scripts.UI.Modals.EndGameModal
         {
             _rewardService = rewardService;
             _adsService = adsService;
-            _gameSession = gameSession;
+            _gameSessionService = gameSessionService;
             _modalCreatorService = modalCreatorService;
             _loadingCurtainPresenter = loadingCurtainPresenter;
             _loadingPipelineFactory = loadingPipelineFactory;
@@ -80,9 +80,9 @@ namespace _Project.Scripts.UI.Modals.EndGameModal
             _analyticsService.ReturnedToMenu(
                 _view.CurrentWave,
                 _saveLoad.PlayerProgress.MetaCoinsCount);
-            _gameSession.LevelToMenuTransition();
+            _gameSessionService.LevelToMenuTransition();
 
-            if (_adsService.CanShowInterstitialAdOnTransitionToMenu(_gameSession.FromLevelToMenuTransitionCount))
+            if (_adsService.CanShowInterstitialAdOnTransitionToMenu(_gameSessionService.FromLevelToMenuTransitionCount))
             {
                 _adsService.ShowInterstitialAd();
                 return;

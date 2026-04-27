@@ -8,7 +8,7 @@ namespace _Project.Scripts.Services.Ads
 {
     public class AdsService : IInitializable, IAdsService, IDisposable
     {
-        public event Action OnRewardedAdWatched;
+        private Action _pendingReward;
         public event Action OnInterstitialAdWatched;
         
         public LevelPlayRewardedAd RewardedAd { get;  private set; }
@@ -38,10 +38,13 @@ namespace _Project.Scripts.Services.Ads
             }
         }
         
-        public void ShowRewardedAd() {
-            if (RewardedAd.IsAdReady()) {
-                RewardedAd.ShowAd();
-            }
+        public void ShowRewardedAd(Action onReward)
+        {
+            if (!RewardedAd.IsAdReady())
+                return;
+
+            _pendingReward = onReward;
+            RewardedAd.ShowAd();
         }
         
         public void ShowInterstitialAd()
@@ -76,7 +79,7 @@ namespace _Project.Scripts.Services.Ads
         }
         
         private void CreateRewardedAd() {
-            RewardedAd = new LevelPlayRewardedAd(GameConstants.REWARDED_ADS_ID);
+            RewardedAd = new LevelPlayRewardedAd(GameConstants.REWARDED_ADS_ID_RESTORE_CASTLE_HP);
             
             RewardedAd.OnAdClosed += RewardedOnAdClosedEvent;
             RewardedAd.OnAdRewarded += RewardedOnAdRewardedEvent;
@@ -94,6 +97,10 @@ namespace _Project.Scripts.Services.Ads
             OnInterstitialAdWatched?.Invoke();
         }
 
-        private void RewardedOnAdRewardedEvent(LevelPlayAdInfo adInfo, LevelPlayReward adReward) => OnRewardedAdWatched?.Invoke();
+        private void RewardedOnAdRewardedEvent(LevelPlayAdInfo adInfo, LevelPlayReward adReward)
+        {
+            _pendingReward?.Invoke();
+            _pendingReward = null;
+        }
     }
 }

@@ -22,9 +22,9 @@ namespace _Project.Scripts.Services.TowerUpgrade
         public float GetUpgradeMultiplier(string upgradeId)
         {
             float upgradeLevel = GetUpgradeLevel(upgradeId);
-            UpgradeConfig upgradeConfig = _upgradeDatabase.GetConfig(upgradeId);
+            UpgradeDTO upgradeDto = _upgradeDatabase.GetConfig(upgradeId);
 
-            return 1 + upgradeConfig.statMultiplierByLevel * (upgradeLevel - 1);
+            return 1 + upgradeDto.statMultiplierByLevel * (upgradeLevel - 1);
         }
         
         public int GetUpgradeLevel(string id) => GetUpgrade(id)?.level ?? 1;

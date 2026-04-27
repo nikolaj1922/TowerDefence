@@ -17,7 +17,7 @@ namespace _Project.Scripts.Logic.Level
         private readonly ITowerPlacement _towerPlacement;
         private readonly IAnalyticsService _analyticsService;
         private readonly IWaveManager _waveManager;
-        private readonly IGameSession _gameSession;
+        private readonly IGameSessionService _gameSessionService;
         private readonly CoinCounterModel _coinCounter;
 
         public LevelBootstrapper(
@@ -27,11 +27,11 @@ namespace _Project.Scripts.Logic.Level
             ILevelUIService levelUiService,
             ICastleService castleService,
             ITowerPlacement towerPlacement,
-            IGameSession gameSession,
+            IGameSessionService gameSessionService,
             IWaveManager waveManager
             )
         {
-            _gameSession = gameSession;
+            _gameSessionService = gameSessionService;
             _coinCounter = coinCounter;
             _waveManager = waveManager;
             _analyticsService = analyticsService;
@@ -43,7 +43,7 @@ namespace _Project.Scripts.Logic.Level
 
         public void Initialize()
         {
-            _gameSession.ResetTowerOnLevel();
+            _gameSessionService.ResetTowerOnLevel();
             
             _towerPlacement.OnPlaceClicked += _levelUiService.ShowTowerPanel;
 
@@ -67,12 +67,12 @@ namespace _Project.Scripts.Logic.Level
             _waveManager.OnCompleteWave -= OnCompleteWave;
         }
 
-        private void OnDefeat() => _gameFlowService.OnDefeat(_gameSession.TowerBuiltOnLevel);
+        private void OnDefeat() => _gameFlowService.OnDefeat(_gameSessionService.TowerBuiltOnLevel);
         
         private void OnVictory() => _gameFlowService.OnVictory();
         
         private void OnCompleteWave(int wave) =>
-            _analyticsService.WaveCompleted(wave, _gameSession.TowerBuiltOnLevel, _coinCounter.Coins);
+            _analyticsService.WaveCompleted(wave, _gameSessionService.TowerBuiltOnLevel, _coinCounter.Coins);
 
         private void OnCastleDamaged(float hp) =>
             _analyticsService.CastleDamaged(_waveManager.CurrentWave, hp);

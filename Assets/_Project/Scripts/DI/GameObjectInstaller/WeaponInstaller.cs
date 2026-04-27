@@ -26,8 +26,8 @@ namespace _Project.Scripts.DI.GameObjectInstaller
         
         public override void InstallBindings()
         {
-            WeaponConfig config = _weaponDatabase.GetConfig(_weaponType);
-            Container.Bind<WeaponConfig>().FromInstance(config).AsSingle();
+            WeaponDTO dto = _weaponDatabase.GetConfig(_weaponType);
+            Container.Bind<WeaponDTO>().FromInstance(dto).AsSingle();
 
             Container.Bind<Transform>().WithId(GameConstants.WEAPON_BASE_INJECT_ID).FromInstance(_weaponBase);
             Container.Bind<Transform>().WithId(GameConstants.WEAPON_HEAD_INJECT_ID).FromInstance(_weaponHead);

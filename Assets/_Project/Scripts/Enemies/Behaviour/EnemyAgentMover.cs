@@ -19,11 +19,17 @@ namespace _Project.Scripts.Enemies.Behaviour
         public bool IsTargetReached { get; private set; }
 
         [Inject]
-        public void Construct(EnemyConfig config, GameDatabase database)
+        public void Construct(EnemyDTO dto, GameDatabase database)
         {
-            _speed = config.Speed;
-            _attackRange = config.AttackRange;
-            _destination = database.GetConfig().CastlePosition;
+            _speed = dto.speed;
+            _attackRange = dto.attackRange;
+
+            GameDTO gameConfig = database.GetConfig();
+            
+            _destination = new Vector3(
+                gameConfig.castlePositionX, 
+                gameConfig.castlePositionY, 
+                gameConfig.castlePositionZ);
         }
 
         private void Awake() => _navMeshAgent = GetComponent<NavMeshAgent>();

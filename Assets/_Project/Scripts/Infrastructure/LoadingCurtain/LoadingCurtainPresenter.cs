@@ -13,14 +13,14 @@ namespace _Project.Scripts.Infrastructure.LoadingCurtain
     {
         private readonly AssetReferenceGameObject _viewReference;
         private readonly LoadingCurtainModel _model;
-        private readonly IAssetProvider _assetProvider;
+        private readonly IAssetProviderService _assetProviderService;
         
         public LoadingCurtainPresenter(
             [Inject(Id = GameConstants.LOADING_CURTAIN_ASSET_INJECT_ID)] AssetReferenceGameObject viewReference, 
             LoadingCurtainModel model,
-            IAssetProvider assetProvider)
+            IAssetProviderService assetProviderService)
         {
-            _assetProvider = assetProvider;
+            _assetProviderService = assetProviderService;
             _model = model;
             _viewReference = viewReference;
         }
@@ -30,7 +30,7 @@ namespace _Project.Scripts.Infrastructure.LoadingCurtain
         
         private async UniTask Run(Queue<ILoadingOperation> loadingOperations)
         {
-            GameObject viewObject = await _assetProvider.Instantiate(_viewReference);
+            GameObject viewObject = await _assetProviderService.Instantiate(_viewReference);
             LoadingCurtainView curtain = viewObject.GetComponent<LoadingCurtainView>();
             
             curtain.Reset();
@@ -44,7 +44,6 @@ namespace _Project.Scripts.Infrastructure.LoadingCurtain
                 
                 curtain.SetDescription(operation.Description);
                 
-              
                 curtain.DrawProgress(_model);
                 
                 await operation.Load();
@@ -56,7 +55,7 @@ namespace _Project.Scripts.Infrastructure.LoadingCurtain
                 return;
             
             curtain.gameObject.SetActive(false);
-            _assetProvider.ReleaseInstance(viewObject);
+            _assetProviderService.ReleaseInstance(viewObject);
         }
     }
 }

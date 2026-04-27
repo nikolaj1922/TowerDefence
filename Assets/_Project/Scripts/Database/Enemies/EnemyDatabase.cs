@@ -1,20 +1,22 @@
-﻿using _Project.Scripts.Enemies;
+﻿using System.Collections.Generic;
+using _Project.Scripts.Enemies;
 using _Project.Scripts.Enemies.Behaviour;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
 using System.Linq;
 using _Project.Scripts.Configs;
 using _Project.Scripts.Infrastructure.Constants;
+using _Project.Scripts.Services.RemoteConfigs;
 
 namespace _Project.Scripts.Database.Enemies
 {
     [CreateAssetMenu(menuName = "Game/Enemy Database")]
-    public class EnemyDatabase : ScriptableObject, IPrefabDatabase, IConfigDatabase
+    public class EnemyDatabase : ScriptableObject, IPrefabDatabase
     {
         [SerializeField] private EnemyEntry[] _enemyAssets;
         
         private readonly DatabasePrefabLoader<EnemyType, Enemy> _prefabLoader = new();
-        private readonly DatabaseConfigLoader<EnemyType, EnemyConfig> _configLoader = new();
+        private readonly Dictionary<EnemyType, EnemyDTO> _configs = new();
 
         public Enemy GetPrefab(EnemyType type)
         {
@@ -33,15 +35,9 @@ namespace _Project.Scripts.Database.Enemies
             return prefab;
         }
         
-        public EnemyConfig GetConfig(EnemyType type)
+        public EnemyDTO GetConfig(EnemyType type)
         {
-            if (_configLoader.Configs == null)
-            {
-                Debug.LogError("Configs not initialized!");
-                return null;
-            }
-            
-            if (!_configLoader.Configs.TryGetValue(type, out var config))
+            if (!_configs.TryGetValue(type, out var config))
             {
                 Debug.LogError($"Config not found for type: {type}");
                 return null;
@@ -58,22 +54,21 @@ namespace _Project.Scripts.Database.Enemies
             );
         }
 
-        public async UniTask LoadConfigs()
+        public void LoadConfig(IRemoteConfigService remoteConfigService)
         {
-            await _configLoader.LoadAssets(
-                GameConstants.ENEMY_CONFIG_ASSET_LABEL,
-                (x) => x.Type);
+            if (!remoteConfigService.TryGetConfig<RemoteConfig<EnemyDTO>>(GameConstants.ENEMY_REMOTE_CONFIG_KEY, out var config))
+            {
+                Debug.LogError("Loading enemy configs failed");
+                return;
+            }
+
+            foreach (var dto in config.items)
+                _configs[dto.type] = dto;
         }
 
         public UniTask UnloadPrefabs()
         {
             _prefabLoader.UnloadAssets();
-            return UniTask.CompletedTask;
-        }
-
-        public UniTask UnloadConfigs()
-        {
-            _configLoader.UnloadAssets();
             return UniTask.CompletedTask;
         }
     }

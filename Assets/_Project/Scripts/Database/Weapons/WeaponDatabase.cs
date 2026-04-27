@@ -1,19 +1,21 @@
-﻿using _Project.Scripts.Configs;
+﻿using System.Collections.Generic;
+using _Project.Scripts.Configs;
 using _Project.Scripts.Infrastructure.Constants;
 using _Project.Scripts.Weapons;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
 using System.Linq;
+using _Project.Scripts.Services.RemoteConfigs;
 
 namespace _Project.Scripts.Database.Weapons
 {
     [CreateAssetMenu(menuName = "Game/Weapon Database")]
-    public class WeaponDatabase : ScriptableObject, IPrefabDatabase, IConfigDatabase
+    public class WeaponDatabase : ScriptableObject, IPrefabDatabase
     {
         [SerializeField] private WeaponEntry[] _weaponAssets;
 
         private readonly DatabasePrefabLoader<WeaponType, Weapon> _prefabLoader = new();
-        private readonly DatabaseConfigLoader<WeaponType, WeaponConfig> _configLoader = new();
+        private readonly Dictionary<WeaponType, WeaponDTO> _configs = new();
 
         public Weapon Get(WeaponType type)
         {
@@ -32,15 +34,15 @@ namespace _Project.Scripts.Database.Weapons
             return prefab;
         }
         
-        public WeaponConfig GetConfig(WeaponType type)
+        public WeaponDTO GetConfig(WeaponType type)
         {
-            if (_configLoader.Configs == null)
+            if (_configs == null)
             {
                 Debug.LogError("Configs not initialized!");
                 return null;
             }
             
-            if (!_configLoader.Configs.TryGetValue(type, out var config))
+            if (!_configs.TryGetValue(type, out var config))
             {
                 Debug.LogError($"Config not found for type: {type}");
                 return null;
@@ -57,22 +59,21 @@ namespace _Project.Scripts.Database.Weapons
             );
         }
 
-        public async UniTask LoadConfigs()
+        public void LoadConfig(IRemoteConfigService remoteConfigService)
         {
-            await _configLoader.LoadAssets(
-                GameConstants.WEAPON_CONFIG_ASSET_LABEL,
-                (x) => x.WeaponType);
+            if (!remoteConfigService.TryGetConfig<RemoteConfig<WeaponDTO>>(GameConstants.WEAPON_REMOTE_CONFIG_KEY, out var config))
+            {
+                Debug.LogError("Loading weapon configs failed");
+                return;
+            }
+            
+            foreach (var dto in config.items)
+                _configs[dto.type] = dto;
         }
 
         public UniTask UnloadPrefabs()
         {
             _prefabLoader.UnloadAssets();
-            return UniTask.CompletedTask;
-        }
-
-        public UniTask UnloadConfigs()
-        {
-            _configLoader.UnloadAssets();
             return UniTask.CompletedTask;
         }
     }

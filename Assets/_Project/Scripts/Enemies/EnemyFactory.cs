@@ -84,7 +84,7 @@ namespace _Project.Scripts.Enemies
 
         private void InitializeEnemy(Enemy enemy, EnemyType type, Action onDeath)
         {
-            enemy.Initialize(onDeath, GetEnemyConfig(type).CoinsReward);
+            enemy.Initialize(onDeath, GetEnemyConfig(type).coinsReward);
             enemy.Death.Initialize(onDeath: () => GetEnemyPool(type).Despawn(enemy));
             enemy.SetInitialized();
         }
@@ -98,7 +98,7 @@ namespace _Project.Scripts.Enemies
             };
         }
 
-        private EnemyConfig GetEnemyConfig(EnemyType type)
+        private EnemyDTO GetEnemyConfig(EnemyType type)
         {
             return type switch
             {

@@ -1,14 +1,12 @@
-﻿using System;
-using _Project.Scripts.Logic.Level.Services.Interfaces;
+﻿using _Project.Scripts.Logic.Level.Services.Interfaces;
 using _Project.Scripts.Logic.Wave;
 using _Project.Scripts.Services.Ads;
 using _Project.Scripts.Services.Analytics;
 using Cysharp.Threading.Tasks;
-using Zenject;
 
 namespace _Project.Scripts.Logic.Level.Services
 {
-    public class GameFlowService : IInitializable, IDisposable, IGameFlowService
+    public class GameFlowService : IGameFlowService
     {
         private readonly IWaveManager _waveManager;
         private readonly IAnalyticsService _analyticsService;
@@ -35,10 +33,6 @@ namespace _Project.Scripts.Logic.Level.Services
             _levelUIService = levelUIService;
             _waveManager = waveManager;
         }
-        
-        public void Initialize() => _adsService.OnRewardedAdWatched += RestartWaveOnRewardedAdsWatched;
-
-        public void Dispose() => _adsService.OnRewardedAdWatched -= RestartWaveOnRewardedAdsWatched;
 
         public void StartLevel() => _waveManager.StartTimer(waveCount: 1);
 

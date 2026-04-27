@@ -17,8 +17,8 @@ namespace _Project.Scripts.DI.GameObjectInstaller
         
         public override void InstallBindings()
         {
-            TowerConfig config = _towerDatabase.GetConfig(_towerType);
-            Container.Bind<TowerConfig>().FromInstance(config).AsSingle();
+            TowerDTO dto = _towerDatabase.GetConfig(_towerType);
+            Container.Bind<TowerDTO>().FromInstance(dto).AsSingle();
         }
     }
 }
