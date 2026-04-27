@@ -10,17 +10,17 @@ namespace _Project.Scripts.Towers
         [SerializeField] private GameObject _occupiedArea;
         [field: SerializeField] public Transform WeaponPoint { get; private set; }
         
-        private TowerConfig _config;
+        private TowerDTO _dto;
         public Weapon Weapon { get; private set; }
         
         [Inject]
-        public void Construct(TowerConfig config) => _config = config;
+        public void Construct(TowerDTO dto) => _dto = dto;
 
         private void Awake() => _occupiedArea.transform.localScale = GetOccupiedScale;
 
         public void SetWeapon(Weapon weapon) => Weapon = weapon;
         
         private Vector3 GetOccupiedScale 
-            => new(_config.OccupiedRadius, _occupiedArea.transform.localScale.y, _config.OccupiedRadius);
+            => new(_dto.occupiedRadius, _occupiedArea.transform.localScale.y, _dto.occupiedRadius);
     }
 }

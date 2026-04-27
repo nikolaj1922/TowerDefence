@@ -20,7 +20,7 @@ namespace _Project.Scripts.UI.TowerCreation
         private readonly IWaveManager _waveManager;
         private readonly IAnalyticsService _analyticsService;
         private readonly ITowerUpgradeService _towerUpgradeService;
-        private readonly IGameSession _gameSession;
+        private readonly IGameSessionService _gameSessionService;
 
         private readonly CreateTowerPanelView _view;
         private readonly CreateTowerPanelModel _model;
@@ -32,7 +32,7 @@ namespace _Project.Scripts.UI.TowerCreation
             ITowerService towerService, 
             IWaveManager waveManager,
             ITowerUpgradeService towerUpgradeService,
-            IGameSession gameSession,
+            IGameSessionService gameSessionService,
             CreateTowerPanelView view,
             CreateTowerPanelModel model
             )
@@ -40,7 +40,7 @@ namespace _Project.Scripts.UI.TowerCreation
             _instantiator =  instantiator;
             _model = model;
             _view = view;
-            _gameSession = gameSession;
+            _gameSessionService = gameSessionService;
             _towerUpgradeService = towerUpgradeService;
             _analyticsService = analyticsService;
             _coinCounterModel = coinCounterModel;
@@ -50,7 +50,7 @@ namespace _Project.Scripts.UI.TowerCreation
 
         public void Initialize()
         {
-            foreach (TowerConfig towerConfig in _model.BuildableTowerConfigs)
+            foreach (TowerDTO towerConfig in _model.BuildableTowerConfigs)
                 DrawTowerButtons(towerConfig);
             
             _coinCounterModel.UpdateSubscribers();
@@ -75,7 +75,7 @@ namespace _Project.Scripts.UI.TowerCreation
 
         public void HidePanel() => _view.HidePanel();
 
-        private void DrawTowerButtons(TowerConfig towerConfig)
+        private void DrawTowerButtons(TowerDTO towerDto)
         {
             CreateTowerButtonView towerButtonView =
                 _instantiator.InstantiatePrefabForComponent<CreateTowerButtonView>(
@@ -83,7 +83,7 @@ namespace _Project.Scripts.UI.TowerCreation
                     _view.PanelRectTransform
                 );
             
-            towerButtonView.Initialize(towerConfig.Icon, towerConfig.CoinPrice, towerConfig.TowerType);
+            towerButtonView.Initialize(towerDto.iconAddress, towerDto.coinPrice, towerDto.type);
             towerButtonView.OnCreateTower += CreateTower;
             _coinCounterModel.OnCoinChanged += towerButtonView.Draw;
             
@@ -106,10 +106,10 @@ namespace _Project.Scripts.UI.TowerCreation
                 _towerUpgradeService.GetUpgradeMultiplier(TowerUpgradeIdMatcher.TOWER_ATTACK_SPEED_ID)
             );
 
-            _gameSession.BuildTowerOnLevel();
+            _gameSessionService.BuildTowerOnLevel();
             HidePanel();
             
-            _analyticsService.TowerBuilt(_waveManager.CurrentWave, price, _coinCounterModel.Coins, _gameSession.TowerBuiltOnLevel);
+            _analyticsService.TowerBuilt(_waveManager.CurrentWave, price, _coinCounterModel.Coins, _gameSessionService.TowerBuiltOnLevel);
         }
     }
 }

@@ -98,4 +98,5 @@ MonoBehaviour:
   _towerDatabase: {fileID: 11400000, guid: b87c2713842875141842e979d95c126d, type: 2}
   _weaponDatabase: {fileID: 11400000, guid: d1bb9ea55e5c2f8439783ed7a90234aa, type: 2}
   _modalDatabase: {fileID: 11400000, guid: 0757c5b56d5589b48b595b3cc3dcfc5c, type: 2}
+  _wavesDatabase: {fileID: 11400000, guid: 2f1a6ca14c8d57144b8c044e4b07f5c8, type: 2}
   _upgradeDatabase: {fileID: 11400000, guid: 43c114dd994f8404eac3f99424a717f0, type: 2}

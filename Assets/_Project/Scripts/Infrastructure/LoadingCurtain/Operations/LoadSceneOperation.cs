@@ -6,22 +6,22 @@ namespace _Project.Scripts.Infrastructure.LoadingCurtain.Operations
 {
     public class LoadSceneOperation : ILoadingOperation
     {
-        private readonly ISceneLoader _sceneLoader;
+        private readonly ISceneLoaderService _sceneLoaderService;
         private readonly Action _onLoadComplete;
         private readonly string _sceneKey; 
         
         public string Description => "Load scene";
 
         public LoadSceneOperation(
-            ISceneLoader sceneLoader, 
+            ISceneLoaderService sceneLoaderService, 
             string sceneKey,
             Action onLoadComplete = null)
         {
             _sceneKey = sceneKey;
             _onLoadComplete = onLoadComplete;
-            _sceneLoader = sceneLoader;
+            _sceneLoaderService = sceneLoaderService;
         }
 
-        public async UniTask Load() => await _sceneLoader.SwitchTo(_sceneKey, _onLoadComplete);
+        public async UniTask Load() => await _sceneLoaderService.SwitchTo(_sceneKey, _onLoadComplete);
     }
 }

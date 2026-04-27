@@ -18,12 +18,12 @@ namespace _Project.Scripts.Weapons
             [Inject(Id = GameConstants.WEAPON_BASE_INJECT_ID)] Transform baseTransform,
             [Inject(Id = GameConstants.WEAPON_HEAD_INJECT_ID)] Transform weaponHead,
             WeaponTargetFinder targetFinder,
-            WeaponConfig config)
+            WeaponDTO dto)
         {
             _baseTransform = baseTransform;
             _weaponHead = weaponHead;
             _targetFinder = targetFinder;
-            _rotationSpeed = config.RotationSpeed;
+            _rotationSpeed = dto.rotationSpeed;
         }
 
         public void Tick(float deltaTime)

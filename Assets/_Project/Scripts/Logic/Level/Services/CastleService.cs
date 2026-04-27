@@ -1,8 +1,10 @@
 ﻿using System;
+using _Project.Scripts.Configs;
 using _Project.Scripts.Database.Game;
 using _Project.Scripts.Logic.Level.Services.Interfaces;
 using _Project.Scripts.Services.TowerUpgrade;
 using _Project.Scripts.Towers.Castle;
+using UnityEngine;
 using Zenject;
 
 namespace _Project.Scripts.Logic.Level.Services
@@ -30,8 +32,10 @@ namespace _Project.Scripts.Logic.Level.Services
 
         public void Initialize()
         {
+            GameDTO gameConfig = _db.GetConfig(); 
+            
             _castle = _initializer.CreateCastle(
-                _db.GetConfig().CastlePosition,
+                new Vector3(gameConfig.castlePositionX, gameConfig.castlePositionY,  gameConfig.castlePositionZ),
                 _upgradeService.GetUpgradeMultiplier(TowerUpgradeIdMatcher.CASTLE_DAMAGE_ID),
                 _upgradeService.GetUpgradeMultiplier(TowerUpgradeIdMatcher.CASTLE_ATTACK_SPEED_ID)
             );

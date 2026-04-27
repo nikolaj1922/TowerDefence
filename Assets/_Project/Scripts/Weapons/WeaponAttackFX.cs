@@ -23,14 +23,14 @@ namespace _Project.Scripts.Weapons
         private CancellationTokenSource _visualCts;
 
         public WeaponAttackFX(
-            WeaponConfig config, 
+            WeaponDTO dto, 
             [Inject(Id = GameConstants.WEAPON_HEAD_INJECT_ID)] Transform weaponHead,
             [Inject(Id = GameConstants.WEAPON_BASE_INJECT_ID)] Transform weaponBase,
             [Inject(Id = GameConstants.PROJECTILE_POINT_INJECT_ID)] Transform projectileSpawnPoint,
             CFXR_Effect onAttackEffect
         )
         {
-            _attackSpeed = config.AttackSpeed;
+            _attackSpeed = dto.attackSpeed;
             _weaponHead = weaponHead;
             _weaponBase = weaponBase;
             _projectileSpawnPoint = projectileSpawnPoint;

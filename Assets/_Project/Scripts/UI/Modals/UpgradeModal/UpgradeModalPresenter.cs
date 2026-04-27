@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using _Project.Scripts.Configs;
 using _Project.Scripts.Database.Modals;
 using _Project.Scripts.Database.Upgrades;
+using _Project.Scripts.Services.AssetProvider;
 using _Project.Scripts.Services.SaveLoad;
 using _Project.Scripts.Services.ModalCreator;
 using _Project.Scripts.Services.TowerUpgrade;
@@ -16,6 +17,7 @@ namespace _Project.Scripts.UI.Modals.UpgradeModal
         private readonly UpgradeModalView _view;
         private readonly UpgradeButtonView _upgradeButtonView;
 
+        private readonly IAssetProviderService _assetProviderService;
         private readonly ISaveLoad _saveLoad;
         private readonly IInstantiator _instantiator;
         private readonly ITowerUpgradeService _towerUpgradeService;
@@ -26,6 +28,7 @@ namespace _Project.Scripts.UI.Modals.UpgradeModal
         private List<UpgradeButtonView> _upgradeViews;
 
         public UpgradeModalPresenter(
+            IAssetProviderService assetProviderService,
             IInstantiator instantiator, 
             UpgradeButtonView upgradeButtonView, 
             UpgradeModalView view,
@@ -38,6 +41,7 @@ namespace _Project.Scripts.UI.Modals.UpgradeModal
             _instantiator = instantiator;
 
             _saveLoad = saveLoad;
+            _assetProviderService = assetProviderService;
             _towerUpgradeService = towerUpgradeService;
             _upgradeDatabase = upgradeDatabase;
             _modalCreatorService = modalCreatorService;
@@ -70,7 +74,7 @@ namespace _Project.Scripts.UI.Modals.UpgradeModal
         
         private void OnBackToMainMenuClick() => _modalCreatorService.OpenModal(ModalType.Menu);  
         
-        private void CreateUpgradeButton(UpgradeConfig upgradeConfig)
+        private void CreateUpgradeButton(UpgradeDTO upgradeDto)
         {
             UpgradeButtonView upgradeView = 
                 _instantiator.InstantiatePrefabForComponent<UpgradeButtonView>(
@@ -79,9 +83,10 @@ namespace _Project.Scripts.UI.Modals.UpgradeModal
             
             UpgradeButtonPresenter upgradeButton = new UpgradeButtonPresenter(
                 _saveLoad, 
+                _assetProviderService,
                 upgradeView, 
                 _towerUpgradeService, 
-                upgradeConfig);
+                upgradeDto);
             
             upgradeButton.Initialize();
             upgradeView.OnBuyClicked += RefreshListAfterBuy;

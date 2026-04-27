@@ -6,17 +6,17 @@ namespace _Project.Scripts.Infrastructure.LoadingCurtain.Operations
 {
     public class ReloadSceneOperation : ILoadingOperation
     {
-        private readonly ISceneLoader _sceneLoader;
+        private readonly ISceneLoaderService _sceneLoaderService;
         private readonly Action _onLoadComplete;
         
         public string Description => "Load scene";
 
-        public ReloadSceneOperation(ISceneLoader sceneLoader, Action onLoadComplete = null)
+        public ReloadSceneOperation(ISceneLoaderService sceneLoaderService, Action onLoadComplete = null)
         {
             _onLoadComplete = onLoadComplete;
-            _sceneLoader = sceneLoader;
+            _sceneLoaderService = sceneLoaderService;
         }
 
-        public async UniTask Load() => await _sceneLoader.Reload(_onLoadComplete);
+        public async UniTask Load() => await _sceneLoaderService.Reload(_onLoadComplete);
     }
 }

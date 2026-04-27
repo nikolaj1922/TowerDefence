@@ -27,7 +27,7 @@ namespace _Project.Scripts.Weapons
         
         public WeaponAttack(
             Weapon weapon,
-            WeaponConfig config, 
+            WeaponDTO dto, 
             WeaponTargetFinder targetFinder,
             [Inject(Id = GameConstants.WEAPON_HEAD_INJECT_ID)] Transform weaponHead,
             [Inject(Id = GameConstants.WEAPON_BASE_INJECT_ID)] Transform weaponBase,
@@ -36,9 +36,9 @@ namespace _Project.Scripts.Weapons
             WeaponAttackFX weaponAttackFX
             )
         {
-            _damage = config.Damage;
+            _damage = dto.damage;
             _weapon = weapon;
-            _attackSpeed = config.AttackSpeed;
+            _attackSpeed = dto.attackSpeed;
             _targetFinder = targetFinder;
             _weaponHead = weaponHead;
             _weaponBase = weaponBase;

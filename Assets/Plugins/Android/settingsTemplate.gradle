@@ -22,7 +22,7 @@ dependencyResolutionManagement {
             url "https://maven.google.com/" // Assets/LevelPlay/Editor/IronSourceSDKDependencies.xml:12
         }
         maven {
-            url (unityProjectPath + "/Assets/Firebase/m2repository") // Packages/com.google.firebase.app/Firebase/Editor/AppDependencies.xml:25, Packages/com.google.firebase.analytics/Firebase/Editor/AnalyticsDependencies.xml:21
+            url (unityProjectPath + "/Assets/Firebase/m2repository") // Packages/com.google.firebase.app/Firebase/Editor/AppDependencies.xml:25, Packages/com.google.firebase.remote-config/Firebase/Editor/RemoteConfigDependencies.xml:23, Packages/com.google.firebase.analytics/Firebase/Editor/AnalyticsDependencies.xml:21
         }
         mavenLocal()
 // Android Resolver Repos End

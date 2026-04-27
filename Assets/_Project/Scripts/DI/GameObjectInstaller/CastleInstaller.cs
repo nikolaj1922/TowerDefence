@@ -26,7 +26,7 @@ namespace _Project.Scripts.DI.GameObjectInstaller
         public override void InstallBindings()
         {
             float castleHp = 
-                _gameDatabase.GetConfig().CastleHealth *
+                _gameDatabase.GetConfig().castleHealth *
                 _towerUpgradeService.GetUpgradeMultiplier(TowerUpgradeIdMatcher.CASTLE_HP_ID);
             
             Container

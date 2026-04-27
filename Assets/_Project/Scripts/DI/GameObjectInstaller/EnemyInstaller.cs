@@ -19,9 +19,9 @@ namespace _Project.Scripts.DI.GameObjectInstaller
         
         public override void InstallBindings()
         {
-            EnemyConfig config = _enemyDatabase.GetConfig(_enemyType);
-            Container.Bind<EnemyConfig>().FromInstance(config).AsSingle();
-            Container.Bind<HealthModel>().FromMethod(_ => new HealthModel(config.Health)).AsSingle();
+            EnemyDTO dto = _enemyDatabase.GetConfig(_enemyType);
+            Container.Bind<EnemyDTO>().FromInstance(dto).AsSingle();
+            Container.Bind<HealthModel>().FromMethod(_ => new HealthModel(dto.health)).AsSingle();
             Container.Bind<HealthBarView>().FromInstance(_healthBarView).AsSingle();
             Container.BindInterfacesAndSelfTo<HealthController>().AsSingle();
         }

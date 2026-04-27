@@ -1,47 +1,41 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
+using System.Linq;
 using _Project.Scripts.Configs;
 using _Project.Scripts.Infrastructure.Constants;
-using Cysharp.Threading.Tasks;
+using _Project.Scripts.Services.RemoteConfigs;
 using UnityEngine;
-using UnityEngine.AddressableAssets;
 
 namespace _Project.Scripts.Database.Upgrades
 {
     [CreateAssetMenu(menuName = "Configs/Upgrades/All Upgrades Config")]
-    public class UpgradeDatabase : ScriptableObject, IConfigDatabase
+    public class UpgradeDatabase : ScriptableObject
     {
-        [SerializeField] private AssetReference[] _upgradeAssets;
-        
-        private readonly DatabaseConfigLoader<string, UpgradeConfig> _configLoader = new();
+        private readonly Dictionary<string, UpgradeDTO> _configs = new();
 
-        public UpgradeConfig GetConfig(string id)
+        public UpgradeDTO GetConfig(string id)
         {
-            if (_configLoader.Configs == null)
+            if (!_configs.TryGetValue(id, out UpgradeDTO config))
             {
-                Debug.LogError("WeaponDatabase not initialized!");
+                Debug.LogError($"Can't find upgrade config {id}");
                 return null;
             }
-            
-            if (_configLoader.Configs.TryGetValue(id, out UpgradeConfig config))
-                return config;
-            
-            Debug.LogError($"Can't find upgrade config {id}");
-            return null;
+               
+            return config;
         }
 
-        public UpgradeConfig[] GetUpgrades() => _configLoader.Configs.Values.ToArray();
+        public UpgradeDTO[] GetUpgrades() => _configs.Values.ToArray();
 
-        public async UniTask LoadConfigs()
+        public void LoadConfigs(IRemoteConfigService remoteConfigService)
         {
-            await _configLoader.LoadAssets(
-                GameConstants.UPGRADE_CONFIG_ASSET_LABEL,
-                (x) => x.id);
-        }
+            if (!remoteConfigService.TryGetConfig<RemoteConfig<UpgradeDTO>>(GameConstants.UPGRADES_REMOTE_CONFIG_KEY,
+                    out var config))
+            {
+                Debug.LogError("Failed to load upgrade configs");
+                return;
+            }
 
-        public UniTask UnloadConfigs()
-        {
-            _configLoader.UnloadAssets();
-            return UniTask.CompletedTask;
+            foreach (var dto in config.items)
+                _configs[dto.id] = dto;
         }
     }
 }

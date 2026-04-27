@@ -1,19 +1,21 @@
+using System.Collections.Generic;
 using _Project.Scripts.Configs;
 using _Project.Scripts.Towers;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
 using System.Linq;
 using _Project.Scripts.Infrastructure.Constants;
+using _Project.Scripts.Services.RemoteConfigs;
 
 namespace _Project.Scripts.Database.Towers
 {
     [CreateAssetMenu(menuName = "Game/Tower Database")]
-    public class TowerDatabase : ScriptableObject, IPrefabDatabase, IConfigDatabase
+    public class TowerDatabase : ScriptableObject, IPrefabDatabase
     {
         [SerializeField] private TowerEntry[] _towerAssets;
         
         private readonly DatabasePrefabLoader<TowerType, Tower> _prefabLoader =  new();
-        private readonly DatabaseConfigLoader<TowerType, TowerConfig> _configLoader =  new();
+        private readonly Dictionary<TowerType, TowerDTO> _configs =  new();
         
         public Tower GetPrefab(TowerType type)
         {
@@ -32,15 +34,15 @@ namespace _Project.Scripts.Database.Towers
             return prefab;
         }
         
-        public TowerConfig GetConfig(TowerType type)
+        public TowerDTO GetConfig(TowerType type)
         {
-            if (_configLoader.Configs == null)
+            if (_configs == null)
             {
                 Debug.LogError("Configs not initialized!");
                 return null;
             }
             
-            if (!_configLoader.Configs.TryGetValue(type, out var config))
+            if (!_configs.TryGetValue(type, out var config))
             {
                 Debug.LogError($"Config not found for type: {type}");
                 return null;
@@ -57,24 +59,23 @@ namespace _Project.Scripts.Database.Towers
             );
         }
         
-        public async UniTask LoadConfigs()
+        public void LoadConfig(IRemoteConfigService remoteConfigService)
         {
-            await _configLoader.LoadAssets(
-                GameConstants.TOWER_CONFIG_ASSET_LABEL,
-                (x) => x.TowerType);
+            if (!remoteConfigService.TryGetConfig<RemoteConfig<TowerDTO>>(GameConstants.TOWER_REMOTE_CONFIG_KEY, out var config))
+            {
+                Debug.LogError("Loading tower configs failed");
+                return;
+            }
+
+            foreach (var dto in config.items)
+                _configs[dto.type] = dto;
         }
         
-        public TowerConfig[] GetBuildable() => _configLoader.Configs.Values.Where(t => t.CanBuild).ToArray();
+        public TowerDTO[] GetBuildable() => _configs.Values.Where(t => t.canBuild).ToArray();
 
         public UniTask UnloadPrefabs()
         {
             _prefabLoader.UnloadAssets();
-            return UniTask.CompletedTask;
-        }
-
-        public UniTask UnloadConfigs()
-        {
-            _configLoader.UnloadAssets();
             return UniTask.CompletedTask;
         }
     }

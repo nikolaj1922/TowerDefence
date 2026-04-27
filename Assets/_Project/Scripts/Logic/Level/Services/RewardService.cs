@@ -16,7 +16,7 @@ namespace _Project.Scripts.Logic.Level.Services
         }
         
         public int GetReward() =>
-            (_waveManager.CurrentWave) * _gameDatabase.GetConfig().CoinsPerWave
-            + _waveManager.TotalEnemyKilled * _gameDatabase.GetConfig().CoinsPerKill;
+            (_waveManager.CurrentWave) * _gameDatabase.GetConfig().coinsPerWave
+            + _waveManager.TotalEnemyKilled * _gameDatabase.GetConfig().coinsPerKill;
     }
 }

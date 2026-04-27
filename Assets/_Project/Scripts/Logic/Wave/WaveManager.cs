@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Linq;
 using System.Threading;
+using _Project.Scripts.Configs;
 using _Project.Scripts.Database.Game;
+using _Project.Scripts.Database.Waves;
 using _Project.Scripts.Enemies;
 using _Project.Scripts.Services.Analytics;
 using Cysharp.Threading.Tasks;
@@ -15,7 +17,7 @@ namespace _Project.Scripts.Logic.Wave
         public event Action<int> OnCompleteWave;
 
         private readonly IEnemyFactory _enemyFactory;
-        private readonly GameDatabase _gameDatabase;
+        private readonly WavesDatabase _wavesDatabase;
         private readonly IAnalyticsService _analyticsService;
         private int _waveIndex;
         private int _enemyKilledOnWave;
@@ -27,12 +29,12 @@ namespace _Project.Scripts.Logic.Wave
         public int TotalEnemyKilled { get; private set; }
         
         public WaveManager(
+            WavesDatabase wavesDatabase,
             IEnemyFactory enemyFactory,
-            GameDatabase gameDatabase,
             IAnalyticsService analyticsService
         )
         {
-            _gameDatabase = gameDatabase;
+            _wavesDatabase = wavesDatabase;
             _analyticsService = analyticsService;
             _enemyFactory = enemyFactory;
         }
@@ -48,7 +50,7 @@ namespace _Project.Scripts.Logic.Wave
         public void StartWave()
         {
             UpdateWaveToken();
-            Configs.Wave wave = GetWave();
+            WaveDTO wave = GetWave();
             
             if (wave == null)
                 return;
@@ -56,12 +58,12 @@ namespace _Project.Scripts.Logic.Wave
             StartEnemySpawn(wave, _waveCancelToken.Token).Forget();
         }
         
-        private Configs.Wave GetWave() => 
-            _waveIndex < _gameDatabase.GetConfig().Waves.Length 
-                ? _gameDatabase.GetConfig().Waves[_waveIndex]
+        private WaveDTO GetWave() => 
+            _waveIndex < _wavesDatabase.GetConfig().Length
+                ? _wavesDatabase.GetConfig()[_waveIndex]
                 : null;
 
-        private async UniTaskVoid StartEnemySpawn(Configs.Wave wave, CancellationToken token)
+        private async UniTaskVoid StartEnemySpawn(WaveDTO wave, CancellationToken token)
         {
             _enemyFactory.DespawnAllEnemies();
             _totalEnemiesOnWave = wave.enemyGroups.Sum(e => e.enemyCount);

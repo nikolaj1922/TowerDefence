@@ -21,7 +21,7 @@ namespace _Project.Scripts.UI
         private IWaveManager _waveManager;
         private ITowerService _towerService;
         private ITowerUpgradeService _towerUpgradeService;
-        private IGameSession _gameSession;
+        private IGameSessionService _gameSessionService;
         private CoinCounterView _coinCounterView;
         private WaveCounterView _waveCounterView;
         private CoinCounterModel _coinCounterModel;
@@ -33,7 +33,7 @@ namespace _Project.Scripts.UI
 
         [Inject]
         public void Construct(
-            IGameSession gameSession,
+            IGameSessionService gameSessionService,
             IAnalyticsService analyticsService,
             ITowerUpgradeService towerUpgradeService,
             ITowerService towerService,
@@ -46,7 +46,7 @@ namespace _Project.Scripts.UI
             IInstantiator instantiator
         )
         {
-            _gameSession = gameSession;
+            _gameSessionService = gameSessionService;
             _coinCounterModel = coinCounterModel;
             _analyticsService =  analyticsService;
             _towerUpgradeService = towerUpgradeService;
@@ -80,7 +80,7 @@ namespace _Project.Scripts.UI
                 _towerService, 
                 _waveManager, 
                 _towerUpgradeService,
-                _gameSession,
+                _gameSessionService,
                 towerPanelView,
                 towerPanelModel);
 

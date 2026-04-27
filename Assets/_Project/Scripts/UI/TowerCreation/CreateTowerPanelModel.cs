@@ -7,11 +7,11 @@ namespace _Project.Scripts.UI.TowerCreation
 {
     public class CreateTowerPanelModel
     {
-        public TowerConfig[] BuildableTowerConfigs { get; private set; }
+        public TowerDTO[] BuildableTowerConfigs { get; private set; }
         public Vector3 TowerPosition { get; private set; }
         public List<CreateTowerButtonView> TowerButtons { get; } =  new();
 
-        public CreateTowerPanelModel(TowerConfig[] buildableTowerConfigs) =>
+        public CreateTowerPanelModel(TowerDTO[] buildableTowerConfigs) =>
             BuildableTowerConfigs = buildableTowerConfigs; 
         
         public void SetTowerPosition(Vector3 pos) => TowerPosition = pos;

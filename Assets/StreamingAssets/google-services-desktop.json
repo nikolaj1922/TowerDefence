@@ -7,6 +7,25 @@
   "client": [
     {
       "client_info": {
+        "mobilesdk_app_id": "1:1086294011889:android:f93c9613028c15b5139e50",
+        "android_client_info": {
+          "package_name": "com.DefaultCompany.MyTowerDefence"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDjAPm6X5wKGb5IRFx1qPMo5bcV-ToNEVM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
         "mobilesdk_app_id": "1:1086294011889:android:85a91c47b981da36139e50",
         "android_client_info": {
           "package_name": "com.UnityTechnologies.com.unity.template.urpblank"

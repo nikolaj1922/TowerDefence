@@ -18,11 +18,11 @@ namespace _Project.Scripts.Weapons
 
         public WeaponTargetFinder(
             LayerMask enemiesLayerMask, 
-            WeaponConfig config, 
+            WeaponDTO dto, 
             Vector3 position)
         {
             _enemiesLayerMask = enemiesLayerMask;
-            _attackRange = config.AttackRange;
+            _attackRange = dto.attackRange;
             _position = position;
         }
 

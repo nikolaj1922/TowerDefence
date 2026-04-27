@@ -23,11 +23,11 @@ namespace _Project.Scripts.Enemies.Behaviour
         [SerializeField] private LayerMask _castleLayer;
         
         [Inject]
-        public void Construct(EnemyConfig config)
+        public void Construct(EnemyDTO dto)
         {
-            _damage = config.Damage;
-            _attackCooldown = config.AttackCooldown;
-            _attackRange = config.AttackRange;
+            _damage = dto.damage;
+            _attackCooldown = dto.attackCooldown;
+            _attackRange = dto.attackRange;
         }
 
         private void Awake()

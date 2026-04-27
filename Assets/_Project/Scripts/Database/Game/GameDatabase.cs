@@ -1,30 +1,26 @@
 ﻿using _Project.Scripts.Configs;
 using _Project.Scripts.Infrastructure.Constants;
-using Cysharp.Threading.Tasks;
+using _Project.Scripts.Services.RemoteConfigs;
 using UnityEngine;
 
 namespace _Project.Scripts.Database.Game
 {
     [CreateAssetMenu(menuName = "Game/Game Database")]
-    public class GameDatabase: ScriptableObject, IConfigDatabase
+    public class GameDatabase: ScriptableObject
     {
-        private const string GAME_CONFIG_KEY = "Game";
+        private GameDTO _config;
         
-        private readonly DatabaseConfigLoader<string, GameConfig> _configLoader = new();
+        public GameDTO GetConfig() => _config;
         
-        public GameConfig GetConfig() => _configLoader.Configs[GAME_CONFIG_KEY];
-        
-        public async UniTask LoadConfigs()
+        public void LoadConfig(IRemoteConfigService remoteConfigService)
         {
-            await _configLoader.LoadAssets(
-                GameConstants.GAME_CONFIG_ASSET_LABEL,
-                (x) => GAME_CONFIG_KEY);
-        }
-
-        public UniTask UnloadConfigs()
-        {
-            _configLoader.UnloadAssets();
-            return UniTask.CompletedTask;
+            if (!remoteConfigService.TryGetConfig<GameDTO>(GameConstants.GAME_REMOTE_CONFIG_KEY, out var config))
+            {
+                Debug.LogError("Failed to load game config");
+                return;
+            }
+            
+            _config = config;
         }
     }
 }

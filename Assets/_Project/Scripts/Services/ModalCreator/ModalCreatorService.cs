@@ -11,14 +11,14 @@ namespace _Project.Scripts.Services.ModalCreator
     {
         private readonly IInstantiator _instantiator;
         private readonly ModalsDatabase _modalDatabase;
-        private readonly IAssetProvider _assetProvider;
+        private readonly IAssetProviderService _assetProviderService;
 
         private GameObject _currentOpenedModal;
         private AssetReferenceGameObject _currentAssetReferenceGameObject;
 
-        public ModalCreatorService(ModalsDatabase modalDatabase, IAssetProvider assetProvider, IInstantiator instantiator)
+        public ModalCreatorService(ModalsDatabase modalDatabase, IAssetProviderService assetProviderService, IInstantiator instantiator)
         {
-            _assetProvider = assetProvider;
+            _assetProviderService = assetProviderService;
             _instantiator = instantiator;
             _modalDatabase =  modalDatabase;
         }
@@ -32,7 +32,7 @@ namespace _Project.Scripts.Services.ModalCreator
             IInstantiator instantiatorInstance = inPlaceInstantiator ?? _instantiator;
             
             _currentAssetReferenceGameObject = _modalDatabase.Get(modalType);
-            GameObject modalObject = await _assetProvider.Load<GameObject>(_currentAssetReferenceGameObject);
+            GameObject modalObject = await _assetProviderService.Load<GameObject>(_currentAssetReferenceGameObject);
             _currentOpenedModal = instantiatorInstance.InstantiatePrefab(modalObject);
             return _currentOpenedModal;
         }
@@ -40,7 +40,7 @@ namespace _Project.Scripts.Services.ModalCreator
         public void CloseModal()
         {
             Object.Destroy(_currentOpenedModal);
-            _assetProvider.Release(_currentAssetReferenceGameObject);
+            _assetProviderService.Release(_currentAssetReferenceGameObject);
 
             _currentOpenedModal = null;
             _currentAssetReferenceGameObject = null;
