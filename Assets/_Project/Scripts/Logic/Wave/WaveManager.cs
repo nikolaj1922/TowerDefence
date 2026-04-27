@@ -9,119 +9,91 @@ using Cysharp.Threading.Tasks;
 
 namespace _Project.Scripts.Logic.Wave
 {
-    public class WaveManager : IWaveManager
-    {
-        public event Action<int> OnWaveTimerStart;
-        public event Action OnCompleteLevel;
-        public event Action<int> OnCompleteWave;
+   public class WaveManager : IWaveManager
+   { 
+       public event Action<int> OnWaveTimerStart;
+       public event Action<int> OnCompleteWave; 
+       public event Action OnCompleteLevel;
+       
+       private readonly IEnemyFactory _enemyFactory; 
+       private readonly IAnalyticsService _analytics; 
+       private readonly WaveDTO[] _waves;
+       
+       private CancellationTokenSource _cts; 
+       private int _waveIndex; 
+       private int _killed; 
+       private int _total;
+       
+       public int CurrentWave => _waveIndex + 1; 
+       public int TotalEnemyKilled { get; private set; }
 
-        private readonly IEnemyFactory _enemyFactory;
-        private readonly WavesDatabase _wavesDatabase;
-        private readonly IAnalyticsService _analyticsService;
-        private int _waveIndex;
-        private int _enemyKilledOnWave;
-        private int _totalEnemiesOnWave;
-        
-        private CancellationTokenSource _waveCancelToken;
-
-        public int CurrentWave => _waveIndex + 1;
-        public int TotalEnemyKilled { get; private set; }
-        
         public WaveManager(
-            WavesDatabase wavesDatabase,
+            WavesDatabase database,
             IEnemyFactory enemyFactory,
-            IAnalyticsService analyticsService
-        )
+            IAnalyticsService analytics)
         {
-            _wavesDatabase = wavesDatabase;
-            _analyticsService = analyticsService;
+            _waves = database.GetConfig();
             _enemyFactory = enemyFactory;
-        }
+            _analytics = analytics;
+        } 
+        public void StartTimer(int wave) => OnWaveTimerStart?.Invoke(wave);
 
-        public void StartTimer(int waveCount) => OnWaveTimerStart?.Invoke(waveCount);
-        
         public void StopWave()
         {
-            ResetWaveToken();
+            ResetToken();
             _enemyFactory.StopActiveEnemies();
         }
-        
+
         public void StartWave()
         {
-            UpdateWaveToken();
-            WaveDTO wave = GetWave();
-            
-            if (wave == null)
-                return;
+            if (_waveIndex >= _waves.Length) return;
 
-            StartEnemySpawn(wave, _waveCancelToken.Token).Forget();
+            ResetToken();
+            _cts = new CancellationTokenSource();
+
+            SpawnWave(_waves[_waveIndex], _cts.Token).Forget();
         }
-        
-        private WaveDTO GetWave() => 
-            _waveIndex < _wavesDatabase.GetConfig().Length
-                ? _wavesDatabase.GetConfig()[_waveIndex]
-                : null;
 
-        private async UniTaskVoid StartEnemySpawn(WaveDTO wave, CancellationToken token)
+        private async UniTaskVoid SpawnWave(WaveDTO wave, CancellationToken token)
         {
             _enemyFactory.DespawnAllEnemies();
-            _totalEnemiesOnWave = wave.enemyGroups.Sum(e => e.enemyCount);
-            _enemyKilledOnWave = 0;
-            
-            _analyticsService.WaveStarted(CurrentWave, _totalEnemiesOnWave);
-            
-            foreach (var waveEnemyData in wave.enemyGroups)
-            {
-                for (int i = 0; i < waveEnemyData.enemyCount; i++)
-                {
-                    _enemyFactory.CreateEnemy(waveEnemyData.enemyType, onDeath: OnEnemyDeath);
 
-                    await UniTask.WaitForSeconds(
-                        wave.spawnFrequency,
-                        false, 
-                        PlayerLoopTiming.Update, 
-                        token);
+            _killed = 0;
+            _total = wave.enemyGroups.Sum(x => x.enemyCount);
+
+            _analytics.WaveStarted(CurrentWave, _total);
+
+            foreach (var group in wave.enemyGroups)
+            {
+                for (int i = 0; i < group.enemyCount; i++)
+                {
+                    _enemyFactory.CreateEnemy(group.enemyType, OnEnemyDeath);
+                    await UniTask.Delay(TimeSpan.FromSeconds(wave.spawnFrequency), cancellationToken: token);
                 }
             }
         }
-        
+
         private void OnEnemyDeath()
         {
-            _enemyKilledOnWave++;
+            _killed++;
             TotalEnemyKilled++;
-            
-            if (_enemyKilledOnWave != _totalEnemiesOnWave)
-                return;
-            
+
+            if (_killed < _total) return;
+
             OnCompleteWave?.Invoke(CurrentWave);
             _waveIndex++;
 
-            TryStartNewWave();
-        }
-        
-        private void TryStartNewWave()
-        {
-            if (GetWave() == null)
-            {
+            if (_waveIndex >= _waves.Length)
                 OnCompleteLevel?.Invoke();
-                return;
-            }
-
-            StartTimer(CurrentWave);
-        }
-        
-        private void ResetWaveToken()
-        {
-            _waveCancelToken?.Cancel();
-            _waveCancelToken?.Dispose();
-            _waveCancelToken = null;
+            else
+                StartTimer(CurrentWave);
         }
 
-        private void UpdateWaveToken()
+        private void ResetToken()
         {
-            _waveCancelToken?.Cancel();
-            _waveCancelToken?.Dispose();
-            _waveCancelToken = new CancellationTokenSource();
+            _cts?.Cancel();
+            _cts?.Dispose();
+            _cts = null;
         }
-    }
+   }
 }
