@@ -11,8 +11,8 @@ namespace _Project.Scripts.Services.Ads
         private Action _pendingReward;
         public event Action OnInterstitialAdWatched;
         
-        public LevelPlayRewardedAd RewardedAd { get;  private set; }
-        public LevelPlayInterstitialAd InterstitialAd { get; private set; }
+        private LevelPlayRewardedAd _rewardedAd;
+        private LevelPlayInterstitialAd _interstitialAd;
         
         public void Initialize()
         {
@@ -26,35 +26,37 @@ namespace _Project.Scripts.Services.Ads
             LevelPlay.OnInitSuccess -= SdkInitializationCompletedEvent;
             LevelPlay.OnInitFailed -= SdkInitializationFailedEvent;
 
-            if (RewardedAd != null)
+            if (_rewardedAd != null)
             {
-                RewardedAd.OnAdClosed -= RewardedOnAdClosedEvent;
-                RewardedAd.OnAdRewarded -= RewardedOnAdRewardedEvent;
+                _rewardedAd.OnAdClosed -= RewardedOnAdClosedEvent;
+                _rewardedAd.OnAdRewarded -= RewardedOnAdRewardedEvent;
             }
 
-            if (InterstitialAd != null)
+            if (_interstitialAd != null)
             {
-                InterstitialAd.OnAdClosed -= InterstitialOnAdClosedEvent;
+                _interstitialAd.OnAdClosed -= InterstitialOnAdClosedEvent;
             }
         }
         
+        public bool IsRewardedAdReady() => _rewardedAd?.IsAdReady() == true;
+        
         public void ShowRewardedAd(Action onReward)
         {
-            if (!RewardedAd.IsAdReady())
+            if (!_rewardedAd.IsAdReady())
                 return;
 
             _pendingReward = onReward;
-            RewardedAd.ShowAd();
+            _rewardedAd.ShowAd();
         }
         
         public void ShowInterstitialAd()
         {
-            if (InterstitialAd.IsAdReady())
-                InterstitialAd.ShowAd();
+            if (_interstitialAd.IsAdReady())
+                _interstitialAd.ShowAd();
         }
         
         public bool CanShowInterstitialAdOnTransitionToMenu(int transitionCount) =>
-            InterstitialAd.IsAdReady() && transitionCount % 2 == 0;
+            _interstitialAd.IsAdReady() && transitionCount % 2 == 0;
 
         private void SdkInitializationFailedEvent(LevelPlayInitError obj)
         {
@@ -73,21 +75,21 @@ namespace _Project.Scripts.Services.Ads
         
         private void CreateInterstitialAd()
         {
-            InterstitialAd = new LevelPlayInterstitialAd(GameConstants.INTERSTITIAL_ADS_ID);
+            _interstitialAd = new LevelPlayInterstitialAd(GameConstants.INTERSTITIAL_ADS_ID);
 
-            InterstitialAd.OnAdClosed += InterstitialOnAdClosedEvent;
+            _interstitialAd.OnAdClosed += InterstitialOnAdClosedEvent;
         }
         
         private void CreateRewardedAd() {
-            RewardedAd = new LevelPlayRewardedAd(GameConstants.REWARDED_ADS_ID_RESTORE_CASTLE_HP);
+            _rewardedAd = new LevelPlayRewardedAd(GameConstants.REWARDED_ADS_ID_RESTORE_CASTLE_HP);
             
-            RewardedAd.OnAdClosed += RewardedOnAdClosedEvent;
-            RewardedAd.OnAdRewarded += RewardedOnAdRewardedEvent;
+            _rewardedAd.OnAdClosed += RewardedOnAdClosedEvent;
+            _rewardedAd.OnAdRewarded += RewardedOnAdRewardedEvent;
         }
         
-        private void LoadRewardedAd() => RewardedAd.LoadAd();
+        private void LoadRewardedAd() => _rewardedAd.LoadAd();
         
-        private void LoadInterstitialAd() => InterstitialAd.LoadAd();
+        private void LoadInterstitialAd() => _interstitialAd.LoadAd();
 
         private void RewardedOnAdClosedEvent(LevelPlayAdInfo adInfo) => LoadRewardedAd();
 

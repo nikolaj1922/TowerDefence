@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using _Project.Scripts.Database.Purchases;
 using UnityEngine;
 using UnityEngine.Purchasing;
@@ -7,10 +8,11 @@ namespace _Project.Scripts.Services.IAP
 {
     public class IAPProvider : IIAPProvider
     {
+        private Action _pendingPurchase;
+        
         private StoreController _storeController;
         private readonly PurchaseDatabase _purchaseDatabase;
         private readonly IPurchaseService _purchaseService;
-        private readonly Dictionary<string, Product> _products = new();
         
         public IAPProvider(PurchaseDatabase purchaseDatabase, IPurchaseService purchaseService)
         {
@@ -31,7 +33,11 @@ namespace _Project.Scripts.Services.IAP
             });
         }
 
-        public void StartPurchase(string productId) => _storeController.PurchaseProduct(productId);
+        public void StartPurchase(string productId, Action onPurchaseSuccess = null)
+        {
+            _pendingPurchase = onPurchaseSuccess;
+            _storeController.PurchaseProduct(productId);
+        }
 
         private void InitStoreController()
         {
@@ -61,11 +67,6 @@ namespace _Project.Scripts.Services.IAP
 
         private void OnProductsFetched(List<Product> products)
         {
-            Debug.Log("Products fetched successfully");
-            
-            foreach (var product in  products)
-                _products[product.definition.id] = product;
-            
             _storeController.FetchPurchases();
         }
         
@@ -92,7 +93,9 @@ namespace _Project.Scripts.Services.IAP
                 Debug.Log("Purchase success: " + productId);
                 _purchaseService.OnPurchaseCompleted(productId);
             }
-
+            
+            _pendingPurchase?.Invoke();
+            _pendingPurchase = null;
             _storeController.ConfirmPurchase(order);
         }
     }

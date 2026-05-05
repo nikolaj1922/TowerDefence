@@ -9,7 +9,6 @@ namespace _Project.Scripts.DTO
         public CatalogPopupProductType type;
         public string id;
         public string title;
-        public string iconAddress;
         public float price;
     }
 }

@@ -81,7 +81,7 @@ namespace _Project.Scripts.Logic.Level.Services
 
         private bool CanShowAdsModal()
         {
-            return _saveLoad.PlayerProgress.ShowAds && _canShowAdsModalForSession && _adsService.RewardedAd.IsAdReady();
+            return _saveLoad.PlayerProgress.ShowAds && _canShowAdsModalForSession && _adsService.IsRewardedAdReady();
         }
     }
 }

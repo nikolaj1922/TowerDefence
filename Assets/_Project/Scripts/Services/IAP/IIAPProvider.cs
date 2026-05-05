@@ -1,8 +1,10 @@
-﻿namespace _Project.Scripts.Services.IAP
+﻿using System;
+
+namespace _Project.Scripts.Services.IAP
 {
     public interface IIAPProvider
     {
         void Initialize();
-        void StartPurchase(string productId);
+        void StartPurchase(string productId, Action onPurchaseSuccess = null);
     }
 }
