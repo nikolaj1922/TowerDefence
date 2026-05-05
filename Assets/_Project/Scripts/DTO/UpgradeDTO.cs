@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace _Project.Scripts.Configs
+namespace _Project.Scripts.DTO
 {
     [Serializable]
     public class UpgradeDTO

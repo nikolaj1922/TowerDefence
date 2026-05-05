@@ -9,7 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 649496582096367281}
-  - component: {fileID: 2788061891717484932}
+  - component: {fileID: 4272580075727924970}
   m_Layer: 5
   m_Name: ShopButton
   m_TagString: Untagged
@@ -39,7 +39,7 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &2788061891717484932
+--- !u!114 &4272580075727924970
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -48,43 +48,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 1522940737846944701}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7b79b5624d944058bd39aad2b90fb275, type: 3}
+  m_Script: {fileID: 11500000, guid: 4889996b599a337409d00861e6b27447, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Unity.Purchasing.Codeless::UnityEngine.Purchasing.CodelessIAPButton
-  productId: 
-  buttonType: 0
-  automaticallyConfirmTransaction: 1
-  onProductFetched:
-    m_PersistentCalls:
-      m_Calls: []
-  onProductFetchFailed:
-    m_PersistentCalls:
-      m_Calls: []
-  onPurchaseFetched:
-    m_PersistentCalls:
-      m_Calls: []
-  onTransactionsRestored:
-    m_PersistentCalls:
-      m_Calls: []
-  onOrderPending:
-    m_PersistentCalls:
-      m_Calls: []
-  onOrderConfirmed:
-    m_PersistentCalls:
-      m_Calls: []
-  onPurchaseFailed:
-    m_PersistentCalls:
-      m_Calls: []
-  onOrderDeferred:
-    m_PersistentCalls:
-      m_Calls: []
-  onPurchaseCompleteLegacy:
-    m_PersistentCalls:
-      m_Calls: []
-  onPurchaseFailedLegacy:
-    m_PersistentCalls:
-      m_Calls: []
-  button: {fileID: 0}
+  m_EditorClassIdentifier: Assembly-CSharp::ShopModalButtonView
+  _titleText: {fileID: 6258185984941291821}
+  _priceText: {fileID: 5249131980570503805}
+  _buyButton: {fileID: 6518309075394420318}
 --- !u!1 &4494646199861307853
 GameObject:
   m_ObjectHideFlags: 0

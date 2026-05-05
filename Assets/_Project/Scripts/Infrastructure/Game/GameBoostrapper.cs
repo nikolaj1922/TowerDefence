@@ -1,5 +1,6 @@
 ﻿using _Project.Scripts.Database.Enemies;
 using _Project.Scripts.Database.Game;
+using _Project.Scripts.Database.Purchases;
 using _Project.Scripts.Database.Towers;
 using _Project.Scripts.Database.Upgrades;
 using _Project.Scripts.Database.Waves;
@@ -7,6 +8,7 @@ using _Project.Scripts.Database.Weapons;
 using Zenject;
 using _Project.Scripts.Infrastructure.LoadingCurtain;
 using _Project.Scripts.Infrastructure.LoadingCurtain.PipelineFactory;
+using _Project.Scripts.Services.IAP;
 using _Project.Scripts.Services.RemoteConfigs;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
@@ -21,13 +23,17 @@ namespace _Project.Scripts.Infrastructure.Game
         private EnemyDatabase _enemyDatabase;
         private TowerDatabase _towerDatabase;
         private WeaponDatabase _weaponDatabase;
+        private PurchaseDatabase _purchaseDatabase;
         private LoadingCurtainPresenter _loadingCurtainPresenter;
         private ILoadingPipelineFactory _loadingPipelineFactory;
         private IRemoteConfigService _remoteConfigService;
         private Camera _camera;
+        private IIAPProvider _iapProvider;
 
         [Inject]
         public void Construct(
+            IIAPProvider iapProvider,
+            PurchaseDatabase purchaseDatabase,
             UpgradeDatabase upgradeDatabase,
             WavesDatabase wavesDatabase,
             GameDatabase gameDatabase,
@@ -41,6 +47,8 @@ namespace _Project.Scripts.Infrastructure.Game
             )
         {
             _camera = camera;
+            _iapProvider = iapProvider;
+            _purchaseDatabase = purchaseDatabase;
             _remoteConfigService = remoteConfigService;
             _wavesDatabase = wavesDatabase;
             _upgradeDatabase = upgradeDatabase;
@@ -62,10 +70,14 @@ namespace _Project.Scripts.Infrastructure.Game
         {
             await _loadingCurtainPresenter.StartLoadingOperations(_loadingPipelineFactory.StartGamePipeline());
             InitDatabases();
+            InitIap();
         }
+        
+        private void InitIap() => _iapProvider.Initialize();
 
         private void InitDatabases()
         {
+            _purchaseDatabase.LoadConfigs(_remoteConfigService);
             _upgradeDatabase.LoadConfigs(_remoteConfigService);
             _gameDatabase.LoadConfig(_remoteConfigService);
             _enemyDatabase.LoadConfig(_remoteConfigService);

@@ -1,7 +1,7 @@
 ﻿using Zenject;
 using UnityEngine;
-using _Project.Scripts.Configs;
 using _Project.Scripts.Database.Weapons;
+using _Project.Scripts.DTO;
 using _Project.Scripts.Infrastructure.Constants;
 using _Project.Scripts.Weapons;
 using CartoonFX;

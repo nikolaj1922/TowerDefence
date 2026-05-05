@@ -3,8 +3,8 @@ using Zenject;
 using CartoonFX;
 using UnityEngine;
 using System.Threading;
+using _Project.Scripts.DTO;
 using Cysharp.Threading.Tasks;
-using _Project.Scripts.Configs;
 using _Project.Scripts.Infrastructure.ObjectsPool;
 using _Project.Scripts.Infrastructure.Constants;
 

@@ -2,7 +2,7 @@
 using _Project.Scripts.Towers;
 using _Project.Scripts.Weapons;
 
-namespace _Project.Scripts.Configs
+namespace _Project.Scripts.DTO
 {
     [Serializable]
     public class TowerDTO

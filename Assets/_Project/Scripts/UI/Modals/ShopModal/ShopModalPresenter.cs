@@ -1,25 +1,34 @@
 ﻿using System;
 using _Project.Scripts.Database.Modals;
-using _Project.Scripts.Infrastructure.Constants;
+using _Project.Scripts.Database.Purchases;
+using _Project.Scripts.DTO;
+using _Project.Scripts.Services.IAP;
 using _Project.Scripts.Services.ModalCreator;
-using _Project.Scripts.Services.SaveLoad;
-using UnityEngine.Purchasing;
 using Zenject;
 
 namespace _Project.Scripts.UI.Modals.ShopModal
 {
     public class ShopModalPresenter: IInitializable, IDisposable
     {
-        private readonly IModalCreatorService _modalCreatorService;
         private readonly ShopModalView _view;
-        private readonly ISaveLoad _saveLoad;
-        
+        private readonly ShopModalButtonView _shopButtonView;
+        private readonly IModalCreatorService _modalCreatorService;
+        private readonly IIAPProvider _iapProvider;
+        private readonly PurchaseDatabase _purchaseDatabase;
+        private readonly IInstantiator _instantiator;
+
         public ShopModalPresenter(
-            ISaveLoad saveLoad,
+            PurchaseDatabase purchaseDatabase,
             ShopModalView view,
+            ShopModalButtonView shopButtonView,
+            IInstantiator instantiator,
+            IIAPProvider iapProvider,
             IModalCreatorService modalCreatorService)
         {
-            _saveLoad = saveLoad;
+            _shopButtonView = shopButtonView;
+            _instantiator = instantiator;
+            _purchaseDatabase = purchaseDatabase;
+            _iapProvider = iapProvider;
             _view = view;
             _modalCreatorService = modalCreatorService;
         }
@@ -27,60 +36,30 @@ namespace _Project.Scripts.UI.Modals.ShopModal
         public void Initialize()
         {
             _view.OnBackToMainMenuClicked += OnBackToMainMenuClick;
-            _view.GetAipListener().onPurchaseCompleteLegacy.AddListener(OnPurchaseCompleted);
-
-            TryToHideNoAdsButton();
+            foreach (var dto in _purchaseDatabase.GetPurchases())
+                CreateShopButton(dto);
         }
-
-       
-
+        
         public void Dispose()
         {
             _view.OnBackToMainMenuClicked -= OnBackToMainMenuClick;
-            _view.GetAipListener().onPurchaseCompleteLegacy.RemoveListener(OnPurchaseCompleted);
         }
         
-        private void TryToHideNoAdsButton()
+        private void CreateShopButton(PurchaseDTO purchaseDto)
         {
-            if (_saveLoad.PlayerProgress.ShowAds == false)
-                _view.HideNoAdsButton();
-        }
+            ShopModalButtonView shopButtonView = 
+                _instantiator.InstantiatePrefabForComponent<ShopModalButtonView>(
+                    _shopButtonView, 
+                    _view.GridContainer);
+            
+            shopButtonView.Init(
+                purchaseDto.title,
+                $"{purchaseDto.price}$", 
+                () => _iapProvider.StartPurchase(purchaseDto.id));
+        } 
         
         private void OnBackToMainMenuClick() => _modalCreatorService.OpenModal(ModalType.Menu);  
         
-        private void OnPurchaseCompleted(Product product)
-        {
-            switch (product.definition.id)
-            {
-                case GameConstants.PURCHASE_ID_500_COINS:
-                    AddCoins(500);
-                    break;
-                case GameConstants.PURCHASE_ID_1500_COINS:
-                    AddCoins(1500);
-                    break;
-                case GameConstants.PURCHASE_ID_4000_COINS:
-                    AddCoins(4000);
-                    break;
-                case GameConstants.PURCHASE_ID_10000_COINS:
-                    AddCoins(10000);
-                    break;
-                case GameConstants.PURCHASE_ID_NO_ADS:
-                    RemoveAds();
-                    break;
-            }
-        }
-
-        private void RemoveAds()
-        {
-            _saveLoad.PlayerProgress.DisableAds();
-            _saveLoad.SaveProgress();
-            _view.HideNoAdsButton();
-        }
-
-        private void AddCoins(int coins)
-        {
-            _saveLoad.PlayerProgress.AddMetaCoins(coins);
-            _saveLoad.SaveProgress();
-        }
+        
     }
 }

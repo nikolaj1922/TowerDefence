@@ -1,4 +1,4 @@
-﻿using _Project.Scripts.Configs;
+﻿using _Project.Scripts.DTO;
 using _Project.Scripts.Logic.Health;
 using UnityEngine;
 using Zenject;

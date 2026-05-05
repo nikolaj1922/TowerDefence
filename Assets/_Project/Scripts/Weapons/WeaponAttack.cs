@@ -1,6 +1,6 @@
-﻿using Zenject;
+﻿using _Project.Scripts.DTO;
+using Zenject;
 using UnityEngine;
-using _Project.Scripts.Configs;
 using _Project.Scripts.Enemies.Behaviour;
 using _Project.Scripts.Infrastructure.Constants;
 using _Project.Scripts.Infrastructure.ObjectsPool;

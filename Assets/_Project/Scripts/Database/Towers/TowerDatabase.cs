@@ -1,9 +1,9 @@
 using System.Collections.Generic;
-using _Project.Scripts.Configs;
 using _Project.Scripts.Towers;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
 using System.Linq;
+using _Project.Scripts.DTO;
 using _Project.Scripts.Infrastructure.Constants;
 using _Project.Scripts.Services.RemoteConfigs;
 

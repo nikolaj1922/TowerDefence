@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Linq;
 using System.Threading;
-using _Project.Scripts.Configs;
 using _Project.Scripts.Database.Waves;
+using _Project.Scripts.DTO;
 using _Project.Scripts.Enemies;
 using _Project.Scripts.Services.Analytics;
 using Cysharp.Threading.Tasks;

@@ -1,4 +1,4 @@
-﻿using _Project.Scripts.Configs;
+﻿using _Project.Scripts.DTO;
 using UnityEngine;
 
 namespace _Project.Scripts.UI.TowerCreation
