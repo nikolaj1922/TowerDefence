@@ -73,7 +73,7 @@ namespace _Project.Scripts.Enemies.Behaviour
         {
             foreach (Collider target in _attackTargets)
             {
-                if (!target.TryGetComponent<IDamagable>(out var damagable))
+                if (!target.TryGetComponent<IDamagable>(out IDamagable damagable))
                     return;
 
                 damagable.TakeDamage(_damage);

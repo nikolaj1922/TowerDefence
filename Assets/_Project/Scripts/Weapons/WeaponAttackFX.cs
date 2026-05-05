@@ -60,14 +60,14 @@ namespace _Project.Scripts.Weapons
             if (!_projectileSpawnPoint || !_weaponBase)
                 return;
 
-            var effect = _projectilePool.Get();
+            CFXR_Effect effect = _projectilePool.Get();
             effect.transform.SetPositionAndRotation(
                 _projectileSpawnPoint.position,
                 _projectileSpawnPoint.rotation);
             
             effect.transform.localScale = _weaponBase.localScale * VFX_SCALE_MULTIPLIER;
 
-            var vfx = effect.GetComponent<PooledVFX>();
+            PooledVFX vfx = effect.GetComponent<PooledVFX>();
             vfx.Init(_projectilePool, effect);
         }
         

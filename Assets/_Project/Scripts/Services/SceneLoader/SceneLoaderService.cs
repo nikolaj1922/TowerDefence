@@ -18,7 +18,7 @@ namespace _Project.Scripts.Services.SceneLoader
             if (!_loadedScenes.ContainsKey(sceneKey))
                 await Preload(sceneKey);
             
-            var handle = _loadedScenes[sceneKey];
+            AsyncOperationHandle<SceneInstance> handle = _loadedScenes[sceneKey];
             await handle.Result.ActivateAsync().ToUniTask();
             
             SceneManager.SetActiveScene(handle.Result.Scene);
@@ -32,7 +32,7 @@ namespace _Project.Scripts.Services.SceneLoader
 
         public async UniTask Reload(Action onLoadComplete = null)
         {
-            if (_loadedScenes.TryGetValue(_currentSceneKey, out var handle))
+            if (_loadedScenes.TryGetValue(_currentSceneKey, out AsyncOperationHandle<SceneInstance> handle))
             {
                 await Addressables.UnloadSceneAsync(handle).ToUniTask();
                 _loadedScenes.Remove(_currentSceneKey);
@@ -41,12 +41,12 @@ namespace _Project.Scripts.Services.SceneLoader
             await SwitchTo(_currentSceneKey, onLoadComplete);
         }
 
-        public async UniTask Preload(string sceneKey)
+        private async UniTask Preload(string sceneKey)
         {
             if (_loadedScenes.ContainsKey(sceneKey))
                 return;
 
-            var handle = Addressables.LoadSceneAsync(
+            AsyncOperationHandle<SceneInstance> handle = Addressables.LoadSceneAsync(
                 sceneKey,
                 LoadSceneMode.Additive,
                 activateOnLoad: false
@@ -66,7 +66,7 @@ namespace _Project.Scripts.Services.SceneLoader
                 if(key == sceneKey)
                     continue;
                 
-                var handle = _loadedScenes[key];
+                AsyncOperationHandle<SceneInstance> handle = _loadedScenes[key];
 
                 await Addressables.UnloadSceneAsync(handle).ToUniTask();
                 _loadedScenes.Remove(key);

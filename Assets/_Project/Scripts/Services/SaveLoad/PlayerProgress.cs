@@ -10,9 +10,13 @@ namespace _Project.Scripts.Services.SaveLoad
     {
         public PlayerUpgrades upgrades;
         [SerializeField] private int _metaCoinsCount;
+        [SerializeField] private bool _showAds = true;
 
         public int MetaCoinsCount => _metaCoinsCount;
-
+        public bool ShowAds => _showAds;
+        
+        public void DisableAds() => _showAds = false;
+        
         public void AddMetaCoins(int amount)
         {
             if (amount <= 0)

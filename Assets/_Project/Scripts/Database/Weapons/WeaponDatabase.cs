@@ -25,7 +25,7 @@ namespace _Project.Scripts.Database.Weapons
                 return null;
             }
             
-            if (!_prefabLoader.Prefabs.TryGetValue(type, out var prefab))
+            if (!_prefabLoader.Prefabs.TryGetValue(type, out Weapon prefab))
             {
                 Debug.LogError($"Prefab not found for type: {type}");
                 return null;
@@ -42,7 +42,7 @@ namespace _Project.Scripts.Database.Weapons
                 return null;
             }
             
-            if (!_configs.TryGetValue(type, out var config))
+            if (!_configs.TryGetValue(type, out WeaponDTO config))
             {
                 Debug.LogError($"Config not found for type: {type}");
                 return null;
@@ -61,13 +61,13 @@ namespace _Project.Scripts.Database.Weapons
 
         public void LoadConfig(IRemoteConfigService remoteConfigService)
         {
-            if (!remoteConfigService.TryGetConfig<RemoteConfig<WeaponDTO>>(GameConstants.WEAPON_REMOTE_CONFIG_KEY, out var config))
+            if (!remoteConfigService.TryGetConfig<RemoteConfig<WeaponDTO>>(GameConstants.WEAPON_REMOTE_CONFIG_KEY, out RemoteConfig<WeaponDTO> config))
             {
                 Debug.LogError("Loading weapon configs failed");
                 return;
             }
             
-            foreach (var dto in config.items)
+            foreach (WeaponDTO dto in config.items)
                 _configs[dto.type] = dto;
         }
 

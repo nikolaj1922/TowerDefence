@@ -51,7 +51,7 @@ namespace _Project.Scripts.Enemies
 
         public void StopActiveEnemies()
         {
-            foreach (var enemy in _orksPool.ActiveEnemies)
+            foreach (Enemy enemy in _orksPool.ActiveEnemies)
                 enemy.ToIdle();   
         }
 

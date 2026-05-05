@@ -57,7 +57,7 @@ namespace _Project.Scripts.UI.Modals.UpgradeModal
             
             _view.MetaCounterView.UpdateView(_saveLoad.PlayerProgress.MetaCoinsCount.ToString());
             
-            foreach (var upgrade in _upgradeDatabase.GetUpgrades())
+            foreach (UpgradeDTO upgrade in _upgradeDatabase.GetUpgrades())
                 CreateUpgradeButton(upgrade);
         }
         

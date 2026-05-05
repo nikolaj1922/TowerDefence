@@ -63,7 +63,7 @@ namespace _Project.Scripts.Logic.Wave
 
             _analytics.WaveStarted(CurrentWave, _total);
 
-            foreach (var group in wave.enemyGroups)
+            foreach (WaveEnemyData group in wave.enemyGroups)
             {
                 for (int i = 0; i < group.enemyCount; i++)
                 {

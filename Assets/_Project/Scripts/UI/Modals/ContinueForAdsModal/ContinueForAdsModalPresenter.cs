@@ -6,6 +6,7 @@ using _Project.Scripts.Services.Ads;
 using _Project.Scripts.Services.ModalCreator;
 using _Project.Scripts.UI.Modals.EndGameModal;
 using Cysharp.Threading.Tasks;
+using UnityEngine;
 using Zenject;
 
 namespace _Project.Scripts.UI.Modals.ContinueForAdsModal
@@ -66,8 +67,8 @@ namespace _Project.Scripts.UI.Modals.ContinueForAdsModal
         
         private async UniTask CreateEndGameModal()
         {
-            var modal = await _modalCreatorService.OpenModal(ModalType.EndGame, _instantiator);
-            var view = modal.GetComponent<EndGameModalView>();
+            GameObject modal = await _modalCreatorService.OpenModal(ModalType.EndGame, _instantiator);
+            EndGameModalView view = modal.GetComponent<EndGameModalView>();
 
             view.SetCurrentWave(_waveManager.CurrentWave);
             view.Draw("Defeat!",_rewardService.GetReward());

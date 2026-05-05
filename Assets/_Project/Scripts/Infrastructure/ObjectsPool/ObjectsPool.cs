@@ -13,7 +13,7 @@ namespace _Project.Scripts.Infrastructure.ObjectsPool
 
         public T Get()
         {
-            var obj = _pool.Count > 0 ? _pool.Pop() : Create();
+            T obj = _pool.Count > 0 ? _pool.Pop() : Create();
 
             obj.gameObject.SetActive(true);
             return obj;

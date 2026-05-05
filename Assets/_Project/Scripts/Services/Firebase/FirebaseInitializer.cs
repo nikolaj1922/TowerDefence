@@ -24,7 +24,7 @@ namespace _Project.Scripts.Services.Firebase
                 if(!task.IsCompletedSuccessfully)
                     throw new Exception($"Failed to get dependency status: {task.Result}");
                 
-                var status = task.Result;
+                DependencyStatus status = task.Result;
                 
                 if (status != DependencyStatus.Available)
                     throw new Exception($"Failed to get dependency status: {status}");

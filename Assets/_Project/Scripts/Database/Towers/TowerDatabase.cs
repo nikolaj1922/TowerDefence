@@ -25,7 +25,7 @@ namespace _Project.Scripts.Database.Towers
                 return null;
             }
             
-            if (!_prefabLoader.Prefabs.TryGetValue(type, out var prefab))
+            if (!_prefabLoader.Prefabs.TryGetValue(type, out Tower prefab))
             {
                 Debug.LogError($"Prefab not found for type: {type}");
                 return null;
@@ -42,7 +42,7 @@ namespace _Project.Scripts.Database.Towers
                 return null;
             }
             
-            if (!_configs.TryGetValue(type, out var config))
+            if (!_configs.TryGetValue(type, out TowerDTO config))
             {
                 Debug.LogError($"Config not found for type: {type}");
                 return null;
@@ -61,13 +61,13 @@ namespace _Project.Scripts.Database.Towers
         
         public void LoadConfig(IRemoteConfigService remoteConfigService)
         {
-            if (!remoteConfigService.TryGetConfig<RemoteConfig<TowerDTO>>(GameConstants.TOWER_REMOTE_CONFIG_KEY, out var config))
+            if (!remoteConfigService.TryGetConfig<RemoteConfig<TowerDTO>>(GameConstants.TOWER_REMOTE_CONFIG_KEY, out RemoteConfig<TowerDTO> config))
             {
                 Debug.LogError("Loading tower configs failed");
                 return;
             }
 
-            foreach (var dto in config.items)
+            foreach (TowerDTO dto in config.items)
                 _configs[dto.type] = dto;
         }
         

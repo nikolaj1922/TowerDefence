@@ -14,7 +14,7 @@ namespace _Project.Scripts.Database.Game
         
         public void LoadConfig(IRemoteConfigService remoteConfigService)
         {
-            if (!remoteConfigService.TryGetConfig<GameDTO>(GameConstants.GAME_REMOTE_CONFIG_KEY, out var config))
+            if (!remoteConfigService.TryGetConfig<GameDTO>(GameConstants.GAME_REMOTE_CONFIG_KEY, out GameDTO config))
             {
                 Debug.LogError("Failed to load game config");
                 return;

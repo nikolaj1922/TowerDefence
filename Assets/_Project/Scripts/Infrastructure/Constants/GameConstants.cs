@@ -29,5 +29,11 @@
         public const string GAME_REMOTE_CONFIG_KEY = "Game";
         public const string WAVES_REMOTE_CONFIG_KEY = "Waves";
         public const string UPGRADES_REMOTE_CONFIG_KEY = "Upgrades";
+
+        public const string PURCHASE_ID_500_COINS = "meta-500";
+        public const string PURCHASE_ID_1500_COINS = "meta-1500";
+        public const string PURCHASE_ID_4000_COINS = "meta-4000";
+        public const string PURCHASE_ID_10000_COINS = "meta-10000";
+        public const string PURCHASE_ID_NO_ADS = "no-ads";
     }
 }

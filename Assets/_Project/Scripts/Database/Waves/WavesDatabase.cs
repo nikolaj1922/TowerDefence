@@ -14,7 +14,7 @@ namespace _Project.Scripts.Database.Waves
         
         public void LoadConfig(IRemoteConfigService remoteConfigService)
         {
-            if (!remoteConfigService.TryGetConfig<RemoteConfig<WaveDTO>>(GameConstants.WAVES_REMOTE_CONFIG_KEY, out var config))
+            if (!remoteConfigService.TryGetConfig<RemoteConfig<WaveDTO>>(GameConstants.WAVES_REMOTE_CONFIG_KEY, out RemoteConfig<WaveDTO> config))
             {
                 Debug.LogError("Failed to load waves config");
                 return;

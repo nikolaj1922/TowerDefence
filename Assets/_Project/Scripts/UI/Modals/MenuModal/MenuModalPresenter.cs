@@ -39,6 +39,7 @@ namespace _Project.Scripts.UI.Modals.MenuModal
         public void Initialize()
         {
             _menuModalView.OnStartClicked += OnStartClick;
+            _menuModalView.OnShopClicked += OnShopClick;
             _menuModalView.OnOpenUpgradesClicked += OnOpenUpgradesClick;
             
             _menuModalView.UpdateMetaCounter(_saveLoad.PlayerProgress.MetaCoinsCount.ToString());
@@ -48,6 +49,7 @@ namespace _Project.Scripts.UI.Modals.MenuModal
         {
             _menuModalView.OnStartClicked -= OnStartClick;
             _menuModalView.OnOpenUpgradesClicked -= OnOpenUpgradesClick;
+            _menuModalView.OnShopClicked -= OnShopClick;
         }
         
         private void OnStartClick()
@@ -58,5 +60,6 @@ namespace _Project.Scripts.UI.Modals.MenuModal
         }
         
         private void OnOpenUpgradesClick() => _modalCreatorService.OpenModal(ModalType.Upgrades);
+        private void OnShopClick() => _modalCreatorService.OpenModal(ModalType.Shop);
     }
 }

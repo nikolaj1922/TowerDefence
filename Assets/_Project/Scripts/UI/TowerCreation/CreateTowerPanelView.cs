@@ -39,7 +39,7 @@ namespace _Project.Scripts.UI.TowerCreation
         {
             _closePanelButton.onClick.RemoveListener(HidePanel);
 
-            foreach (var button in _buttons)
+            foreach (CreateTowerButtonView button in _buttons)
             {
                 button.OnCreateTower -= OnTowerButtonClick;
                 _coinCounterModel.OnCoinChanged -= button.Draw;
