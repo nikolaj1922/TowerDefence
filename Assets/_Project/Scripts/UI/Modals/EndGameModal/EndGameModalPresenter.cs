@@ -82,7 +82,8 @@ namespace _Project.Scripts.UI.Modals.EndGameModal
                 _saveLoad.PlayerProgress.MetaCoinsCount);
             _gameSessionService.LevelToMenuTransition();
 
-            if (_adsService.CanShowInterstitialAdOnTransitionToMenu(_gameSessionService.FromLevelToMenuTransitionCount))
+            if (_adsService.CanShowInterstitialAdOnTransitionToMenu(_gameSessionService.FromLevelToMenuTransitionCount) 
+                && _saveLoad.PlayerProgress.ShowAds)
             {
                 _adsService.ShowInterstitialAd();
                 return;

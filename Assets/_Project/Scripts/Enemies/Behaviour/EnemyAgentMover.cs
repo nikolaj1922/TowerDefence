@@ -1,5 +1,5 @@
-﻿using _Project.Scripts.Configs;
-using _Project.Scripts.Database.Game;
+﻿using _Project.Scripts.Database.Game;
+using _Project.Scripts.DTO;
 using UnityEngine;
 using UnityEngine.AI;
 using Zenject;

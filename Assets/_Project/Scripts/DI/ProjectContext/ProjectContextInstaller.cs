@@ -5,6 +5,7 @@ using _Project.Scripts.Services.Analytics;
 using _Project.Scripts.Database.Enemies;
 using _Project.Scripts.Database.Game;
 using _Project.Scripts.Database.Modals;
+using _Project.Scripts.Database.Purchases;
 using _Project.Scripts.Services.ModalCreator;
 using _Project.Scripts.Services.TowerUpgrade;
 using _Project.Scripts.Services.AssetProvider;
@@ -20,6 +21,7 @@ using _Project.Scripts.Infrastructure.LoadingCurtain.PipelineFactory;
 using _Project.Scripts.Services.Ads;
 using _Project.Scripts.Services.Firebase;
 using _Project.Scripts.Services.GameSession;
+using _Project.Scripts.Services.IAP;
 using _Project.Scripts.Services.RemoteConfigs;
 using UnityEngine.AddressableAssets;
 
@@ -39,6 +41,7 @@ namespace _Project.Scripts.DI.ProjectContext
         [SerializeField] private ModalsDatabase _modalDatabase;
         [SerializeField] private WavesDatabase _wavesDatabase;
         [SerializeField] private UpgradeDatabase _upgradeDatabase;
+        [SerializeField] private PurchaseDatabase _purchaseDatabase;
 
         public override void InstallBindings()
         {
@@ -50,6 +53,13 @@ namespace _Project.Scripts.DI.ProjectContext
             BindAnalytics();
             BindLoadingCurtain();
             BindAds();
+            BindIAP();
+        }
+
+        private void BindIAP()
+        {
+            Container.Bind<IPurchaseService>().To<PurchaseService>().AsSingle();
+            Container.Bind<IIAPProvider>().To<IAPProvider>().AsSingle();
         }
 
         private void BindAds() => Container.BindInterfacesAndSelfTo<AdsService>().AsSingle();
@@ -94,6 +104,7 @@ namespace _Project.Scripts.DI.ProjectContext
             Container.Bind<UpgradeDatabase>().FromInstance(_upgradeDatabase).AsSingle();
             Container.Bind<WavesDatabase>().FromInstance(_wavesDatabase).AsSingle();
             Container.Bind<GameDatabase>().FromInstance(_gameDatabase).AsSingle();
+            Container.Bind<PurchaseDatabase>().FromInstance(_purchaseDatabase).AsSingle();
         }
 
         private void BindLoadingCurtain()

@@ -4,7 +4,7 @@ using _Project.Scripts.Enemies.Behaviour;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
 using System.Linq;
-using _Project.Scripts.Configs;
+using _Project.Scripts.DTO;
 using _Project.Scripts.Infrastructure.Constants;
 using _Project.Scripts.Services.RemoteConfigs;
 
@@ -26,7 +26,7 @@ namespace _Project.Scripts.Database.Enemies
                 return null;
             }
             
-            if (!_prefabLoader.Prefabs.TryGetValue(type, out var prefab))
+            if (!_prefabLoader.Prefabs.TryGetValue(type, out Enemy prefab))
             {
                 Debug.LogError($"Prefab not found for type: {type}");
                 return null;
@@ -37,7 +37,7 @@ namespace _Project.Scripts.Database.Enemies
         
         public EnemyDTO GetConfig(EnemyType type)
         {
-            if (!_configs.TryGetValue(type, out var config))
+            if (!_configs.TryGetValue(type, out EnemyDTO config))
             {
                 Debug.LogError($"Config not found for type: {type}");
                 return null;
@@ -56,13 +56,13 @@ namespace _Project.Scripts.Database.Enemies
 
         public void LoadConfig(IRemoteConfigService remoteConfigService)
         {
-            if (!remoteConfigService.TryGetConfig<RemoteConfig<EnemyDTO>>(GameConstants.ENEMY_REMOTE_CONFIG_KEY, out var config))
+            if (!remoteConfigService.TryGetConfig(GameConstants.ENEMY_REMOTE_CONFIG_KEY, out RemoteConfig<EnemyDTO> config))
             {
                 Debug.LogError("Loading enemy configs failed");
                 return;
             }
 
-            foreach (var dto in config.items)
+            foreach (EnemyDTO dto in config.items)
                 _configs[dto.type] = dto;
         }
 

@@ -1,7 +1,7 @@
 ﻿using System.Linq;
-using _Project.Scripts.Configs;
 using _Project.Scripts.Database;
 using _Project.Scripts.Database.Upgrades;
+using _Project.Scripts.DTO;
 using _Project.Scripts.Services.SaveLoad;
 
 namespace _Project.Scripts.Services.TowerUpgrade

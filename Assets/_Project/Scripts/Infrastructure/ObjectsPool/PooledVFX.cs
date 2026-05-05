@@ -15,7 +15,7 @@ namespace _Project.Scripts.Infrastructure.ObjectsPool
             _effect = effect;
             _particleSystem = effect.GetComponent<ParticleSystem>();
 
-            var main = _particleSystem.main;
+            ParticleSystem.MainModule main = _particleSystem.main;
             main.stopAction = ParticleSystemStopAction.Callback;
         }
         

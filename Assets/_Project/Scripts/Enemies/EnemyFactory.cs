@@ -1,8 +1,8 @@
 ﻿using System;
 using UnityEngine;
-using _Project.Scripts.Configs;
 using _Project.Scripts.Enemies.States;
 using _Project.Scripts.Database.Enemies;
+using _Project.Scripts.DTO;
 using _Project.Scripts.Enemies.Behaviour;
 using _Project.Scripts.Infrastructure.Constants;
 using _Project.Scripts.Infrastructure.StateMachine;
@@ -51,7 +51,7 @@ namespace _Project.Scripts.Enemies
 
         public void StopActiveEnemies()
         {
-            foreach (var enemy in _orksPool.ActiveEnemies)
+            foreach (Enemy enemy in _orksPool.ActiveEnemies)
                 enemy.ToIdle();   
         }
 

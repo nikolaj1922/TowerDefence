@@ -1,6 +1,6 @@
-﻿using Zenject;
+﻿using _Project.Scripts.DTO;
+using Zenject;
 using UnityEngine;
-using _Project.Scripts.Configs;
 using _Project.Scripts.Enemies.Behaviour;
 
 namespace _Project.Scripts.Weapons
@@ -55,7 +55,7 @@ namespace _Project.Scripts.Weapons
 
             for (int i = 0; i < count; i++)
             {
-                var col = _aimedEnemyColliders[i];
+                Collider col = _aimedEnemyColliders[i];
 
                 if (!col.TryGetComponent(out Enemy enemy))
                     continue;

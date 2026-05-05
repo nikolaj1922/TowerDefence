@@ -1,9 +1,9 @@
 ﻿using System;
 using Zenject;
 using System.Collections.Generic;
-using _Project.Scripts.Configs;
 using _Project.Scripts.Database.Modals;
 using _Project.Scripts.Database.Upgrades;
+using _Project.Scripts.DTO;
 using _Project.Scripts.Services.AssetProvider;
 using _Project.Scripts.Services.SaveLoad;
 using _Project.Scripts.Services.ModalCreator;
@@ -57,7 +57,7 @@ namespace _Project.Scripts.UI.Modals.UpgradeModal
             
             _view.MetaCounterView.UpdateView(_saveLoad.PlayerProgress.MetaCoinsCount.ToString());
             
-            foreach (var upgrade in _upgradeDatabase.GetUpgrades())
+            foreach (UpgradeDTO upgrade in _upgradeDatabase.GetUpgrades())
                 CreateUpgradeButton(upgrade);
         }
         

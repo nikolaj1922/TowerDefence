@@ -1,6 +1,6 @@
 using System;
 using System.Collections.Generic;
-using _Project.Scripts.Configs;
+using _Project.Scripts.DTO;
 using _Project.Scripts.Infrastructure.Constants;
 using _Project.Scripts.Towers;
 using _Project.Scripts.UI.CoinCounter;
@@ -39,7 +39,7 @@ namespace _Project.Scripts.UI.TowerCreation
         {
             _closePanelButton.onClick.RemoveListener(HidePanel);
 
-            foreach (var button in _buttons)
+            foreach (CreateTowerButtonView button in _buttons)
             {
                 button.OnCreateTower -= OnTowerButtonClick;
                 _coinCounterModel.OnCoinChanged -= button.Draw;

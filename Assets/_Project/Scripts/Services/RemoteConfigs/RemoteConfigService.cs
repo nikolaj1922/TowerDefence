@@ -54,7 +54,7 @@ namespace _Project.Scripts.Services.RemoteConfigs
             
             try
             {
-                var instance = FirebaseRemoteConfig.DefaultInstance; 
+                FirebaseRemoteConfig instance = FirebaseRemoteConfig.DefaultInstance; 
             
                 await instance.FetchAsync(TimeSpan.Zero);
                 await instance.ActivateAsync();

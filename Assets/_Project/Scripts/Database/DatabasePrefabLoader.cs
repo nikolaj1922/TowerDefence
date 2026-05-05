@@ -23,9 +23,9 @@ namespace _Project.Scripts.Database
 
             List<UniTask> tasks = new();
             
-            foreach (var (key, reference) in entries)
+            foreach ((TKey key, AssetReferenceGameObject reference) in entries)
             {
-                var handle = Addressables.LoadAssetAsync<GameObject>(reference);
+                AsyncOperationHandle<GameObject> handle = Addressables.LoadAssetAsync<GameObject>(reference);
                 _handles[key] = handle;
                 
                 tasks.Add(handle.ToUniTask());
@@ -33,7 +33,7 @@ namespace _Project.Scripts.Database
             
             await UniTask.WhenAll(tasks);
 
-            foreach (var (key, handle) in _handles)
+            foreach ((TKey key, AsyncOperationHandle<GameObject> handle) in _handles)
                 Prefabs[key] = map(handle.Result);
         }
         
@@ -42,7 +42,7 @@ namespace _Project.Scripts.Database
             if (_handles == null)
                 return;
 
-            foreach (var handle in _handles.Values)
+            foreach (AsyncOperationHandle<GameObject> handle in _handles.Values)
             {
                 if (handle.IsValid())
                     Addressables.Release(handle);

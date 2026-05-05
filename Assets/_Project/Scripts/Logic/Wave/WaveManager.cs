@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Linq;
 using System.Threading;
-using _Project.Scripts.Configs;
 using _Project.Scripts.Database.Waves;
+using _Project.Scripts.DTO;
 using _Project.Scripts.Enemies;
 using _Project.Scripts.Services.Analytics;
 using Cysharp.Threading.Tasks;
@@ -63,7 +63,7 @@ namespace _Project.Scripts.Logic.Wave
 
             _analytics.WaveStarted(CurrentWave, _total);
 
-            foreach (var group in wave.enemyGroups)
+            foreach (WaveEnemyData group in wave.enemyGroups)
             {
                 for (int i = 0; i < group.enemyCount; i++)
                 {

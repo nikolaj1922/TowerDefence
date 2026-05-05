@@ -1,6 +1,6 @@
 ﻿using System;
 using UnityEngine;
-using _Project.Scripts.Configs;
+using _Project.Scripts.DTO;
 using _Project.Scripts.Services.AssetProvider;
 using _Project.Scripts.Services.SaveLoad;
 using _Project.Scripts.Services.TowerUpgrade;

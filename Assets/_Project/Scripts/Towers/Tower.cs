@@ -1,7 +1,7 @@
 ﻿using Zenject;
 using UnityEngine;
 using _Project.Scripts.Weapons;
-using _Project.Scripts.Configs;
+using _Project.Scripts.DTO;
 
 namespace _Project.Scripts.Towers
 {

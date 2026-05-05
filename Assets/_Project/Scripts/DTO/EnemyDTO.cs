@@ -1,7 +1,7 @@
 ﻿using System;
 using _Project.Scripts.Enemies;
 
-namespace _Project.Scripts.Configs
+namespace _Project.Scripts.DTO
 {
     [Serializable]
     public class EnemyDTO

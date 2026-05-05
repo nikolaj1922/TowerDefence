@@ -1,6 +1,6 @@
 ﻿using System;
-using _Project.Scripts.Configs;
 using _Project.Scripts.Database.Game;
+using _Project.Scripts.DTO;
 using _Project.Scripts.Logic.Level.Services.Interfaces;
 using _Project.Scripts.Services.TowerUpgrade;
 using _Project.Scripts.Towers.Castle;

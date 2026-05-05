@@ -21,7 +21,7 @@ namespace _Project.Scripts.Services.AssetProvider
 
         public async UniTask<T> LoadByAddress<T>(string address) where T : class
         {
-            if (_cache.TryGetValue(address, out var handleOperation))
+            if (_cache.TryGetValue(address, out AsyncOperationHandle handleOperation))
                 return handleOperation.Result as T;
 
             AsyncOperationHandle<T> handle = Addressables.LoadAssetAsync<T>(address);
@@ -65,7 +65,7 @@ namespace _Project.Scripts.Services.AssetProvider
 
         public void ReleaseByAddress(string address)
         {
-            if (_cache.TryGetValue(address, out var handleOperation))
+            if (_cache.TryGetValue(address, out AsyncOperationHandle handleOperation))
             {
                 Addressables.Release(handleOperation);
                 _cache.Remove(address);
@@ -76,7 +76,7 @@ namespace _Project.Scripts.Services.AssetProvider
 
         public void Clear()
         {
-            foreach (var handle in _cache.Values)
+            foreach (AsyncOperationHandle handle in _cache.Values)
                 Addressables.Release(handle);
 
             _cache.Clear();

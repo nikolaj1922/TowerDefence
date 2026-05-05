@@ -48,8 +48,8 @@ namespace _Project.Scripts.Logic.Level.Services
         
         public async UniTask ShowEndModal(string title)
         {
-            var modal = await _modalCreatorService.OpenModal(ModalType.EndGame, _instantiator);
-            var view = modal.GetComponent<EndGameModalView>();
+            GameObject modal = await _modalCreatorService.OpenModal(ModalType.EndGame, _instantiator);
+            EndGameModalView view = modal.GetComponent<EndGameModalView>();
 
             view.SetCurrentWave(_waveManager.CurrentWave);
             view.Draw(title, _rewardService.GetReward());

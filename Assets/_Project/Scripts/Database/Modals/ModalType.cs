@@ -5,6 +5,7 @@
         Menu,
         Upgrades,
         EndGame,
-        EndGameAds
+        EndGameAds,
+        Shop
     }
 }
