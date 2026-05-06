@@ -10,7 +10,11 @@ namespace _Project.Scripts.Infrastructure.LoadingCurtain.Operations
         public LoadPlayerProgressOperation(ISaveLoad saveLoad) => _saveLoad = saveLoad;
         
         public string Description => "Load player progress";
-        
-        public async UniTask Load() => await _saveLoad.LoadProgress();
+
+        public async UniTask Load()
+        {
+            await _saveLoad.InitializeRemoteSave();
+            await _saveLoad.LoadProgress();
+        }
     }
 }

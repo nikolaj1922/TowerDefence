@@ -1,41 +1,96 @@
-﻿using UnityEngine;
-using _Project.Scripts.Infrastructure.Constants;
+﻿using System;
+using UnityEngine;
+using _Project.Scripts.Services.NetworkChecker;
 using Cysharp.Threading.Tasks;
 
 namespace _Project.Scripts.Services.SaveLoad
 {
     public class SaveLoad : ISaveLoad
     {
+        private bool _cloudSaveInitialized;
+        private readonly INetworkChecker _networkChecker;
+        private readonly ILocalSaveService _localSaveService;
+        private readonly IRemoteSaveService _remoteSaveService;
         public PlayerProgress PlayerProgress { get; private set; }
-        
-        public void SaveProgress()
+
+        public SaveLoad(
+            INetworkChecker networkChecker, 
+            ILocalSaveService localSaveService,
+            IRemoteSaveService remoteSaveService)
         {
-            string json = JsonUtility.ToJson(PlayerProgress);
-            PlayerPrefs.SetString(GameConstants.PLAYER_PROGRESS, json);
-            PlayerPrefs.Save();
+            _networkChecker = networkChecker;
+            _localSaveService = localSaveService;
+            _remoteSaveService = remoteSaveService;
         }
 
-        public UniTask LoadProgress()
+        public async UniTask InitializeRemoteSave()
         {
-            if (PlayerPrefs.HasKey(GameConstants.PLAYER_PROGRESS))
+            bool isNetworkAvailable = await _networkChecker.CheckNetwork();
+
+            if (!isNetworkAvailable)
+                return;
+            
+            await _remoteSaveService.Initialize();
+
+            _cloudSaveInitialized = true;
+            Debug.Log($"Cloud save initialized successfully");
+        }
+        
+        public async UniTask SaveProgress()
+        {
+            bool isNetworkAvailable = await _networkChecker.CheckNetwork();
+            
+            PlayerProgress.updatedAtTimeStamp = DateTimeOffset.UtcNow.ToUnixTimeSeconds();
+            
+            string json = ProgressToJson();
+            _localSaveService.Save(json);
+
+            if (_cloudSaveInitialized && isNetworkAvailable)
+                await _remoteSaveService.Save(json);
+        }
+        
+        public async UniTask LoadProgress()
+        {
+            bool isNetworkAvailable = await _networkChecker.CheckNetwork();
+            
+            if (isNetworkAvailable)
             {
-                string json = PlayerPrefs.GetString(GameConstants.PLAYER_PROGRESS);
-                PlayerProgress = JsonUtility.FromJson<PlayerProgress>(json);
+                PlayerProgress remoteProgress = await _remoteSaveService.Load();
+
+                if (remoteProgress == null)
+                {
+                    PlayerProgress = _localSaveService.Load();
+                    return;
+                }
+
+                PlayerProgress localProgress = _localSaveService.GetProgress();
+
+                if (localProgress == null)
+                {
+                    PlayerProgress = remoteProgress;
+                    _localSaveService.Save(ProgressToJson());
+                    return;
+                }
+
+                if (CheckIsLocalProgressFresher(localProgress, remoteProgress))
+                {
+                    PlayerProgress = localProgress;
+                    await _remoteSaveService.Save(ProgressToJson());
+                    return;
+                }
+                
+                PlayerProgress = remoteProgress;
+                _localSaveService.Save(ProgressToJson());
             }
             else
             {
-                InitProgress();
+                PlayerProgress = _localSaveService.Load();
             }
-            
-            return UniTask.CompletedTask;
         }
 
-        private void InitProgress()
-        {
-            PlayerProgress = new PlayerProgress
-            {
-                upgrades = new PlayerUpgrades()
-            };
-        }
+        private string ProgressToJson() => JsonUtility.ToJson(PlayerProgress);
+        
+        private bool CheckIsLocalProgressFresher(PlayerProgress localProgress, PlayerProgress cloudProgress) =>
+            localProgress.updatedAtTimeStamp > cloudProgress.updatedAtTimeStamp;
     }
 }
