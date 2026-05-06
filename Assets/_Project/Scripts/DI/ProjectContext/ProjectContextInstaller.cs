@@ -22,6 +22,7 @@ using _Project.Scripts.Services.Ads;
 using _Project.Scripts.Services.Firebase;
 using _Project.Scripts.Services.GameSession;
 using _Project.Scripts.Services.IAP;
+using _Project.Scripts.Services.NetworkChecker;
 using _Project.Scripts.Services.RemoteConfigs;
 using UnityEngine.AddressableAssets;
 
@@ -58,7 +59,6 @@ namespace _Project.Scripts.DI.ProjectContext
 
         private void BindIAP()
         {
-            Container.Bind<IPurchaseService>().To<PurchaseService>().AsSingle();
             Container.Bind<IIAPProvider>().To<IAPProvider>().AsSingle();
         }
 
@@ -66,13 +66,21 @@ namespace _Project.Scripts.DI.ProjectContext
 
         private void BindCamera() => Container.Bind<Camera>().FromInstance(_camera).AsSingle();
 
+        private void BindSaveLoad()
+        {
+            Container.Bind<ILocalSaveService>().To<LocalSaveService>().AsSingle();
+            Container.Bind<IRemoteSaveService>().To<RemoteSaveService>().AsSingle();
+            Container.Bind<ISaveLoad>().To<SaveLoad>().AsSingle();
+        }
+        
         private void BindServices()
         {
+            Container.Bind<INetworkChecker>().To<NetworkChecker>().AsSingle();
             Container.Bind<IGameSessionService>().To<GameSessionService>().AsSingle();
             Container.Bind<IModalCreatorService>().To<ModalCreatorService>().AsSingle();
             Container.Bind<IAssetProviderService>().To<AssetProviderService>().AsSingle();
             Container.Bind<ISceneLoaderService>().To<SceneLoaderService>().AsSingle().NonLazy();
-            Container.Bind<ISaveLoad>().To<SaveLoad>().AsSingle();
+            BindSaveLoad();
             Container.Bind<ITowerUpgradeService>().To<TowerUpgradeService>().AsSingle();
         }
 

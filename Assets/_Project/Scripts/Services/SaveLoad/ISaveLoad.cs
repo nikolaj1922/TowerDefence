@@ -6,7 +6,8 @@ namespace _Project.Scripts.Services.SaveLoad
     {
         PlayerProgress PlayerProgress { get; }
         
-        void SaveProgress();
+        UniTask SaveProgress();
         UniTask LoadProgress();
+        UniTask InitializeRemoteSave();
     }
 }

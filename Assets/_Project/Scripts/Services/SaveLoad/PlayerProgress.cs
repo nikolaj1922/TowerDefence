@@ -11,6 +11,7 @@ namespace _Project.Scripts.Services.SaveLoad
         public PlayerUpgrades upgrades;
         [SerializeField] private int _metaCoinsCount;
         [SerializeField] private bool _showAds = true;
+        public long updatedAtTimeStamp;
 
         public int MetaCoinsCount => _metaCoinsCount;
         public bool ShowAds => _showAds;

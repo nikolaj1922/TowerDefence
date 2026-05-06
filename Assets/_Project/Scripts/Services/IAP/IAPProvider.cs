@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using _Project.Scripts.Database.Purchases;
+using _Project.Scripts.Infrastructure.Constants;
+using _Project.Scripts.Services.SaveLoad;
 using UnityEngine;
 using UnityEngine.Purchasing;
 
@@ -12,11 +14,13 @@ namespace _Project.Scripts.Services.IAP
         
         private StoreController _storeController;
         private readonly PurchaseDatabase _purchaseDatabase;
-        private readonly IPurchaseService _purchaseService;
+        private readonly ISaveLoad _saveLoad;
         
-        public IAPProvider(PurchaseDatabase purchaseDatabase, IPurchaseService purchaseService)
+        public IAPProvider(
+            PurchaseDatabase purchaseDatabase, 
+            ISaveLoad saveLoad)
         {
-            _purchaseService = purchaseService;
+            _saveLoad = saveLoad;
             _purchaseDatabase = purchaseDatabase;
         }
         
@@ -91,12 +95,46 @@ namespace _Project.Scripts.Services.IAP
             {
                 string productId = cartItem.Product.definition.id;
                 Debug.Log("Purchase success: " + productId);
-                _purchaseService.OnPurchaseCompleted(productId);
+                OnPurchaseCompleted(productId);
             }
             
             _pendingPurchase?.Invoke();
             _pendingPurchase = null;
             _storeController.ConfirmPurchase(order);
+        }
+        
+        private void OnPurchaseCompleted(string productId)
+        {
+            switch (productId)
+            {
+                case GameConstants.PURCHASE_ID_500_COINS:
+                    AddCoins(500);
+                    break;
+                case GameConstants.PURCHASE_ID_1500_COINS:
+                    AddCoins(1500);
+                    break;
+                case GameConstants.PURCHASE_ID_4000_COINS:
+                    AddCoins(4000);
+                    break;
+                case GameConstants.PURCHASE_ID_10000_COINS:
+                    AddCoins(10000);
+                    break;
+                case GameConstants.PURCHASE_ID_NO_ADS:
+                    RemoveAds();
+                    break;
+            }
+        }
+
+        private void RemoveAds()
+        {
+            _saveLoad.PlayerProgress.DisableAds();
+            _saveLoad.SaveProgress();
+        }
+
+        private void AddCoins(int coins)
+        {
+            _saveLoad.PlayerProgress.AddMetaCoins(coins);
+            _saveLoad.SaveProgress();
         }
     }
 }

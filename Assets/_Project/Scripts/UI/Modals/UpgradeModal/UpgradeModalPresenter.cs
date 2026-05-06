@@ -76,7 +76,7 @@ namespace _Project.Scripts.UI.Modals.UpgradeModal
         
         private void CreateUpgradeButton(UpgradeDTO upgradeDto)
         {
-            UpgradeButtonView upgradeView = 
+            UpgradeButtonView upgradeButtonView = 
                 _instantiator.InstantiatePrefabForComponent<UpgradeButtonView>(
                     _upgradeButtonView, 
                     _view.GridContainer);
@@ -84,15 +84,15 @@ namespace _Project.Scripts.UI.Modals.UpgradeModal
             UpgradeButtonPresenter upgradeButton = new UpgradeButtonPresenter(
                 _saveLoad, 
                 _assetProviderService,
-                upgradeView, 
+                upgradeButtonView, 
                 _towerUpgradeService, 
                 upgradeDto);
             
             upgradeButton.Initialize();
-            upgradeView.OnBuyClicked += RefreshListAfterBuy;
+            upgradeButtonView.OnBuyClicked += RefreshListAfterBuy;
             
             _upgradeButtons.Add(upgradeButton);
-            _upgradeViews.Add(upgradeView);
+            _upgradeViews.Add(upgradeButtonView);
         } 
         
         private void RefreshListAfterBuy()
