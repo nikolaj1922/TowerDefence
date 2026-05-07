@@ -17,7 +17,8 @@ MonoBehaviour:
     serializedVersion: 2
     Hash: 00000000000000000000000000000000
   m_OptimizeCatalogSize: 0
-  m_BuildRemoteCatalog: 0
+  m_BuildRemoteCatalog: 1
+  m_BundleLocalCatalog: 0
   m_CatalogRequestsTimeout: 0
   m_DisableCatalogUpdateOnStart: 0
   m_InternalIdNamingMode: 0
@@ -31,7 +32,7 @@ MonoBehaviour:
     m_ClassName: UnityEngine.ResourceManagement.ResourceProviders.AssetBundleProvider
   m_IgnoreUnsupportedFilesInBuild: 0
   m_UniqueBundleIds: 0
-  m_EnableJsonCatalog: 0
+  m_EnableJsonCatalog: 1
   m_NonRecursiveBuilding: 1
   m_AllowNestedBundleFolders: 0
   m_CCDEnabled: 0
@@ -51,10 +52,10 @@ MonoBehaviour:
   m_CheckForContentUpdateRestrictionsOption: 0
   m_MonoScriptBundleCustomNaming: 
   m_RemoteCatalogBuildPath:
-    m_Id: 
+    m_Id: 002285893606add4db8ef95be7f505f8
   m_RemoteCatalogLoadPath:
-    m_Id: 
-  m_ContentStateBuildPathProfileVariableName: 
+    m_Id: 2a225f5fd5b2f4549854557185f5a0e2
+  m_ContentStateBuildPathProfileVariableName: <default settings path>
   m_CustomContentStateBuildPath: 
   m_ContentStateBuildPath: 
   m_BuildAddressablesWithPlayerBuild: 0
@@ -78,6 +79,20 @@ MonoBehaviour:
         m_Value: '{UnityEngine.AddressableAssets.Addressables.RuntimePath}/[BuildTarget]'
       - m_Id: 2a225f5fd5b2f4549854557185f5a0e2
         m_Value: <undefined>
+      - m_Id: 811ac4162c3e96a438f2c42fc9c8fe7c
+        m_Value: '[UnityEngine.AddressableAssets.Addressables.BuildPath]/[BuildTarget]'
+      - m_Id: ba595afd8e2e98641aa88d175ebfc494
+        m_Value: '[UnityEditor.EditorUserBuildSettings.activeBuildTarget]'
+    - m_InheritedParent: 
+      m_Id: 7ee2366590180e043859f7eab88f188f
+      m_ProfileName: Remote Profile
+      m_Values:
+      - m_Id: 002285893606add4db8ef95be7f505f8
+        m_Value: 'ServerData/[BuildTarget]'
+      - m_Id: 1784767de56c4014ca28e9625b9d6962
+        m_Value: '{UnityEngine.AddressableAssets.Addressables.RuntimePath}/[BuildTarget]'
+      - m_Id: 2a225f5fd5b2f4549854557185f5a0e2
+        m_Value: "https://storage.yandexcloud.net/unity-td-test\u0435/[BuildTarget]"
       - m_Id: 811ac4162c3e96a438f2c42fc9c8fe7c
         m_Value: '[UnityEngine.AddressableAssets.Addressables.BuildPath]/[BuildTarget]'
       - m_Id: ba595afd8e2e98641aa88d175ebfc494
@@ -119,4 +134,4 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 0749966529b850b46a52e3f653ca0963, type: 2}
   - {fileID: 11400000, guid: b9d7d7669522df143b8a1523772c9d24, type: 2}
   - {fileID: 11400000, guid: 74bfedf922894b8409d812578e80364a, type: 2}
-  m_ActiveProfileId: 608f6e13a52c21b4286b1c147041c71c
+  m_ActiveProfileId: 7ee2366590180e043859f7eab88f188f

@@ -12,6 +12,7 @@ using _Project.Scripts.Services.IAP;
 using _Project.Scripts.Services.RemoteConfigs;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
+using UnityEngine.AddressableAssets;
 
 namespace _Project.Scripts.Infrastructure.Game
 {
@@ -62,12 +63,13 @@ namespace _Project.Scripts.Infrastructure.Game
 
         public void Initialize()
         {
+            
             _camera.aspect = (float)Screen.width / Screen.height;
             LoadInitialAssets().Forget();
         }
 
         private async UniTask LoadInitialAssets()
-        {
+        { 
             await _loadingCurtainPresenter.StartLoadingOperations(_loadingPipelineFactory.StartGamePipeline());
             InitDatabases();
             InitIap();
