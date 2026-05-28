@@ -2,6 +2,7 @@
 using UnityEngine;
 using _Project.Scripts.Services.NetworkChecker;
 using Cysharp.Threading.Tasks;
+using Zenject;
 
 namespace _Project.Scripts.Services.SaveLoad
 {
@@ -9,14 +10,14 @@ namespace _Project.Scripts.Services.SaveLoad
     {
         private bool _cloudSaveInitialized;
         private readonly INetworkChecker _networkChecker;
-        private readonly ILocalSaveService _localSaveService;
-        private readonly IRemoteSaveService _remoteSaveService;
+        private readonly ISaveService _localSaveService;
+        private readonly ISaveService _remoteSaveService;
         public PlayerProgress PlayerProgress { get; private set; }
 
         public SaveLoad(
             INetworkChecker networkChecker, 
-            ILocalSaveService localSaveService,
-            IRemoteSaveService remoteSaveService)
+            [Inject(Id = "Local")] ISaveService localSaveService,
+            [Inject(Id = "Remote")] ISaveService remoteSaveService)
         {
             _networkChecker = networkChecker;
             _localSaveService = localSaveService;
@@ -43,7 +44,7 @@ namespace _Project.Scripts.Services.SaveLoad
             PlayerProgress.updatedAtTimeStamp = DateTimeOffset.UtcNow.ToUnixTimeSeconds();
             
             string json = ProgressToJson();
-            _localSaveService.Save(json);
+            await _localSaveService.Save(json);
 
             if (_cloudSaveInitialized && isNetworkAvailable)
                 await _remoteSaveService.Save(json);
@@ -59,7 +60,7 @@ namespace _Project.Scripts.Services.SaveLoad
 
                 if (remoteProgress == null)
                 {
-                    PlayerProgress = _localSaveService.Load();
+                    PlayerProgress = await _localSaveService.Load();
                     return;
                 }
 
@@ -68,7 +69,7 @@ namespace _Project.Scripts.Services.SaveLoad
                 if (localProgress == null)
                 {
                     PlayerProgress = remoteProgress;
-                    _localSaveService.Save(ProgressToJson());
+                    await _localSaveService.Save(ProgressToJson());
                     return;
                 }
 
@@ -80,11 +81,11 @@ namespace _Project.Scripts.Services.SaveLoad
                 }
                 
                 PlayerProgress = remoteProgress;
-                _localSaveService.Save(ProgressToJson());
+                await _localSaveService.Save(ProgressToJson());
             }
             else
             {
-                PlayerProgress = _localSaveService.Load();
+                PlayerProgress = await _localSaveService.Load();
             }
         }
 
