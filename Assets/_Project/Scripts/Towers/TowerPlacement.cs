@@ -52,7 +52,7 @@ namespace _Project.Scripts.Towers
                     var touch = Input.GetTouch(0);
                     if(touch.phase == TouchPhase.Began)
                     {
-                        if (UIHelper.IsPointerOverUIElement(touch.position))
+                        if (IsPointerOverUIElement(touch.position))
                             return;
 
                         TryPlaceTower(touch.position);

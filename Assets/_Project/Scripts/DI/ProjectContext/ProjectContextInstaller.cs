@@ -68,8 +68,8 @@ namespace _Project.Scripts.DI.ProjectContext
 
         private void BindSaveLoad()
         {
-            Container.Bind<ILocalSaveService>().To<LocalSaveService>().AsSingle();
-            Container.Bind<IRemoteSaveService>().To<RemoteSaveService>().AsSingle();
+            Container.Bind<ISaveService>().WithId("Local").To<LocalSaveService>().AsSingle();
+            Container.Bind<ISaveService>().WithId("Remote").To<RemoteSaveService>().AsSingle();
             Container.Bind<ISaveLoad>().To<SaveLoad>().AsSingle();
         }
         

@@ -9,7 +9,7 @@ using UnityEngine;
 
 namespace _Project.Scripts.Services.SaveLoad
 {
-    public class RemoteSaveService : IRemoteSaveService
+    public class RemoteSaveService : ISaveService
     {
         public async UniTask Initialize()
         {
@@ -44,5 +44,7 @@ namespace _Project.Scripts.Services.SaveLoad
 
             return JsonUtility.FromJson<PlayerProgress>(json);
         }
+
+        public PlayerProgress GetProgress() => null;
     }
 }

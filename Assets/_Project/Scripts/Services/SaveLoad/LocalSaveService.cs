@@ -1,19 +1,23 @@
-﻿using _Project.Scripts.Infrastructure.Constants;
+﻿using Cysharp.Threading.Tasks;
+using _Project.Scripts.Infrastructure.Constants;
 using UnityEngine;
 
 namespace _Project.Scripts.Services.SaveLoad
 {
-    public class LocalSaveService : ILocalSaveService
+    public class LocalSaveService : ISaveService
     {
-        public PlayerProgress Load() =>
-            PlayerPrefs.HasKey(GameConstants.PLAYER_PROGRESS) 
-                ? GetProgress()
-                : InitProgress();
+        public UniTask Initialize() => UniTask.CompletedTask;
 
-        public void Save(string progressJson)
+        public UniTask<PlayerProgress> Load() =>
+            UniTask.FromResult(PlayerPrefs.HasKey(GameConstants.PLAYER_PROGRESS) 
+                ? GetProgress()
+                : InitProgress());
+
+        public UniTask Save(string progressJson)
         {
             PlayerPrefs.SetString(GameConstants.PLAYER_PROGRESS, progressJson);
             PlayerPrefs.Save();
+            return UniTask.CompletedTask;
         }
         
         public PlayerProgress GetProgress()
