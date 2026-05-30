@@ -16,7 +16,7 @@ MonoBehaviour:
   m_GUID: c4d8891b1cc4d474a8d1bfefcae4fd39
   m_SerializeEntries:
   - m_GUID: 1ca9f04152d43634d8f67c3a9044230a
-    m_Address: LoadingCurtain
+    m_Address: Assets/_Project/Prefabs/UI/LoadingCurtain.prefab
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0

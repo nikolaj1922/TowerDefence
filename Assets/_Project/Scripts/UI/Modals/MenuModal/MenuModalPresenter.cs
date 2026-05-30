@@ -7,6 +7,7 @@ using _Project.Scripts.Infrastructure.LoadingCurtain.PipelineFactory;
 using _Project.Scripts.Services.Analytics;
 using _Project.Scripts.Services.SaveLoad;
 using Cysharp.Threading.Tasks;
+using UnityEngine;
 
 namespace _Project.Scripts.UI.Modals.MenuModal
 {
@@ -41,6 +42,7 @@ namespace _Project.Scripts.UI.Modals.MenuModal
             _menuModalView.OnStartClicked += OnStartClick;
             _menuModalView.OnShopClicked += OnShopClick;
             _menuModalView.OnOpenUpgradesClicked += OnOpenUpgradesClick;
+            _menuModalView.OnQuitClicked += OnQuitClick;
             
             _menuModalView.UpdateMetaCounter(_saveLoad.PlayerProgress.MetaCoinsCount.ToString());
         }
@@ -50,6 +52,7 @@ namespace _Project.Scripts.UI.Modals.MenuModal
             _menuModalView.OnStartClicked -= OnStartClick;
             _menuModalView.OnOpenUpgradesClicked -= OnOpenUpgradesClick;
             _menuModalView.OnShopClicked -= OnShopClick;
+            _menuModalView.OnQuitClicked -= OnQuitClick;
         }
         
         private void OnStartClick()
@@ -58,8 +61,20 @@ namespace _Project.Scripts.UI.Modals.MenuModal
             _analyticsService.GameStarted(_saveLoad.PlayerProgress.MetaCoinsCount);
             _loadingCurtainPresenter.StartLoadingOperations(_loadingPipelineFactory.LevelPipeline()).Forget();
         }
+
+        private void OnQuitClick() => ExitGame();
         
         private void OnOpenUpgradesClick() => _modalCreatorService.OpenModal(ModalType.Upgrades);
+        
         private void OnShopClick() => _modalCreatorService.OpenModal(ModalType.Shop);
+
+        private void ExitGame()
+        {
+            #if UNITY_EDITOR
+                UnityEditor.EditorApplication.isPlaying = false;
+            #else
+                Application.Quit();
+            #endif
+        }
     }
 }
