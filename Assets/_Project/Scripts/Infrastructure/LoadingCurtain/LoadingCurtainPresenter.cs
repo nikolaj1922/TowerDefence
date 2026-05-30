@@ -30,6 +30,28 @@ namespace _Project.Scripts.Infrastructure.LoadingCurtain
         
         private async UniTask Run(Queue<ILoadingOperation> loadingOperations)
         {
+            Debug.Log(Addressables.RuntimePath);
+            
+            foreach (var locator in Addressables.ResourceLocators)
+            {
+                Debug.Log(locator.LocatorId);
+            }
+            
+            var locations = Addressables.LoadResourceLocationsAsync(_viewReference);
+            await locations;
+
+            foreach (var loc in locations.Result)
+            {
+                Debug.Log($"Primary: {loc.InternalId}");
+
+                if (loc.Dependencies != null)
+                {
+                    foreach (var dep in loc.Dependencies)
+                    {
+                        Debug.Log($"Dependency: {dep.InternalId}");
+                    }
+                }
+            }
             GameObject viewObject = await _assetProviderService.Instantiate(_viewReference);
             LoadingCurtainView curtain = viewObject.GetComponent<LoadingCurtainView>();
             

@@ -1,9 +1,7 @@
 ﻿using System.Collections.Generic;
 using _Project.Scripts.Database.Enemies;
-using _Project.Scripts.Database.Game;
 using _Project.Scripts.Database.Modals;
 using _Project.Scripts.Database.Towers;
-using _Project.Scripts.Database.Upgrades;
 using _Project.Scripts.Database.Weapons;
 using _Project.Scripts.Infrastructure.Constants;
 using _Project.Scripts.Infrastructure.LoadingCurtain.Operations;
@@ -27,8 +25,6 @@ namespace _Project.Scripts.Infrastructure.LoadingCurtain.PipelineFactory
         private readonly EnemyDatabase _enemyDatabase;
         private readonly TowerDatabase _towerDatabase;
         private readonly WeaponDatabase _weaponDatabase;
-        private readonly UpgradeDatabase _upgradeDatabase;
-        private readonly GameDatabase _gameDatabase;
         
         private readonly AssetReference _menuSceneReference;
         private readonly AssetReference _levelSceneReference;
@@ -39,9 +35,7 @@ namespace _Project.Scripts.Infrastructure.LoadingCurtain.PipelineFactory
             ISceneLoaderService sceneLoaderService,
             IRemoteConfigService remoteConfigService,
             
-            GameDatabase gameDatabase,
             EnemyDatabase enemyDatabase,
-            UpgradeDatabase upgradeDatabase,
             TowerDatabase towerDatabase,
             WeaponDatabase weaponDatabase,
             
@@ -56,8 +50,6 @@ namespace _Project.Scripts.Infrastructure.LoadingCurtain.PipelineFactory
             _sceneLoaderService = sceneLoaderService;
             _remoteConfigService = remoteConfigService;
 
-            _gameDatabase = gameDatabase;
-            _upgradeDatabase = upgradeDatabase;
             _weaponDatabase = weaponDatabase;
             _enemyDatabase = enemyDatabase;
             _towerDatabase = towerDatabase;
